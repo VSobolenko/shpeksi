@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "hooks": {
+    "preToolUse": [
+      {
+        "command": "node .cursor/hooks/secret-guard.cjs",
+        "matcher": "^(Write|StrReplace|EditNotebook)$"
+      }
+    ],
+    "beforeShellExecution": [
+      {
+        "command": "node .cursor/hooks/git-guard.cjs",
+        "matcher": "git"
+      }
+    ]
+  }
+}
