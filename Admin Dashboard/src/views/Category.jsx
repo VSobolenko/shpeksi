@@ -155,7 +155,7 @@ const Category = props => {
                     <DataTable
                       title={t('Categories')}
                       columns={columns}
-                      data={data.categories}
+                      data={data && data.categories ? data.categories : []}
                       pagination
                       progressPending={loading}
                       progressComponent={<CustomLoader />}

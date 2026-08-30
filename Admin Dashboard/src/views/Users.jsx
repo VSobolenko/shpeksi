@@ -104,7 +104,7 @@ const Users = props => {
                     <DataTable
                       title={t('Users')}
                       columns={columns}
-                      data={data.users}
+                      data={data && data.users ? data.users : []}
                       pagination
                       progressPending={loading}
                       progressComponent={<CustomLoader />}

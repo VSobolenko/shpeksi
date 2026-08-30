@@ -175,7 +175,7 @@ const Food = props => {
                     <DataTable
                       title={t('Foods')}
                       columns={columns}
-                      data={data.foods}
+                      data={data && data.foods ? data.foods : []}
                       pagination
                       progressPending={loading}
                       progressComponent={<CustomLoader />}

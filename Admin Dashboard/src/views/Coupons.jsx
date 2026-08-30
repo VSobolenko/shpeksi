@@ -179,7 +179,7 @@ const Coupon = props => {
                     <DataTable
                       title={t('Coupons')}
                       columns={columns}
-                      data={data.coupons}
+                      data={data && data.coupons ? data.coupons : []}
                       pagination
                       progressPending={loading}
                       progressComponent={<CustomLoader />}

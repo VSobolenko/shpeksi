@@ -170,7 +170,6 @@ export const subscribePlaceOrder = `subscription SubscribePaceOrder{
         quantity
       }
       reason
-      status
       payment_status
       order_status
       createdAt
@@ -242,7 +241,6 @@ export const getOrders = `query Orders($page:Int,$rows:Int,$search:String){
       quantity
     }
     reason
-    status
     payment_status
     order_status
     createdAt

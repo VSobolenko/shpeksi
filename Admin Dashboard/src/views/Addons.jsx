@@ -164,7 +164,7 @@ const Addon = props => {
                     <DataTable
                       title={t('Addons')}
                       columns={columns}
-                      data={data.allAddons}
+                      data={data && data.allAddons ? data.allAddons : []}
                       pagination
                       progressPending={loading}
                       progressComponent={<CustomLoader />}

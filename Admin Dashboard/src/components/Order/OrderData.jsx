@@ -191,7 +191,7 @@ const OrdersData = props => {
             subHeaderComponent={subHeaderComponent()}
             pagination
             paginationServer
-            paginationTotalRows={data.orderCount}
+            paginationTotalRows={data && data.orderCount !== undefined ? data.orderCount : 0}
             onChangeRowsPerPage={handlePerRowsChange}
             onChangePage={handlePageChange}
             conditionalRowStyles={conditionalRowStyles}

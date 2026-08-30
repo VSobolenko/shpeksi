@@ -162,7 +162,7 @@ const Option = props => {
                     <DataTable
                       title={t('Options')}
                       columns={columns}
-                      data={data.allOptions}
+                      data={data && data.allOptions ? data.allOptions : []}
                       pagination
                       progressPending={loading}
                       progressComponent={<CustomLoader />}

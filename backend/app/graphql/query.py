@@ -1,6 +1,6 @@
 """GraphQL Query resolvers (catalog, users, orders, config, dashboard)."""
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List, Optional
 
 import strawberry
@@ -49,6 +49,42 @@ def _parse_date(value: Optional[str]) -> Optional[datetime]:
 
 def _food_price_range(food: Food) -> list[float]:
     return [v.price for v in food.variations]
+
+
+def _filter_orders_by_date(
+    orders: List[Order], start: Optional[datetime], end: Optional[datetime]
+) -> List[Order]:
+    """Keep orders whose createdAt falls within [start, end) — where ``end`` is
+    treated as the whole ending day (exclusive of the next midnight), so orders
+    placed later on the ending date are still included."""
+    if start:
+        orders = [o for o in orders if o.createdAt and o.createdAt >= start]
+    if end:
+        end_exclusive = end + timedelta(days=1)
+        orders = [o for o in orders if o.createdAt and o.createdAt < end_exclusive]
+    return orders
+
+
+async def _orders_in_range(starting_date: Optional[str], ending_date: Optional[str]) -> List[Order]:
+    orders = await Order.find_all().to_list()
+    return _filter_orders_by_date(
+        orders, _parse_date(starting_date), _parse_date(ending_date)
+    )
+
+
+async def _daily(orders: List[Order], with_amount: bool):
+    buckets: dict = {}
+    for o in orders:
+        day = o.createdAt.date().isoformat() if o.createdAt else "unknown"
+        entry = buckets.setdefault(day, {"count": 0, "amount": 0.0})
+        entry["count"] += 1
+        entry["amount"] += o.order_amount if o.payment_status == "PAID" else 0.0
+    if with_amount:
+        return [
+            DailyOrderData(day=d, count=v["count"], amount=round(v["amount"], 2))
+            for d, v in sorted(buckets.items())
+        ]
+    return [DailyOrder(day=d, count=v["count"]) for d, v in sorted(buckets.items())]
 
 
 @strawberry.type
@@ -236,23 +272,12 @@ class Query:
 
     # --- Dashboard -------------------------------------------------------- #
 
-    async def _orders_in_range(self, starting_date: Optional[str], ending_date: Optional[str]):
-        query = Order.find_all()
-        orders = await query.to_list()
-        start = _parse_date(starting_date)
-        end = _parse_date(ending_date)
-        if start:
-            orders = [o for o in orders if o.createdAt and o.createdAt >= start]
-        if end:
-            orders = [o for o in orders if o.createdAt and o.createdAt <= end]
-        return orders
-
     @strawberry.field
     async def getDashboardTotal(
         self, info: strawberry.Info, starting_date: Optional[str] = None, ending_date: Optional[str] = None
     ) -> DashboardTotal:
         require_admin(info)
-        orders = await self._orders_in_range(starting_date, ending_date)
+        orders = await _orders_in_range(starting_date, ending_date)
         total_orders = len(orders)
         total_sales = round(sum(o.order_amount for o in orders if o.payment_status == "PAID"), 2)
         ratings = [o.review.rating for o in orders if o.review]
@@ -267,27 +292,13 @@ class Query:
             avg_ratings=avg_ratings,
         )
 
-    async def _daily(self, orders: List[Order], with_amount: bool):
-        buckets: dict = {}
-        for o in orders:
-            day = o.createdAt.date().isoformat() if o.createdAt else "unknown"
-            entry = buckets.setdefault(day, {"count": 0, "amount": 0.0})
-            entry["count"] += 1
-            entry["amount"] += o.order_amount if o.payment_status == "PAID" else 0.0
-        if with_amount:
-            return [
-                DailyOrderData(day=d, count=v["count"], amount=round(v["amount"], 2))
-                for d, v in sorted(buckets.items())
-            ]
-        return [DailyOrder(day=d, count=v["count"]) for d, v in sorted(buckets.items())]
-
     @strawberry.field
     async def getDashboardSales(
         self, info: strawberry.Info, starting_date: Optional[str] = None, ending_date: Optional[str] = None
     ) -> DashboardSales:
         require_admin(info)
-        orders = await self._orders_in_range(starting_date, ending_date)
-        daily = await self._daily(orders, with_amount=True)
+        orders = await _orders_in_range(starting_date, ending_date)
+        daily = await _daily(orders, with_amount=True)
         return DashboardSales(
             orders=[DailySale(day=d.day, amount=d.amount) for d in daily]
         )
@@ -297,19 +308,19 @@ class Query:
         self, info: strawberry.Info, starting_date: Optional[str] = None, ending_date: Optional[str] = None
     ) -> DashboardOrders:
         require_admin(info)
-        orders = await self._orders_in_range(starting_date, ending_date)
-        return DashboardOrders(orders=await self._daily(orders, with_amount=False))
+        orders = await _orders_in_range(starting_date, ending_date)
+        return DashboardOrders(orders=await _daily(orders, with_amount=False))
 
     @strawberry.field
     async def getDashboardData(
         self, info: strawberry.Info, starting_date: Optional[str] = None, ending_date: Optional[str] = None
     ) -> DashboardData:
         require_admin(info)
-        orders = await self._orders_in_range(starting_date, ending_date)
+        orders = await _orders_in_range(starting_date, ending_date)
         total_sales = round(sum(o.order_amount for o in orders if o.payment_status == "PAID"), 2)
         return DashboardData(
             total_orders=len(orders),
             total_users=await User.find_all().count(),
             total_sales=total_sales,
-            orders=await self._daily(orders, with_amount=True),
+            orders=await _daily(orders, with_amount=True),
         )

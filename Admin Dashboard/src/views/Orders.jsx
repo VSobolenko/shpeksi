@@ -49,7 +49,7 @@ const Orders = props => {
                   }
                   return (
                     <OrdersData
-                      orders={data.allOrders}
+                      orders={data && data.allOrders ? data.allOrders : []}
                       toggleModal={toggleModal}
                       subscribeToMore={subscribeToMore}
                       loading={loading}

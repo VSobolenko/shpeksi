@@ -100,7 +100,7 @@ const Ratings = props => {
                     <DataTable
                       title={t('Ratings')}
                       columns={columns}
-                      data={data.allReviews}
+                      data={data && data.allReviews ? data.allReviews : []}
                       pagination
                       progressPending={loading}
                       progressComponent={<CustomLoader />}
