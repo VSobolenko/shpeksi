@@ -1,4 +1,4 @@
-import { useApolloClient } from "@apollo/react-hooks";
+import { useApolloClient } from "@apollo/client";
 import { useNavigation, useTheme } from "@react-navigation/native";
 import React, { useContext, useLayoutEffect } from "react";
 import { FlatList, TouchableOpacity, View } from "react-native";
@@ -8,7 +8,7 @@ import EmptyOrder from "../../assets/images/SVG/imageComponents/EmptyOrder";
 import {
   ActiveOrders,
   CustomIcon,
-  EnategaImage,
+  PickupImage,
   Spinner,
   TextDefault,
   TextError,
@@ -21,8 +21,8 @@ import { ICONS_NAME, NAVIGATION_SCREEN } from "../../utils/constant";
 import { scale } from "../../utils/scaling";
 import useStyle from "./style";
 
-const orderStatusActive = ["PENDING", "PICKED", "ACCEPTED"];
-const orderStatusInactive = ["DELIVERED", "COMPLETED"];
+const orderStatusActive = ["PENDING", "ACCEPTED", "READY"];
+const orderStatusInactive = ["COMPLETED"];
 
 function MyOrders() {
   const styles = useStyle();
@@ -146,7 +146,7 @@ function MyOrders() {
           >
             <View style={styles.subContainer}>
               <View style={styles.imgContainer}>
-                <EnategaImage
+                <PickupImage
                   imgStyle={styles.imgResponsive}
                   source={{ uri: item.items[0].food.img_url }}
                   spinnerProps={{ style: styles.loadingView }}
@@ -160,9 +160,6 @@ function MyOrders() {
                 <TextDefault line={3} textColor={colors.tagColor} H5 medium>
                   {configuration.currency_symbol}
                   {item.order_amount}
-                  {/* {item.order_status === 'PENDING'
-                  ? "We're asking the restaurant how long it will take to deliver your food."
-                  : 'The restaurant rider will be at your place around.'} */}
                 </TextDefault>
               </View>
               <View style={styles.Vline} />

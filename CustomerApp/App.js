@@ -1,4 +1,4 @@
-import { ApolloProvider } from '@apollo/react-hooks'
+import { ApolloProvider } from '@apollo/client'
 import * as Font from 'expo-font'
 import * as Location from 'expo-location'
 import * as Notifications from 'expo-notifications'

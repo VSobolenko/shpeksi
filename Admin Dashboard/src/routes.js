@@ -6,7 +6,6 @@ import Configuration from './views/Configuration'
 import Users from './views/Users'
 import Ratings from './views/Ratings'
 import ResetPassword from './views/ForgotPassword'
-import Riders from './views/Riders'
 import Options from './views/Options'
 import Addons from './views/Addons'
 import Coupons from './views/Coupons'
@@ -41,7 +40,7 @@ var routes = [
   {
     path: '/orders',
     name: 'Orders',
-    icon: 'ni ni-delivery-fast text-orange',
+    icon: 'ni ni-basket text-orange',
     component: Orders,
     layout: '/admin',
     appearInSidebar: true
@@ -59,14 +58,6 @@ var routes = [
     name: 'Ratings',
     icon: 'fas fa-star text-orange',
     component: Ratings,
-    layout: '/admin',
-    appearInSidebar: true
-  },
-  {
-    path: '/riders',
-    name: 'Riders',
-    icon: 'ni ni-bus-front-12 text-orange',
-    component: Riders,
     layout: '/admin',
     appearInSidebar: true
   },

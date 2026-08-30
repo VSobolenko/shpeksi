@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import gql from 'graphql-tag'
-import { Mutation, Query } from 'react-apollo'
+import { gql } from '@apollo/client'
+import { Mutation, Query } from '@apollo/client/react/components'
 import { withTranslation } from 'react-i18next'
 // reactstrap components
 import {
@@ -27,8 +27,6 @@ import {
 } from 'reactstrap'
 import { validateFunc } from '../../constraints/constraints'
 import {
-  getAvailableRiders,
-  assignRider,
   updateOrderStatus,
   getPaymentStatuses,
   updatePaymentStatus,
@@ -39,12 +37,6 @@ import Loader from 'react-loader-spinner'
 // constants
 const UPDATE_STATUS = gql`
   ${updateOrderStatus}
-`
-const GET_RIDERS = gql`
-  ${getAvailableRiders}
-`
-const ASSIGN_RIDER = gql`
-  ${assignRider}
 `
 const GET_PAYMENT_STATUSES = gql`
   ${getPaymentStatuses}
@@ -62,7 +54,6 @@ const GET_CONFIGURATION = gql`
 function Order(props) {
   const { order } = props
   const [reason, reasonSetter] = useState('')
-  const [selectedRider, selectedRiderSetter] = useState('')
   const [selectedStatus, selectedStatusSetter] = useState('')
   const [selectedPaymentStatus, selectedPaymentStatusSetter] = useState('')
   const [customerCollapse, customerCollapseSetter] = useState(true)
@@ -86,14 +77,11 @@ function Order(props) {
   }
   const onCompleted = ({
     updateStatus,
-    assignRider,
     updateOrderStatus,
     updatePaymentStatus
   }) => {
     if (updateStatus) {
       successSetter('Status Updated')
-    } else if (assignRider) {
-      successSetter('Rider assinged')
     } else if (updateOrderStatus) {
       successSetter('Order status updated')
     } else if (updatePaymentStatus) {
@@ -102,12 +90,6 @@ function Order(props) {
   }
   const onError = error => {
     errorSetter(error.message)
-  }
-  const onChangeRider = event => {
-    selectedRiderSetter(event.target.value)
-  }
-  const validateRider = () => {
-    return !!selectedRider
   }
   const validateStatus = () => {
     return !!selectedStatus
@@ -163,7 +145,7 @@ function Order(props) {
               </Row>
             )}
             {order.order_status !== 'CANCELLED' &&
-              order.order_status !== 'DELIVERED' && (
+              order.order_status !== 'COMPLETED' && (
               <Row className="mb-2">
                 <Col lg="12">
                   <div>
@@ -258,111 +240,8 @@ function Order(props) {
             )}
             {order.order_status !== 'PENDING' &&
               order.order_status !== 'CANCELLED' &&
-              order.order_status !== 'DELIVERED' && (
+              order.order_status !== 'COMPLETED' && (
               <>
-                <Row>
-                  <Col xs="8">
-                    <h3 className="mb-1">{t('Rider')}</h3>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col lg="6">
-                    <label
-                      className="form-control-label"
-                      htmlFor="input-rider">
-                      {t('Available Riders')}
-                    </label>
-                    <FormGroup>
-                      <InputGroup>
-                        <Query query={GET_RIDERS}>
-                          {({ loading, error, data }) => {
-                            if (loading) return <option>Loading...</option>
-                            if (error) return <option>Error...</option>
-                            return (
-                              <Input
-                                type="select"
-                                name="select"
-                                id="input-rider"
-                                onChange={onChangeRider}
-                                defaultValue={
-                                  order.rider ? order.rider._id : ''
-                                }>
-                                <option disabled></option>
-                                {data.availableRiders.map(rider => (
-                                  <option key={rider._id} value={rider._id}>
-                                    {rider.name}
-                                  </option>
-                                ))}
-                              </Input>
-                            )
-                          }}
-                        </Query>
-                        <InputGroupAddon addonType="append">
-                          <Mutation
-                            mutation={ASSIGN_RIDER}
-                            onError={onError}
-                            onCompleted={onCompleted}>
-                            {(assignRider, { loading }) => {
-                              if (loading) {
-                                return (
-                                  <Button
-                                    color="primary"
-                                    onClick={() => null}>
-                                    <Loader
-                                      className="text-center"
-                                      type="TailSpin"
-                                      color="#FFF"
-                                      height={20}
-                                      width={40}
-                                      visible={loading}
-                                    />
-                                  </Button>
-                                )
-                              }
-                              return (
-                                <Button
-                                  color="primary"
-                                  disabled={
-                                    order.rider
-                                      ? order.rider._id === selectedRider
-                                      : false
-                                  }
-                                  onClick={() => {
-                                    if (validateRider()) {
-                                      assignRider({
-                                        variables: {
-                                          id: order._id,
-                                          riderId: selectedRider
-                                        }
-                                      })
-                                    }
-                                  }}>
-                                    Assign
-                                </Button>
-                              )
-                            }}
-                          </Mutation>
-                        </InputGroupAddon>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                  <Col lg="6">
-                    <label
-                      className="form-control-label"
-                      htmlFor="rider-name">
-                      {t('Assigned To')}
-                    </label>
-                    <FormGroup>
-                      <Input
-                        className="form-control-alternative"
-                        id="rider-name"
-                        type="text"
-                        readOnly
-                        value={order.rider ? order.rider.name : ''}
-                      />
-                    </FormGroup>
-                  </Col>
-                </Row>
                 <Row>
                   <Col xs="8">
                     <h3 className="mb-1">{t('Order Status')}</h3>
@@ -372,7 +251,7 @@ function Order(props) {
                   <Col lg="6">
                     <label
                       className="form-control-label"
-                      htmlFor="input-rider">
+                      htmlFor="input-status">
                       {t('Select Status')}
                     </label>
                     <FormGroup>
@@ -380,11 +259,11 @@ function Order(props) {
                         <Input
                           type="select"
                           name="select"
-                          id="input-rider"
+                          id="input-status"
                           onChange={onChangeStatus}>
                           <option selected></option>
-                          <option value="PICKED">PICKED</option>
-                          <option value="DELIVERED">DELIVERED</option>
+                          <option value="READY">READY</option>
+                          <option value="COMPLETED">COMPLETED</option>
                         </Input>
 
                         <InputGroupAddon addonType="append">
@@ -437,13 +316,13 @@ function Order(props) {
                   <Col lg="6">
                     <label
                       className="form-control-label"
-                      htmlFor="rider-name">
+                      htmlFor="status-name">
                       {t('Current Status')}
                     </label>
                     <FormGroup>
                       <Input
                         className="form-control-alternative"
-                        id="rider-name"
+                        id="status-name"
                         type="text"
                         readOnly
                         value={order.order_status || ''}
@@ -460,7 +339,7 @@ function Order(props) {
                   <Col lg="6">
                     <label
                       className="form-control-label"
-                      htmlFor="input-rider">
+                      htmlFor="input-status">
                       {t('Select Status')}
                     </label>
                     <FormGroup>
@@ -473,7 +352,7 @@ function Order(props) {
                               <Input
                                 type="select"
                                 name="select"
-                                id="input-rider"
+                                id="input-status"
                                 onChange={onChangePaymentStatus}
                                 defaultValue={order.payment_status}>
                                 <option disabled></option>
@@ -537,13 +416,13 @@ function Order(props) {
                   <Col lg="6">
                     <label
                       className="form-control-label"
-                      htmlFor="rider-name">
+                      htmlFor="status-name">
                       {t('Current Status')}
                     </label>
                     <FormGroup>
                       <Input
                         className="form-control-alternative"
-                        id="rider-name"
+                        id="status-name"
                         type="text"
                         readOnly
                         value={order.payment_status || ''}
@@ -609,22 +488,6 @@ function Order(props) {
                       type="text"
                       disabled={true}
                       defaultValue={order.user.email}
-                    />
-                  </FormGroup>
-                </Col>
-              </Row>
-              <Row>
-                <Col lg="12">
-                  <label className="form-control-label" htmlFor="input-address">
-                    {t('Address')}
-                  </label>
-                  <FormGroup>
-                    <Input
-                      className="form-control-alternative"
-                      id="input-address"
-                      type="text"
-                      disabled={true}
-                      defaultValue={order.delivery_address.delivery_address}
                     />
                   </FormGroup>
                 </Col>
@@ -744,22 +607,7 @@ function Order(props) {
                                     }}
                                     pill>
                                     {data.configuration.currency_symbol}{' '}
-                                    {(
-                                      order.order_amount -
-                                      order.delivery_charges
-                                    ).toFixed(2)}
-                                  </Badge>
-                                </ListGroupItem>
-                                <ListGroupItem className="justify-content-between">
-                                  Delivery Charges
-                                  <Badge
-                                    style={{
-                                      fontSize: '12px',
-                                      float: 'right',
-                                      color: 'black'
-                                    }}>
-                                    {data.configuration.currency_symbol}{' '}
-                                    {order.delivery_charges.toFixed(2)}
+                                    {order.order_amount.toFixed(2)}
                                   </Badge>
                                 </ListGroupItem>
                                 <ListGroupItem className="justify-content-between">
@@ -800,7 +648,7 @@ function Order(props) {
                                     {order.payment_method}
                                   </Badge>
                                 </ListGroupItem>
-                                {order.order_status !== 'DELIVERED' && (
+                                {order.order_status !== 'COMPLETED' && (
                                   <ListGroupItem className="justify-content-between">
                                     Paid Amount
                                     <Badge

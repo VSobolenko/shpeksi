@@ -1,9 +1,9 @@
-import { useMutation } from '@apollo/react-hooks'
+import { useMutation } from '@apollo/client'
 import { useNavigation, useTheme } from '@react-navigation/native'
 import * as Device from 'expo-device'
 import * as Localization from 'expo-localization'
 import * as Notifications from 'expo-notifications'
-import gql from 'graphql-tag'
+import { gql } from '@apollo/client'
 import React, { useContext, useState } from 'react'
 import {
   KeyboardAvoidingView,
@@ -12,12 +12,12 @@ import {
   TouchableOpacity,
   View
 } from 'react-native'
-import { FilledTextField } from 'react-native-material-textfield'
+import { FilledTextField } from '../../components'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { createUser } from '../../apollo/server'
 import {
   CustomIcon,
-  EnategaImage,
+  PickupImage,
   FlashMessage,
   Spinner,
   TextDefault,
@@ -195,7 +195,7 @@ function Register() {
             </View>
             <View style={styles.subContainer}>
               <View style={[styles.flex, styles.upperContainer]}>
-                <EnategaImage
+                <PickupImage
                   imgStyle={[
                     styles.imgResponsive,
                     { backgroundColor: 'transparent' }

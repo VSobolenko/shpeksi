@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 // reactstrap components
 import { Container, Row } from 'reactstrap'
 
@@ -9,7 +9,7 @@ import AuthFooter from '../components/Footers/AuthFooter.jsx'
 
 import routes from '../routes.js'
 
-function Auth(props) {
+function Auth() {
   useEffect(() => {
     document.body.classList.add('bg-default')
     return () => {
@@ -19,16 +19,12 @@ function Auth(props) {
   function getRoutes(routes) {
     return routes.map((prop, key) => {
       if (prop.layout === '/auth') {
+        const Component = prop.component
         return (
-          <Route
-            path={prop.layout + prop.path}
-            component={prop.component}
-            key={key}
-          />
+          <Route path={prop.path.slice(1)} element={<Component />} key={key} />
         )
-      } else {
-        return null
       }
+      return null
     })
   }
   return (
@@ -54,7 +50,7 @@ function Auth(props) {
         {/* Page content */}
         <Container className="mt--8 pb-5">
           <Row className="justify-content-center">
-            <Switch>{getRoutes(routes)}</Switch>
+            <Routes>{getRoutes(routes)}</Routes>
           </Row>
         </Container>
       </div>

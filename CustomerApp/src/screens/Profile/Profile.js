@@ -1,7 +1,7 @@
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation } from "@apollo/client";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation, useRoute, useTheme } from "@react-navigation/native";
-import gql from "graphql-tag";
+import { gql } from "@apollo/client";
 import React, {
   useContext,
   useEffect,
@@ -16,7 +16,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { TextField } from "react-native-material-textfield";
+import { TextField } from "../../components";
 import i18n from "../../../i18n";
 import { updateUser } from "../../apollo/server";
 import {

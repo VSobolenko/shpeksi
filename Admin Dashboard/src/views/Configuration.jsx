@@ -1,15 +1,14 @@
 import React from 'react'
 import { withTranslation } from 'react-i18next'
 import { Container } from 'reactstrap'
-import { Query } from 'react-apollo'
-import gql from 'graphql-tag'
+import { Query } from '@apollo/client/react/components'
+import { gql } from '@apollo/client'
 import Header from '../components/Headers/Header.jsx'
 import { getConfiguration } from '../apollo/server'
 import OrderConfiguration from '../components/Configuration/Order/Order'
 import EmailConfiguration from '../components/Configuration/Email/Email'
 import PaypalConfiguration from '../components/Configuration/Paypal/Paypal'
 import StripeConfiguration from '../components/Configuration/Stripe/Stripe'
-import DeliveryConfiguration from '../components/Configuration/Delivery/Delivery'
 import CurrencyConfiguration from '../components/Configuration/Currency/Currency'
 import Loader from 'react-loader-spinner'
 
@@ -60,9 +59,6 @@ const Configuration = props => {
               <StripeConfiguration
                 publishableKey={data.configuration.publishable_key}
                 secretKey={data.configuration.secret_key}
-              />
-              <DeliveryConfiguration
-                deliveryCharges={data.configuration.delivery_charges}
               />
               <CurrencyConfiguration
                 currencyCode={data.configuration.currency}

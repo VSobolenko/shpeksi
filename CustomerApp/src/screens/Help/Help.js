@@ -11,15 +11,15 @@ import { useTheme } from "@react-navigation/native";
 const links = [
   {
     title: "Product Page",
-    url: "https://enatega.com/enatega-single-vendor/",
+    url: "#",
   },
   {
     title: "Docs",
-    url: "https://enatega.com/docs/enatega-singlevendor-introduction/",
+    url: "#",
   },
   {
     title: "Blog",
-    url: "https://enatega.com/blog/",
+    url: "#",
   },
   { title: "About Us", url: "https://ninjascode.com/about-us/" },
 ];

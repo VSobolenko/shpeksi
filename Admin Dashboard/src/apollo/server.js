@@ -131,15 +131,7 @@ export const subscribePlaceOrder = `subscription SubscribePaceOrder{
   subscribePlaceOrder{
       order{
         _id
-      delivery_address{
-        latitude
-        longitude
-        delivery_address
-        details
-        label
-      }
-      delivery_charges
-      order_amount
+        order_amount
       paid_amount
       payment_method
       order_id
@@ -187,10 +179,6 @@ export const subscribePlaceOrder = `subscription SubscribePaceOrder{
         rating
         description
       }
-      rider{
-        _id
-        name
-      }
     }
     origin
   }
@@ -215,14 +203,6 @@ export const deleteCategory = `
 export const getOrders = `query Orders($page:Int,$rows:Int,$search:String){
   allOrders(page:$page,rows:$rows,search:$search){
     _id
-    delivery_address{
-      latitude
-      longitude
-      delivery_address
-      details
-      label
-    }
-    delivery_charges
     order_amount
     paid_amount
     payment_method
@@ -270,10 +250,6 @@ export const getOrders = `query Orders($page:Int,$rows:Int,$search:String){
       _id
       rating
       description
-    }
-    rider{
-      _id
-      name
     }
   }
 }`
@@ -329,7 +305,6 @@ export const getConfiguration = `query GetConfiguration{
     sandbox
     publishable_key
     secret_key
-    delivery_charges
     currency
     currency_symbol
   }
@@ -370,12 +345,6 @@ export const saveStripeConfiguration = `mutation SaveStripeConfiguration($config
     _id
     publishable_key
     secret_key
-  }
-}`
-export const saveDeliveryConfiguration = `mutation SaveDeliveryConfiguration($configurationInput:DeliveryConfigurationInput!){
-  saveDeliveryConfiguration(configurationInput:$configurationInput){
-    _id
-    delivery_charges
   }
 }`
 export const saveCurrencyConfiguration = `mutation SaveCurrencyConfiguration($configurationInput:CurrencyConfigurationInput!){
@@ -470,79 +439,9 @@ export const resetPassword = `mutation ResetPassword($password:String!,$token:St
   }
 }`
 
-export const createRider = `
-mutation CreateRider($riderInput:RiderInput!){
-    createRider(
-        riderInput:$riderInput
-    ){
-    _id
-    name
-    username
-    password
-    phone
-    available
-    }
-  }`
-
-export const getRiders = `query{
-  riders{
-    _id
-    name
-    username
-    password
-    phone
-    available
-  }
-}`
-
-export const getAvailableRiders = `query{
-  availableRiders{
-    _id
-    name
-    username
-    phone
-    available
-  }
-}`
-
-export const editRider = `
-    mutation EditRider($riderInput:RiderInput!){
-        editRider(
-          riderInput:$riderInput
-        ){
-          _id
-          name
-          username
-          phone
-        }
-      }`
-export const deleteRider = `
-      mutation DeleteRider($id:String!){
-        deleteRider(id:$id){
-          _id
-        }
-      }`
-
-export const toggleAvailablity = `
-      mutation ToggleRider($id:String){
-        toggleAvailablity(id:$id){
-          _id
-        }
-}`
-
 export const orderCount = `
 query{
   orderCount
-}`
-
-export const assignRider = ` mutation AssignRider($id:String!,$riderId:String!){
-  assignRider(id:$id,riderId:$riderId){
-    _id
-    rider{
-      _id
-      name
-    }
-  }
 }`
 
 export const getOrderStatuses = `query{

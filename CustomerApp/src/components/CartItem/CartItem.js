@@ -7,7 +7,7 @@ import { alignment } from '../../utils/alignment'
 import { ICONS_NAME } from '../../utils/constant'
 import { scale } from '../../utils/scaling'
 import { CustomIcon } from '../CustomIcon'
-import EnategaImage from '../EnategaImage/EnategaImage'
+import PickupImage from '../PickupImage/PickupImage'
 import TextDefault from '../Text/TextDefault/TextDefault'
 import useStyle from './styles'
 
@@ -19,7 +19,7 @@ const cartItem = props => {
   return (
     <View style={styles.itemContainer}>
       <View style={{ width: '25%' }}>
-        <EnategaImage
+        <PickupImage
           imgStyle={styles.imgResponsive}
           imgSource={{ uri: props.image }}
           spinnerProps={{ style: styles.loadingView }}

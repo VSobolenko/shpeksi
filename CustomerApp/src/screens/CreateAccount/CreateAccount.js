@@ -1,4 +1,4 @@
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation } from "@apollo/client";
 import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation, useTheme } from "@react-navigation/native";
 
@@ -7,13 +7,13 @@ import Constants from "expo-constants";
 
 import * as Google from "expo-auth-session/providers/google";
 import * as Notifications from "expo-notifications";
-import gql from "graphql-tag";
+import { gql } from "@apollo/client";
 import React, { useContext, useEffect, useState } from "react";
 import { Platform, TouchableOpacity, View } from "react-native";
 import getEnvVars from "../../../environment";
 import { login } from "../../apollo/server";
 import {
-  EnategaImage,
+  PickupImage,
   FdEmailBtn,
   FdGoogleBtn,
   FlashMessage,
@@ -28,13 +28,12 @@ import Analytics from "../../utils/analytics";
 import { NAVIGATION_SCREEN } from "../../utils/constant";
 import { scale } from "../../utils/scaling";
 import useStyle from "./styles";
-import ApolloClient from "apollo-client";
 import i18n from "../../../i18n";
 
 const {
   IOS_CLIENT_ID_GOOGLE,
   ANDROID_CLIENT_ID_GOOGLE,
-  Expo_CLIENT_ID_GOOGLE,
+  EXPO_CLIENT_ID_GOOGLE,
 } = getEnvVars();
 
 const LOGIN = gql`
@@ -131,7 +130,6 @@ const CreateAccount = () => {
                 AppleAuthentication.AppleAuthenticationScope.EMAIL,
               ],
             });
-            console.log(credential);
             if (credential) {
               const user = {
                 appleId: credential.user,
@@ -176,7 +174,7 @@ const CreateAccount = () => {
 
   const [googleRequest, googleResponse, googlePromptAsync] =
     Google.useAuthRequest({
-      expoClientId: Expo_CLIENT_ID_GOOGLE,
+      expoClientId: EXPO_CLIENT_ID_GOOGLE,
       iosClientId: IOS_CLIENT_ID_GOOGLE,
       iosStandaloneAppClientId: IOS_CLIENT_ID_GOOGLE,
       androidClientId: ANDROID_CLIENT_ID_GOOGLE,
@@ -189,7 +187,6 @@ const CreateAccount = () => {
   const googleSignUp = () => {
     if (googleResponse?.type === "success") {
       const { authentication } = googleResponse;
-      console.log(authentication.accessToken);
       (async () => {
         const userInfoResponse = await fetch(
           "https://www.googleapis.com/oauth2/v1/userinfo?alt=json",
@@ -245,7 +242,7 @@ const CreateAccount = () => {
         <RegistrationHeader title={i18n.t('getStarted')} />
         <View style={styles.subContainer}>
           <View style={[styles.flex, styles.upperContainer]}>
-            <EnategaImage
+            <PickupImage
               imgStyle={styles.imgResponsive}
               imgSource={Logo}
               spinnerProps={{ style: styles.loadingView }}

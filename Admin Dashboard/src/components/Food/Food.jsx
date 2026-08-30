@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import React, { useState } from 'react'
-import gql from 'graphql-tag'
-import { Query, Mutation } from 'react-apollo'
+import { gql } from '@apollo/client'
+import { Query, Mutation } from '@apollo/client/react/components'
 import { validateFunc } from '../../constraints/constraints'
 import { withTranslation } from 'react-i18next'
 // reactstrap components

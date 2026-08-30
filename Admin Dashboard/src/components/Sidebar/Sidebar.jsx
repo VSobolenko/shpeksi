@@ -1,9 +1,9 @@
 /*eslint-disable*/
 import React, { useState } from 'react'
 import { withTranslation } from 'react-i18next'
-import { NavLink as NavLinkRRD, Link } from 'react-router-dom'
+import { NavLink as NavLinkRRD, Link, useNavigate } from 'react-router-dom'
 // nodejs library to set properties for components
-import { PropTypes } from 'prop-types'
+import PropTypes from 'prop-types'
 
 // reactstrap components
 import {
@@ -16,21 +16,17 @@ import {
   NavbarBrand,
   Navbar,
   NavItem,
-  NavLink,
   Nav,
   Container,
   Row,
   Col
 } from 'reactstrap'
 
-var ps
+import teamPhoto from 'assets/img/theme/team-4-800x800.jpg'
 
 function Sidebar(props) {
+  const navigate = useNavigate()
   const [collapseOpen, collapseOpenSetter] = useState(false)
-  // verifies if routeName is the one active (in browser input)
-  function activeRoute(routeName) {
-    return props.location.pathname.indexOf(routeName) > -1 ? 'active' : ''
-  }
   // toggles collapse between opened and closed (true/false)
   const toggleCollapse = () => {
     collapseOpenSetter(prev => !prev)
@@ -44,14 +40,15 @@ function Sidebar(props) {
     return routes.map((prop, key) => {
       return prop.appearInSidebar ? (
         <NavItem key={key}>
-          <NavLink
+          <NavLinkRRD
             to={prop.layout + prop.path}
-            tag={NavLinkRRD}
             onClick={closeCollapse}
-            activeClassName="active">
+            className={({ isActive }) =>
+              'nav-link' + (isActive ? ' active' : '')
+            }>
             <i className={prop.icon} />
             {t(prop.name)}
-          </NavLink>
+          </NavLinkRRD>
         </NavItem>
       ) : null
     })
@@ -99,10 +96,7 @@ function Sidebar(props) {
             <DropdownToggle nav>
               <Media className="align-items-center">
                 <span className="avatar avatar-sm rounded-circle">
-                  <img
-                    alt="..."
-                    src={require('assets/img/theme/team-4-800x800.jpg')}
-                  />
+                  <img alt="..." src={teamPhoto} />
                 </span>
               </Media>
             </DropdownToggle>
@@ -115,8 +109,8 @@ function Sidebar(props) {
                 href="#pablo"
                 onClick={e => {
                   e.preventDefault()
-                  localStorage.removeItem('user-enatega')
-                  props.history.push('/auth/login')
+                  localStorage.removeItem('user-pickup')
+                  navigate('/auth/login')
                 }}>
                 <i className="ni ni-user-run" />
                 <span>{t('Logout')}</span>

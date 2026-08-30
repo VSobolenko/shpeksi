@@ -1,6 +1,6 @@
 import React from 'react'
-import { useQuery } from '@apollo/react-hooks'
-import gql from 'graphql-tag'
+import { useQuery } from '@apollo/client'
+import { gql } from '@apollo/client'
 import PropTypes from 'prop-types'
 
 import { getConfiguration } from '../apollo/server'
@@ -15,8 +15,8 @@ export const ConfigurationProvider = props => {
   const { loading, data, error } = useQuery(GETCONFIGURATION)
   const configuration =
     loading || error || !data.configuration
-      ? { currency: '', currency_symbol: '', delivery_charges: 0 }
-      : data.configuration
+    ? { currency: '', currency_symbol: '' }
+    : data.configuration
   return (
     <ConfigurationContext.Provider value={configuration}>
       {props.children}

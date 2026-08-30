@@ -1,7 +1,7 @@
 /* eslint-disable react/display-name */
 import React, { useState } from 'react'
-import gql from 'graphql-tag'
-import { Query, Mutation, compose, withApollo } from 'react-apollo'
+import { gql } from '@apollo/client'
+import { Query, Mutation } from '@apollo/client/react/components'
 import { withTranslation } from 'react-i18next'
 // reactstrap components
 import { Badge, Card, Container, Row, Media, Modal } from 'reactstrap'
@@ -203,4 +203,4 @@ const Food = props => {
   )
 }
 
-export default compose(withApollo, withTranslation())(Food)
+export default withTranslation()(Food)

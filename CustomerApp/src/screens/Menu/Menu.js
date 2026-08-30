@@ -1,6 +1,6 @@
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 import { useNavigation } from "@react-navigation/native";
-import gql from "graphql-tag";
+import { gql } from "@apollo/client";
 import React, { useContext, useLayoutEffect } from "react";
 import { FlatList, View } from "react-native";
 import { categories } from "../../apollo/server";

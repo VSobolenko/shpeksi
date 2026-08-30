@@ -1,8 +1,8 @@
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 import { useNavigation, useRoute } from "@react-navigation/native";
 //import { useHeaderHeight } from '@react-navigation/stack'
 import { useHeaderHeight } from "@react-navigation/elements";
-import gql from "graphql-tag";
+import { gql } from "@apollo/client";
 import { get } from "lodash";
 import React, { useContext, useLayoutEffect, useRef, useState } from "react";
 import {
@@ -16,7 +16,7 @@ import { Modalize } from "react-native-modalize";
 import { foods } from "../../apollo/server";
 import EmptyFood from "../../assets/images/SVG/imageComponents/EmptyFood";
 import {
-  EnategaImage,
+  PickupImage,
   FilterModal,
   FlashMessage,
   RightButton,
@@ -100,7 +100,7 @@ function MenuItems() {
         style={styles.cardContainer}
       >
         <View style={styles.cardImageContainer}>
-          <EnategaImage
+          <PickupImage
             imgStyle={styles.imgResponsive}
             imgSource={
               item.img_url

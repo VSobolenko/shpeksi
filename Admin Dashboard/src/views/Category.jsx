@@ -1,7 +1,7 @@
 /* eslint-disable react/display-name */
 import React, { useState } from 'react'
-import gql from 'graphql-tag'
-import { Query, Mutation, compose, withApollo } from 'react-apollo'
+import { gql } from '@apollo/client'
+import { Query, Mutation } from '@apollo/client/react/components'
 import { withTranslation } from 'react-i18next'
 import CategoryComponent from '../components/Category/Category'
 import CustomLoader from '../components/Loader/CustomLoader'
@@ -182,4 +182,4 @@ const Category = props => {
     </>
   )
 }
-export default compose(withApollo, withTranslation())(Category)
+export default withTranslation()(Category)

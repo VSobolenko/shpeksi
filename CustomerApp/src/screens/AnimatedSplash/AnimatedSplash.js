@@ -1,10 +1,8 @@
 /* eslint-disable react/prop-types */
-import AppLoading from 'expo-app-loading'
 import { Asset } from 'expo-asset'
-import Constants from 'expo-constants'
 import * as SplashScreen from 'expo-splash-screen'
 import React, { useEffect, useMemo, useState } from 'react'
-import { Animated, StyleSheet, View } from 'react-native'
+import { Animated, View } from 'react-native'
 
 function AnimatedSplashScreen({ children, image }) {
   const animation = useMemo(() => new Animated.Value(1), [])
@@ -37,21 +35,11 @@ function AnimatedSplashScreen({ children, image }) {
     <View style={{ flex: 1 }}>
       {isAppReady && children}
       {!animationCompleted && (
-        <Animated.View
-          pointerEvents="none"
-          // style={[
-          //   StyleSheet.absoluteFill,
-          //   {
-          //     backgroundColor: Constants.manifest.splash.backgroundColor,
-          //     opacity: animation
-          //   }
-          // ]}
-          >
+        <Animated.View pointerEvents="none">
           <Animated.Image
             style={{
               width: '100%',
               height: '100%',
-              // resizeMode: 'contain',
               transform: [
                 {
                   scale: animation
@@ -71,23 +59,21 @@ function AnimatedSplashScreen({ children, image }) {
 function AnimatedSplash({ children, image }) {
   const [isSplashReady, setSplashReady] = useState(false)
 
-  const startAsync = useMemo(
-    // Load splash image to show
-    () => () => Asset.fromModule(image).downloadAsync(),
-    [image]
-  )
-
-  const onFinish = useMemo(() => setSplashReady(true), [])
+  useEffect(() => {
+    let mounted = true
+    Asset.fromModule(image)
+      .downloadAsync()
+      .catch(console.error)
+      .finally(() => {
+        if (mounted) setSplashReady(true)
+      })
+    return () => {
+      mounted = false
+    }
+  }, [image])
 
   if (!isSplashReady) {
-    return (
-      <AppLoading
-        autoHideSplash={false}
-        startAsync={startAsync}
-        onError={console.error}
-        onFinish={onFinish}
-      />
-    )
+    return null
   }
 
   return <AnimatedSplashScreen image={image}>{children}</AnimatedSplashScreen>

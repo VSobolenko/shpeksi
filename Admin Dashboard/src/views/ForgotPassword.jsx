@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useLocation } from 'react-router-dom'
 
 // reactstrap components
 import {
@@ -16,8 +17,8 @@ import {
   UncontrolledAlert
 } from 'reactstrap'
 
-import { Mutation } from 'react-apollo'
-import gql from 'graphql-tag'
+import { Mutation } from '@apollo/client/react/components'
+import { gql } from '@apollo/client'
 import { resetPassword } from '../apollo/server'
 import { validateFunc } from '../constraints/constraints'
 
@@ -32,6 +33,7 @@ const ResetPassword = props => {
   const [passwordError, setPasswordError] = useState(null)
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(null)
+  const location = useLocation()
 
   const onBlur = (event, field) => {
     if (field === 'password') {
@@ -145,9 +147,7 @@ const ResetPassword = props => {
                           setPasswordError(null)
                           setError(null)
                           setSuccess(null)
-                          const params = new URLSearchParams(
-                            props.location.search
-                          )
+                          const params = new URLSearchParams(location.search)
                           if (validate() && params.get('reset')) {
                             resetPassword({
                               variables: {

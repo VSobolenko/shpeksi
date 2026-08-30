@@ -16,9 +16,9 @@ import {
   UncontrolledAlert
 } from 'reactstrap'
 
-import { Redirect } from 'react-router-dom'
-import { Mutation } from 'react-apollo'
-import gql from 'graphql-tag'
+import { Navigate, useLocation } from 'react-router-dom'
+import { Mutation } from '@apollo/client/react/components'
+import { gql } from '@apollo/client'
 import { adminLogin } from '../apollo/server'
 import { validateFunc } from '../constraints/constraints'
 const LOGIN = gql`
@@ -26,13 +26,13 @@ const LOGIN = gql`
 `
 
 const Login = props => {
-  const [email, setEmail] = useState('admin@enatega.com')
-  const [password, setPassword] = useState('enatega123')
+  const [email, setEmail] = useState('admin@example.com')
+  const [password, setPassword] = useState('change-me')
   const [emailError, setEmailError] = useState(null)
   const [passwordError, setPasswordError] = useState(null)
   const [error, setError] = useState(null)
   const [redirectToReferrer, setRedirectToReferrer] = useState(
-    !!localStorage.getItem('user-enatega')
+    !!localStorage.getItem('user-pickup')
   )
 
   const onBlur = (event, field) => {
@@ -51,9 +51,10 @@ const Login = props => {
     return EmailError && PasswordError
   }
 
-  const { from } = props.location.state || { from: { pathname: '/' } }
+  const location = useLocation()
+  const { from } = location.state || { from: { pathname: '/' } }
   const { t } = props
-  if (redirectToReferrer) return <Redirect to={from} />
+  if (redirectToReferrer) return <Navigate to={from} replace />
   return (
     <>
       <Col lg="5" md="7">
@@ -125,7 +126,7 @@ const Login = props => {
                   mutation={LOGIN}
                   onCompleted={data => {
                     localStorage.setItem(
-                      'user-enatega',
+                      'user-pickup',
                       JSON.stringify(data.adminLogin)
                     )
                     setRedirectToReferrer(true)
@@ -133,7 +134,6 @@ const Login = props => {
                     setPasswordError(null)
                   }}
                   onError={error => {
-                    console.log('error', JSON.stringify(error))
                     setEmailError(null)
                     setPasswordError(null)
                     setError(error.graphQLErrors[0].message)

@@ -1,16 +1,16 @@
 {
   "expo": {
-    "name": "Enatega",
+    "name": "Pickup",
     "version": "1.0.22",
-    "scheme": "enategasinglevendor",
-    "description": "Enatega is a starter kit food ordering app built in React Native using Expo for IOS and Android. It's made keeping good aesthetics in mind as well keeping the best coding practices in mind. Its fully customisable to easily help you in your next food delivery project. https://enatega.com/enatega-single-vendor/",
-    "slug": "enategasinglevendor",
+    "scheme": "pickup",
+    "description": "Pickup is a self-collect food ordering app built in React Native using Expo for iOS and Android.",
+    "slug": "pickup",
     "owner": "ninjas_code",
-    "currentFullName": "@ninjas_code/enategasinglevendor",
-    "originalFullName": "@ninjas_code/enategasinglevendor",
+    "currentFullName": "@ninjas_code/pickup",
+    "originalFullName": "@ninjas_code/pickup",
     "privacy": "public",
     "androidStatusBar": {
-      "backgroundColor": "#000"
+      "backgroundColor": "#000000"
     },
     "platforms": [
       "ios",
@@ -32,7 +32,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.enatega.vendor",
+      "bundleIdentifier": "com.pickup.vendor",
       "config": {
         "googleMapsApiKey": ""
       },
@@ -47,15 +47,15 @@
       "color": "#d83765",
       "icon": "./assets/not-icon.png",
       "androidMode": "default",
-      "androidCollapsedTitle": "Enatega"
+      "androidCollapsedTitle": "Pickup"
     },
     "android": {
       "versionCode": 26,
-      "package": "com.enatega.vendor",
+      "package": "com.pickup.vendor",
       "googleServicesFile": "./google-services-prod.json",
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyCzNP5qQql2a5y8lOoO-1yj1lj_tzjVImA"
+          "apiKey": ""
         }
       },
       "adaptiveIcon": {
@@ -75,9 +75,6 @@
         }
       ]
     ],
-    "facebookScheme": "fb3017447961609878",
-    "facebookAppId": "3017447961609878",
-    "facebookDisplayName": "Food delivery",
     "extra": {
       "eas": {
         "projectId": "e7c3fd70-4054-4dc8-bbdb-a572a3cc6fb1"

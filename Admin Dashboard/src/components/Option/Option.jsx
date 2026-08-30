@@ -12,8 +12,8 @@ import {
   Button
 } from 'reactstrap'
 import { withTranslation } from 'react-i18next'
-import { Mutation, compose, withApollo } from 'react-apollo'
-import gql from 'graphql-tag'
+import { Mutation } from '@apollo/client/react/components'
+import { gql } from '@apollo/client'
 import { createOptions, getOptions, editOption } from '../../apollo/server'
 import { validateFunc } from '../../constraints/constraints'
 import Loader from 'react-loader-spinner'
@@ -346,4 +346,4 @@ function Option(props) {
   )
 }
 
-export default compose(withApollo, withTranslation())(Option)
+export default withTranslation()(Option)

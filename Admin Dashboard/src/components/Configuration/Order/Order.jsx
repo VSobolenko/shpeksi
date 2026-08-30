@@ -10,8 +10,8 @@ import {
   Input,
   Button
 } from 'reactstrap'
-import { Mutation } from 'react-apollo'
-import gql from 'graphql-tag'
+import { Mutation } from '@apollo/client/react/components'
+import { gql } from '@apollo/client'
 import { validateFunc } from '../../../constraints/constraints'
 import { saveOrderConfiguration } from '../../../apollo/server'
 import Loader from 'react-loader-spinner'

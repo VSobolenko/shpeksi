@@ -4,8 +4,8 @@ import { Container, Row, Card, Modal } from 'reactstrap'
 import OrderComponent from '../components/Order/Order'
 import OrdersData from '../components/Order/OrderData'
 import Header from '../components/Headers/Header.jsx'
-import { Query, compose, withApollo } from 'react-apollo'
-import gql from 'graphql-tag'
+import { Query } from '@apollo/client/react/components'
+import { gql } from '@apollo/client'
 import { getOrders } from '../apollo/server'
 
 const GET_ORDERS = gql`
@@ -79,4 +79,4 @@ const Orders = props => {
   )
 }
 
-export default compose(withApollo, withTranslation())(Orders)
+export default withTranslation()(Orders)

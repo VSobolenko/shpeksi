@@ -1,7 +1,7 @@
 import { useNavigation, useTheme } from '@react-navigation/native'
 import React, { useLayoutEffect, useState } from 'react'
 import { TouchableOpacity, View } from 'react-native'
-import { TextField } from 'react-native-material-textfield'
+import { TextField } from '../../components'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import i18n from '../../../i18n'
 import TextDefault from '../../components/Text/TextDefault/TextDefault'

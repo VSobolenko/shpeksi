@@ -1,24 +1,16 @@
-import { useMutation } from '@apollo/react-hooks'
+import { useMutation } from '@apollo/client'
 import { Ionicons } from '@expo/vector-icons'
 import { useNavigation, useRoute, useTheme } from '@react-navigation/native'
-import * as Location from 'expo-location'
-import gql from 'graphql-tag'
-import { keys } from 'lodash'
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { gql } from '@apollo/client'
+import React, { useLayoutEffect, useState } from 'react'
 import {
-  Image,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
   TouchableOpacity,
   View
 } from 'react-native'
-import MapView, {
-  Marker,
-  PROVIDER_DEFAULT,
-  PROVIDER_GOOGLE
-} from 'react-native-maps'
-import { FilledTextField } from 'react-native-material-textfield'
+import { FilledTextField } from '../../components'
 import i18n from '../../../i18n'
 import { createAddress } from '../../apollo/server'
 import {
@@ -51,15 +43,9 @@ const labelValues = [
   }
 ]
 
-const LATITUDE = 33.7001019
-const LONGITUDE = 72.9735978
-const LATITUDE_DELTA = 0.0022
-const LONGITUDE_DELTA = 0.0021
-
 function NewAddress() {
   const route = useRoute()
   const styles = useStyle()
-  const addressRef = useRef()
   const { colors } = useTheme()
   const navigation = useNavigation()
 
@@ -68,14 +54,6 @@ function NewAddress() {
   const [deliveryAddressError, setDeliveryAddressError] = useState('')
   const [deliveryDetailsError, setDeliveryDetailsError] = useState('')
   const [selectedLabel, setSelectedLabel] = useState(labelValues[0].value)
-  const [region, setRegion] = useState({
-    latitude: LATITUDE,
-    latitudeDelta: LATITUDE_DELTA,
-    longitude: LONGITUDE,
-    longitudeDelta: LONGITUDE_DELTA
-  })
-
-  const regionObj = route.params ? route.params.regionChange : null
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -84,58 +62,10 @@ function NewAddress() {
     })
   }, [navigation])
 
-  useEffect(() => {
-    _getLocationAsync()
-  }, [])
-
-  useEffect(() => {
-    if (regionObj !== null) regionChange(regionObj)
-  }, [regionObj])
-
   const [mutate, { loading }] = useMutation(CREATE_ADDRESS, {
     onCompleted,
     onError
   })
-
-  async function _getLocationAsync() {
-    const { status } = await Location.requestForegroundPermissionsAsync()
-    if (status === 'granted') {
-      const location = await Location.getCurrentPositionAsync({
-        enableHighAccuracy: true
-      })
-      const loc = {
-        latitude: parseFloat(location.coords.latitude),
-        latitudeDelta: LATITUDE_DELTA,
-        longitude: parseFloat(location.coords.longitude),
-        longitudeDelta: LONGITUDE_DELTA
-      }
-      setRegion(loc)
-      regionChange(loc)
-    } else {
-      FlashMessage({
-        message: i18n.t('locaPermission')
-      })
-    }
-  }
-
-  function regionChange(region) {
-    Location.reverseGeocodeAsync({ ...region })
-      .then(data => {
-        if (data.length && addressRef.current !== null) {
-          const location = data[0]
-          const deliveryAddress = keys(location)
-            .map(key => location[key])
-            .join(' ')
-          setDeliveryAddress(deliveryAddress)
-          setRegion(region)
-
-          addressRef.current.setValue(deliveryAddress)
-        }
-      })
-      .catch(error => {
-        console.log('Error : ', error)
-      })
-  }
 
   function onCompleted(data) {
     FlashMessage({
@@ -163,45 +93,6 @@ function NewAddress() {
         style={styles.flex}
         enabled>
         <View style={styles.flex}>
-          <View style={styles.mapContainer}>
-            <MapView
-              style={styles.flex}
-              scrollEnabled={false}
-              zoomEnabled={false}
-              zoomControlEnabled={false}
-              rotateEnabled={false}
-              cacheEnabled={true}
-              showsUserLocation={false}
-              initialRegion={{
-                latitude: LATITUDE,
-                latitudeDelta: LATITUDE_DELTA,
-                longitude: LONGITUDE,
-                longitudeDelta: LONGITUDE_DELTA
-              }}
-              region={region}
-              provider={
-                Platform.OS === 'android' ? PROVIDER_GOOGLE : PROVIDER_DEFAULT
-              }
-              onTouchMove={() => {
-                navigation.navigate(NAVIGATION_SCREEN.FullMap, {
-                  latitude: region.latitude,
-                  longitude: region.longitude,
-                  currentScreen: 'NewAddress'
-                })
-              }}>
-              <Marker
-                coordinate={{
-                  latitude: region.latitude,
-                  longitude: region.longitude
-                }}>
-                <Image
-                  source={require('../../assets/images/markerEnatega.png')}
-                  style={{ width: scale(43), height: scale(43) }}
-                />
-              </Marker>
-            </MapView>
-          </View>
-
           <ScrollView
             style={styles.flex}
             contentContainerStyle={{ flexGrow: 1 }}
@@ -252,9 +143,8 @@ function NewAddress() {
                 <View style={styles.addressContainer}>
                   <FilledTextField
                     error={deliveryAddressError}
-                    ref={addressRef}
                     value={deliveryAddress}
-                    label={i18n.t('fullDeliveryAddress')}
+                    label={i18n.t('fullAddress')}
                     labelFontSize={scale(12)}
                     fontSize={scale(12)}
                     activeLineWidth={0}
@@ -286,7 +176,7 @@ function NewAddress() {
                   <FilledTextField
                     error={deliveryDetailsError}
                     value={deliveryDetails}
-                    label={i18n.t('deliveryDetails')}
+                    label={i18n.t('addressDetails')}
                     labelFontSize={scale(12)}
                     fontSize={scale(12)}
                     textAlignVertical="top"
@@ -311,7 +201,7 @@ function NewAddress() {
                     onBlur={() => {
                       setDeliveryDetailsError(
                         !deliveryDetails.trim().length
-                          ? i18n.t('deliveryDetailsReq')
+                          ? i18n.t('addressDetailsRequired')
                           : null
                       )
                     }}
@@ -325,7 +215,7 @@ function NewAddress() {
                     ? i18n.t('addressReq')
                     : null
                   const deliveryDetailsError = !deliveryDetails.trim().length
-                    ? i18n.t('deliveryDetailsReq')
+                    ? i18n.t('addressDetailsRequired')
                     : null
 
                   setDeliveryAddressError(deliveryAddressError)
@@ -338,8 +228,6 @@ function NewAddress() {
                     mutate({
                       variables: {
                         addressInput: {
-                          latitude: `${region.latitude}`,
-                          longitude: `${region.longitude}`,
                           delivery_address: deliveryAddress.trim(),
                           details: deliveryDetails.trim(),
                           label: selectedLabel

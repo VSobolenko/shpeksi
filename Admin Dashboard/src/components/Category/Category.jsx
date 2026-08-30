@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import React, { useState } from 'react'
-import gql from 'graphql-tag'
-import { Mutation } from 'react-apollo'
+import { gql } from '@apollo/client'
+import { Mutation } from '@apollo/client/react/components'
 import { validateFunc } from '../../constraints/constraints'
 import { withTranslation } from 'react-i18next'
 import Loader from 'react-loader-spinner'

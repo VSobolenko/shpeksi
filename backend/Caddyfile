@@ -1,0 +1,12 @@
+# Caddy reverse proxy: terminates TLS in front of the Pickup backend.
+#
+#   SITE_ADDRESS:
+#     - production: "pickup.example.com"  -> automatic HTTPS via Let's Encrypt
+#     - local test: ":80"                 -> plain HTTP, no TLS
+#
+# The backend app itself is reachable only on the internal compose network
+# (service name `app`, port 8000); it is not published to the host.
+
+{$SITE_ADDRESS}
+
+reverse_proxy app:8000

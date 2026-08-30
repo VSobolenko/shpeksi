@@ -17,7 +17,7 @@ function LogoName(props) {
         fontWeight={700}
         transform="translate(0 27)">
         <TSpan x={0} y={0}>
-          {'enatega'}
+          {'pickup'}
         </TSpan>
       </Text>
     </Svg>

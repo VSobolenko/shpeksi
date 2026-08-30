@@ -1,8 +1,8 @@
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation } from "@apollo/client";
 import { useNavigation, useTheme } from "@react-navigation/native";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
-import gql from "graphql-tag";
+import { gql } from "@apollo/client";
 import React, { useContext, useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -13,12 +13,12 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { FilledTextField } from "react-native-material-textfield";
+import { FilledTextField } from "../../components";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import i18n from "../../../i18n";
 import { login } from "../../apollo/server";
 import {
-  EnategaImage,
+  PickupImage,
   FlashMessage,
   RegistrationHeader,
   TextDefault,
@@ -114,7 +114,6 @@ function Login() {
         Analytics.identify(data.login.userId, trackingOpts);
         Analytics.track(Analytics.events.USER_LOGGED_IN, trackingOpts);
         setTokenAsync(data.login.token);
-        console.log("Data Before Navigation:", data.login.is_active);
         navigation.navigate(NAVIGATION_SCREEN.Menu);
       } catch (e) {
         console.log(e);
@@ -205,7 +204,7 @@ function Login() {
             <RegistrationHeader title={i18n.t("loginBtn")} back />
             <View style={styles.subContainer}>
               <View style={[styles.flex, styles.upperContainer]}>
-                <EnategaImage
+                <PickupImage
                   imgStyle={styles.imgResponsive}
                   imgSource={Logo}
                   spinnerProps={{ style: styles.loadingView }}

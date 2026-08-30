@@ -1,4 +1,4 @@
-import { useApolloClient, useMutation } from '@apollo/react-hooks'
+import { useApolloClient, useMutation } from '@apollo/client'
 import { AntDesign } from '@expo/vector-icons'
 import {
   useIsFocused,
@@ -6,7 +6,7 @@ import {
   useRoute,
   useTheme
 } from '@react-navigation/native'
-import gql from 'graphql-tag'
+import { gql } from '@apollo/client'
 import React, {
   useContext,
   useEffect,
@@ -110,11 +110,6 @@ function Cart() {
   }
   const payObj = route.params ? route.params.PayObject : null
   const coupanObj = route.params ? route.params.CoupanObject : null
-
-  const address =
-    isLoggedIn && profile.addresses
-      ? profile.addresses.filter(a => a.selected)[0]
-      : null
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -231,7 +226,7 @@ function Cart() {
     }
   }
 
-  function calculatePrice(deliveryCharges = 0, withDiscount) {
+  function calculatePrice(withDiscount) {
     let itemTotal = 0
     cart.forEach(cartItem => {
       if (!cartItem.price) {
@@ -242,7 +237,7 @@ function Cart() {
     if (withDiscount && discountPercent) {
       itemTotal = itemTotal - (discountPercent / 100) * itemTotal
     }
-    return (itemTotal + deliveryCharges).toFixed(2)
+    return itemTotal.toFixed(2)
   }
 
   const onClose = () => {
@@ -253,12 +248,6 @@ function Cart() {
     if (!cart.length) {
       FlashMessage({
         message: i18n.t('validateItems')
-      })
-      return false
-    }
-    if (!address) {
-      FlashMessage({
-        message: i18n.t('validateDelivery')
       })
       return false
     }
@@ -308,14 +297,7 @@ function Cart() {
         variables: {
           orderInput: items,
           paymentMethod: paymentMethod.payment,
-          couponCode: coupon,
-          address: {
-            label: address.label,
-            delivery_address: address.delivery_address,
-            details: address.details,
-            longitude: address.longitude,
-            latitude: address.latitude
-          }
+          couponCode: coupon
         }
       })
     } else {
@@ -470,19 +452,7 @@ function Cart() {
                   </TextDefault>
                   <TextDefault numberOfLines={1} medium H5>
                     {configuration.currency_symbol}
-                    {calculatePrice(0, false)}
-                  </TextDefault>
-                </View>
-                <View style={[styles.floatView, styles.pB10]}>
-                  <TextDefault
-                    numberOfLines={1}
-                    textColor={colors.fontSecondColor}
-                    H5>
-                    {i18n.t('deliveryFee')}
-                  </TextDefault>
-                  <TextDefault numberOfLines={1} medium H5>
-                    {configuration.currency_symbol}
-                    {configuration.delivery_charges.toFixed(2)}
+                    {calculatePrice(false)}
                   </TextDefault>
                 </View>
                 {!validCoupon ? (
@@ -527,7 +497,7 @@ function Cart() {
                       <TextDefault>
                         -{configuration.currency_symbol}
                         {parseFloat(
-                          calculatePrice(0, false) - calculatePrice(0, true)
+                          calculatePrice(false) - calculatePrice(true)
                         ).toFixed(2)}
                       </TextDefault>
                     </View>
@@ -558,7 +528,7 @@ function Cart() {
                     right
                     H5>
                     {configuration.currency_symbol}
-                    {calculatePrice(configuration.delivery_charges, true)}{' '}
+                    {calculatePrice(true)}{' '}
                   </TextDefault>
                 </View>
                 <View style={[styles.floatView, { marginBottom: -1 }]}>
@@ -601,50 +571,6 @@ function Cart() {
                         {profile.email}
                       </TextDefault>
                     </View>
-                  </View>
-                  <View
-                    style={[styles.contactContainer, styles.pT10, styles.mB10]}>
-                    <TouchableOpacity
-                      activeOpacity={0.7}
-                      style={styles.pB10}
-                      onPress={event => {
-                        if (!profile.addresses.length) {
-                          navigation.navigate(NAVIGATION_SCREEN.NewAddress, {
-                            backScreen: 'Cart'
-                          })
-                        } else {
-                          navigation.navigate(NAVIGATION_SCREEN.CartAddress, {
-                            address
-                          })
-                        }
-                      }}>
-                      <View style={[styles.floatView, styles.pB10]}>
-                        <TextDefault
-                          numberOfLines={1}
-                          style={{ width: '50%' }}
-                          H5
-                          bold>
-                          {i18n.t('deliveryAddress')}
-                        </TextDefault>
-                        <TextDefault H5 textColor={colors.buttonBackgroundBlue}>
-                          {i18n.t('change')}
-                        </TextDefault>
-                      </View>
-                      {address ? (
-                        <>
-                          <TextDefault
-                            textColor={colors.fontSecondColor}
-                            H5>{`${address.delivery_address}`}</TextDefault>
-                          <TextDefault textColor={colors.fontSecondColor} H5>
-                            {address.details}
-                          </TextDefault>
-                        </>
-                      ) : (
-                        <TextDefault textColor={colors.fontSecondColor} H5>
-                          {i18n.t('deliveryAddressmessage')}
-                        </TextDefault>
-                      )}
-                    </TouchableOpacity>
                   </View>
                   <View
                     style={[styles.contactContainer, styles.pT10, styles.mB10]}>
@@ -708,7 +634,7 @@ function Cart() {
                         </TextDefault>
                         <TextDefault medium H5 right>
                           {configuration.currency_symbol}
-                          {calculatePrice(configuration.delivery_charges, true)}
+                          {calculatePrice(true)}
                         </TextDefault>
                       </TouchableOpacity>
                     )}

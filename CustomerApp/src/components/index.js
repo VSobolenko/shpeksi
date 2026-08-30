@@ -21,12 +21,12 @@ import {
 import { MenuCard, StatusCard } from "./Menu";
 import { FilterModal } from "./Modals";
 import ActiveOrders from "./MyOrders/ActiveOrders";
-import { TrackingRider } from "./OrderDetail";
 import Sidebar from "./Sidebar/Sidebar";
 import Spinner from "./Spinner/Spinner";
 import { TextDefault, TextError, TextLine } from "./Text";
+import TextField from "./TextField/TextField";
 import Triangle from "./Triangle/Triangle";
-import EnategaImage from "./EnategaImage/EnategaImage";
+import PickupImage from "./PickupImage/PickupImage";
 import WrapperView from "./WrapperView/WrapperView";
 import { CustomIcon } from "./CustomIcon";
 
@@ -34,7 +34,7 @@ export {
   WrapperView,
   CustomIcon,
   CartItem,
-  EnategaImage,
+  PickupImage,
   CartComponent,
   CheckComponent,
   HeadingComponent,
@@ -61,5 +61,6 @@ export {
   TextError,
   TextLine,
   Spinner,
-  TrackingRider,
+  TextField,
+  TextField as FilledTextField,
 };

@@ -8,9 +8,9 @@ import DataTable from 'react-data-table-component'
 import orderBy from 'lodash/orderBy'
 
 import { withTranslation } from 'react-i18next'
-import { Query, Mutation, compose, withApollo } from 'react-apollo'
+import { Query, Mutation } from '@apollo/client/react/components'
 import { options, deleteOption } from '../apollo/server'
-import gql from 'graphql-tag'
+import { gql } from '@apollo/client'
 import Loader from 'react-loader-spinner'
 import Alert from '../components/Alert'
 
@@ -190,4 +190,4 @@ const Option = props => {
   )
 }
 
-export default compose(withApollo, withTranslation())(Option)
+export default withTranslation()(Option)

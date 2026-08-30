@@ -8,7 +8,7 @@ import { alignment } from "../../utils/alignment";
 import { ICONS_NAME, NAVIGATION_SCREEN } from "../../utils/constant";
 import { scale } from "../../utils/scaling";
 import { CustomIcon } from "../CustomIcon/index";
-import EnategaImage from "../EnategaImage/EnategaImage";
+import PickupImage from "../PickupImage/PickupImage";
 import TextDefault from "../Text/TextDefault/TextDefault";
 import TextError from "../Text/TextError/TextError";
 import TextLine from "../Text/TextLine/TextLine";
@@ -29,20 +29,14 @@ export const orderStatuses = [
     color: COLORS.blueColor,
   },
   {
-    key: "PICKED",
+    key: "READY",
     status: 3,
     icon: ICONS_NAME.Checked,
     color: COLORS.blueColor,
   },
   {
-    key: "DELIVERED",
-    status: 4,
-    icon: ICONS_NAME.Checked,
-    color: COLORS.blueColor,
-  },
-  {
     key: "COMPLETED",
-    status: 5,
+    status: 4,
     icon: ICONS_NAME.Checked,
     color: COLORS.blueColor,
   },
@@ -101,7 +95,7 @@ const ActiveOrders = ({
         >
           <View style={styles.container}>
             <View style={styles.imgContainer}>
-              <EnategaImage
+              <PickupImage
                 imgStyle={styles.imgResponsive}
                 imgSource={{ uri: item?.items[0]?.food?.img_url }}
                 spinnerProps={{ style: styles.loadingView }}

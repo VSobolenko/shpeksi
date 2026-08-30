@@ -157,6 +157,35 @@ and `security-secrets.mdc` (exact locations of hardcoded secrets).
 - `secret-guard.cjs` — blocks writing known hardcoded secret patterns.
 - `git-guard.cjs` — blocks force-push to main/master and destructive `reset --hard`/`clean`.
 
+### Agent harness (writer/reviewer loop)
+
+The "one agent writes, another checks" pattern is wired from ready-made pieces —
+see the commands in `.cursor/commands/`:
+
+- `/ship <task>` — autonomous orchestrator: propose → implement (fresh
+  implementer subagent per task + task review + fix loop) → verify (evidence) →
+  runtime UI check (Playwright + Maestro) → review (`bugbot` + `security-review`)
+  → finish (merge/PR) → archive. Stops for the human only at plan approval and
+  integration.
+- `/review` — dispatch the checker agents (`bugbot` + `security-review`) as a
+  verification gate; reports PASS / CHANGES REQUIRED.
+- `/ui-verify` — runtime UI verifier: change-impact sweep for blank screens and
+  broken navigation (Playwright for the Admin web app, Maestro for the native
+  CustomerApp); routes failures to the fix loop.
+
+Role mapping (do not reimplement — invoke):
+
+| Role | Tool |
+|------|------|
+| Writer | fresh `generalPurpose` subagent per task (`subagent-driven-development/implementer-prompt.md`) |
+| Task checker | task reviewer subagent (`subagent-driven-development/task-reviewer-prompt.md`) |
+| Final checker | `bugbot` + `security-review` subagents |
+| Runtime UI checker | `/ui-verify` (Playwright web + Maestro native) |
+| Policy enforcer | hooks `secret-guard.cjs` / `git-guard.cjs` (automatic) |
+| Contract | OpenSpec specs + `/opsx-*` |
+| Evidence | `verification-before-completion` |
+| Integration | `finishing-a-development-branch` |
+
 ## Working rules for agents
 
 - Preserve the GraphQL contract unless the roadmap says otherwise (and keep both
@@ -165,3 +194,6 @@ and `security-secrets.mdc` (exact locations of hardcoded secrets).
 - Keep commands/scripts cross-platform (the environment is Windows/PowerShell).
 - Do not rewrite git history.
 - Follow the installed `superpowers` methodology for planning/debugging/verifying.
+- Use `/ship` for end-to-end autonomous work and `/review` as the merge/archive
+  gate; the reviewer agents and policy hooks (`secret-guard`, `git-guard`) are the
+  enforcement layer — do not bypass them.

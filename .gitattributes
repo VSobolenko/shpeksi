@@ -1,0 +1,2 @@
+# Keep shell scripts LF so they run correctly in Linux containers (dash/sh).
+*.sh text eol=lf

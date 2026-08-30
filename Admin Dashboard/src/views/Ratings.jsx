@@ -6,8 +6,8 @@ import Header from '../components/Headers/Header.jsx'
 import DataTable from 'react-data-table-component'
 import orderBy from 'lodash/orderBy'
 import CustomLoader from '../components/Loader/CustomLoader'
-import { Query } from 'react-apollo'
-import gql from 'graphql-tag'
+import { Query } from '@apollo/client/react/components'
+import { gql } from '@apollo/client'
 import { reviews } from '../apollo/server'
 
 const REVIEWS = gql`

@@ -1,1 +1,6 @@
 /node_modules
+
+# secrets (keep .env.example tracked with placeholders)
+.env
+google-services*.json
+google-service-account.json

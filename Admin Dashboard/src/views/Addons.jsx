@@ -8,8 +8,8 @@ import CustomLoader from '../components/Loader/CustomLoader'
 import DataTable from 'react-data-table-component'
 import orderBy from 'lodash/orderBy'
 import { withTranslation } from 'react-i18next'
-import gql from 'graphql-tag'
-import { Query, Mutation, compose, withApollo } from 'react-apollo'
+import { gql } from '@apollo/client'
+import { Query, Mutation } from '@apollo/client/react/components'
 import Loader from 'react-loader-spinner'
 import Alert from '../components/Alert'
 
@@ -192,4 +192,4 @@ const Addon = props => {
   )
 }
 
-export default compose(withApollo, withTranslation())(Addon)
+export default withTranslation()(Addon)

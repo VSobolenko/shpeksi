@@ -45,12 +45,6 @@ const MENU = [
     navigateTo: NAVIGATION_SCREEN.Addresses,
     isAuth: true,
   },
-  // {
-  //   title: 'titleChat',
-  //   icon: ICONS_NAME.Message,
-  //   navigateTo: NAVIGATION_SCREEN.Chat,
-  //   isAuth: false
-  // },
   {
     title: "titleHelp",
     icon: ICONS_NAME.Info,

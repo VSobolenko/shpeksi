@@ -18,12 +18,10 @@ import NewAddress from "../screens/NewAddress/NewAddress";
 import EditAddress from "../screens/EditAddress/EditAddress";
 import Cart from "../screens/Cart/Cart";
 import Profile from "../screens/Profile/Profile";
-import FullMap from "../screens/FullMap/FullMap";
 import CartAddress from "../screens/CartAddress/CartAddress";
 import SelectVoucher from "../screens/Coupon/Coupon";
 import Help from "../screens/Help/Help";
 import HelpBrowser from "../screens/HelpBrowser/HelpBrowser";
-import Chat from "../screens/Chat/Chat";
 import Settings from "../screens/Settings/Settings";
 import Paypal from "../screens/Paypal/Paypal";
 import ItemDetail from "../screens/ItemDetail/ItemDetail";
@@ -35,33 +33,6 @@ import CreateAccount from "../screens/CreateAccount/CreateAccount";
 import Login from "../screens/Login/Login";
 import Register from "../screens/Register/Register";
 import ForgotPassword from "../screens/ForgotPassword/ForgotPassword";
-
-// import {
-//   Addresses,
-//   Cart,
-//   CartAddress,
-//   Chat,
-//   CreateAccount,
-//   EditAddress,
-//   ForgotPassword,
-//   FullMap,
-//   Help,
-//   HelpBrowser,
-//   ItemDetail,
-//   Login,
-//   MenuItems,
-//   MyOrders,
-//   NewAddress,
-//   OrderDetail,
-//   Paypal,
-//   Profile,
-//   RateAndReview,
-//   Register,
-//   SelectVoucher,
-//   Settings,
-//   StripeCheckout,
-//   Menu,
-// } from "../screens";
 
 import { THEME } from "../Theme";
 import { ICONS_NAME, NAVIGATION_SCREEN } from "../utils/constant";
@@ -106,23 +77,23 @@ function Drawer() {
       // sceneContainerStyle={{ backgroundColor: colors.drawerBackground }}
 
       drawerContent={(props) => {
-        const scale = Animated.interpolateNode(props.progress, {
+        const scale = Animated.interpolate(props.progress, {
           inputRange: [0, 1],
           outputRange: [1, 0.7],
         });
-        const Animatedopacity = Animated.interpolateNode(props.progress, {
+        const Animatedopacity = Animated.interpolate(props.progress, {
           inputRange: [0, 0.6, 1],
           outputRange: [0, 0, 1],
         });
-        const AnimatedOuterSlide = Animated.interpolateNode(props.progress, {
+        const AnimatedOuterSlide = Animated.interpolate(props.progress, {
           inputRange: [0, 1],
           outputRange: [0, -35],
         });
-        const AnimatedInnerSlide = Animated.interpolateNode(props.progress, {
+        const AnimatedInnerSlide = Animated.interpolate(props.progress, {
           inputRange: [0, 1],
           outputRange: [0, -15],
         });
-        const borderRadius = Animated.interpolateNode(props.progress, {
+        const borderRadius = Animated.interpolate(props.progress, {
           inputRange: [0, 1],
           outputRange: [0, 20],
         });
@@ -206,10 +177,6 @@ function NoDrawer({ style, opacity = 1, OuterWindowSlide, InnerWindowSlide }) {
             component={EditAddress}
           />
           <NavigationStack.Screen
-            name={NAVIGATION_SCREEN.FullMap}
-            component={FullMap}
-          />
-          <NavigationStack.Screen
             name={NAVIGATION_SCREEN.CartAddress}
             component={CartAddress}
           />
@@ -220,13 +187,6 @@ function NoDrawer({ style, opacity = 1, OuterWindowSlide, InnerWindowSlide }) {
           <NavigationStack.Screen
             name={NAVIGATION_SCREEN.Help}
             component={Help}
-            options={{
-              headerLeft: () => <LeftButton icon={ICONS_NAME.Menu} />,
-            }}
-          />
-          <NavigationStack.Screen
-            name={NAVIGATION_SCREEN.Chat}
-            component={Chat}
             options={{
               headerLeft: () => <LeftButton icon={ICONS_NAME.Menu} />,
             }}
@@ -301,7 +261,6 @@ function NoDrawer({ style, opacity = 1, OuterWindowSlide, InnerWindowSlide }) {
 }
 
 function AppContainer() {
-  console.log("AppContainer Working");
   const colorScheme = useColorScheme();
   function _handleNotification(notification) {
     try {

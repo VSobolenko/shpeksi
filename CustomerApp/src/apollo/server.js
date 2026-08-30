@@ -120,14 +120,6 @@ export const profile = `
 export const order = `query Order($id:String!){
   order(id:$id){
     _id
-    delivery_address{
-      latitude
-      longitude
-      delivery_address
-      details
-      label
-    }
-    delivery_charges
     order_id
     user{
       _id
@@ -173,8 +165,8 @@ export const order = `query Order($id:String!){
     status_queue{
       pending
       preparing
-      picked
-      delivered
+      ready
+      completed
       cancelled
     }
     createdAt
@@ -183,9 +175,6 @@ export const order = `query Order($id:String!){
       rating
       description
     }
-    rider{
-      _id
-    }
   }
 }
 `;
@@ -193,14 +182,6 @@ export const order = `query Order($id:String!){
 export const myOrders = `query Orders($offset:Int){
   orders(offset:$offset){
     _id
-    delivery_address{
-      latitude
-      longitude
-      delivery_address
-      details
-      label
-    }
-    delivery_charges
     order_id
     user{
       _id
@@ -246,8 +227,8 @@ export const myOrders = `query Orders($offset:Int){
     status_queue{
       pending
       preparing
-      picked
-      delivered
+      ready
+      completed
       cancelled
     }
     createdAt
@@ -255,9 +236,6 @@ export const myOrders = `query Orders($offset:Int){
       _id
       rating
       description
-    }
-    rider{
-      _id
     }
   }
 }
@@ -275,14 +253,6 @@ export const orderStatusChanged = `subscription OrderStatusChanged($userId:Strin
     origin
     order{
     _id
-    delivery_address{
-      latitude
-      longitude
-      delivery_address
-      details
-      label
-    }
-    delivery_charges
     order_id
     user{
       _id
@@ -328,8 +298,8 @@ export const orderStatusChanged = `subscription OrderStatusChanged($userId:Strin
     status_queue{
       pending
       preparing
-      picked
-      delivered
+      ready
+      completed
       cancelled
     }
     createdAt
@@ -337,9 +307,6 @@ export const orderStatusChanged = `subscription OrderStatusChanged($userId:Strin
       _id
       rating
       description
-    }
-    rider{
-      _id
     }
   }
   }
@@ -351,18 +318,10 @@ export const orderStatusChanged = `subscription OrderStatusChanged($userId:Strin
 // can we use address id instead of address object, then get the address on backend??
 //
 export const placeOrder = `
-mutation PlaceOrder($orderInput:[OrderInput!]!,$paymentMethod:String!,$couponCode:String,$address:AddressInput!){
-  placeOrder(orderInput: $orderInput,paymentMethod:$paymentMethod,couponCode:$couponCode,address:$address) {
+mutation PlaceOrder($orderInput:[OrderInput!]!,$paymentMethod:String!,$couponCode:String){
+  placeOrder(orderInput: $orderInput,paymentMethod:$paymentMethod,couponCode:$couponCode) {
     _id
     order_id
-    delivery_address{
-      latitude
-      longitude
-      delivery_address
-      details
-      label
-    }
-    delivery_charges
     items{
       _id
       food{
@@ -399,9 +358,6 @@ mutation PlaceOrder($orderInput:[OrderInput!]!,$paymentMethod:String!,$couponCod
       phone
       email
     }
-    rider{
-      _id
-    }
     payment_status
     payment_method
     paid_amount
@@ -410,8 +366,8 @@ mutation PlaceOrder($orderInput:[OrderInput!]!,$paymentMethod:String!,$couponCod
     status_queue{
       pending
       preparing
-      picked
-      delivered
+      ready
+      completed
       cancelled
     }
     createdAt
@@ -459,7 +415,6 @@ export const getConfiguration = `query Configuration{
     _id
     currency
     currency_symbol
-    delivery_charges
   }
 }`;
 
@@ -566,26 +521,6 @@ export const selectAddress = `mutation SelectAddress($id:String!){
       longitude
       latitude
       selected
-    }
-  }
-}`;
-
-export const subscriptionRiderLocation = `subscription SubscriptionRiderLocation($riderId:String!){
-  subscriptionRiderLocation(riderId:$riderId) {
-    _id
-    location {
-      latitude
-      longitude
-    }
-  }
-}`;
-
-export const rider = `query Rider($id:String){
-  rider(id:$id){
-    _id
-    location {
-      latitude
-      longitude
     }
   }
 }`;

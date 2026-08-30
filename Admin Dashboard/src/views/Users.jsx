@@ -4,8 +4,8 @@ import { withTranslation } from 'react-i18next'
 import { Container, Row, Card } from 'reactstrap'
 import Header from '../components/Headers/Header.jsx'
 import CustomLoader from '../components/Loader/CustomLoader'
-import { Query, compose, withApollo } from 'react-apollo'
-import gql from 'graphql-tag'
+import { Query } from '@apollo/client/react/components'
+import { gql } from '@apollo/client'
 import { getUsers } from '../apollo/server'
 import { transformToNewline } from '../utils/stringManipulations'
 import DataTable from 'react-data-table-component'
@@ -122,4 +122,4 @@ const Users = props => {
   )
 }
 
-export default compose(withApollo, withTranslation())(Users)
+export default withTranslation()(Users)

@@ -20,21 +20,17 @@ export const orderStatuses = {
     status: 2,
     statusText: "prepFood",
   },
-  PICKED: {
+  READY: {
     status: 3,
-    statusText: "riderOnWay",
-  },
-  DELIVERED: {
-    status: 4,
-    statusText: "orderDelivered",
+    statusText: "readyForPickup",
   },
   COMPLETED: {
-    status: 5,
+    status: 4,
     statusText: "completeOrder",
   },
 };
 
-const orderStatusActive = ["PENDING", "PICKED", "ACCEPTED"];
+const orderStatusActive = ["PENDING", "ACCEPTED", "READY"];
 
 const StatusCard = () => {
   const { colors } = useTheme();

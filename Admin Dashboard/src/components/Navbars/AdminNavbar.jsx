@@ -1,6 +1,6 @@
 import React from 'react'
 import { withTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 // reactstrap components
 import {
   DropdownMenu,
@@ -13,7 +13,10 @@ import {
   Media
 } from 'reactstrap'
 
+import teamPhoto from 'assets/img/theme/team-4-800x800.jpg'
+
 function AdminNavbar(props) {
+  const navigate = useNavigate()
   const { t } = props
   return (
     <>
@@ -30,10 +33,7 @@ function AdminNavbar(props) {
               <DropdownToggle className="pr-0" nav>
                 <Media className="align-items-center">
                   <span className="avatar avatar-sm rounded-circle">
-                    <img
-                      alt="..."
-                      src={require('assets/img/theme/team-4-800x800.jpg')}
-                    />
+                    <img alt="..." src={teamPhoto} />
                   </span>
                   <Media className="ml-2 d-none d-lg-block">
                     <span className="mb-0 text-sm font-weight-bold">Admin</span>
@@ -49,8 +49,8 @@ function AdminNavbar(props) {
                   href="#pablo"
                   onClick={e => {
                     e.preventDefault()
-                    localStorage.removeItem('user-enatega')
-                    props.history.push('/auth/login')
+                    localStorage.removeItem('user-pickup')
+                    navigate('/auth/login')
                   }}>
                   <i className="ni ni-user-run" />
                   <span>{t('Logout')}</span>

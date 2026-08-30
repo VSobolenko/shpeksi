@@ -1,6 +1,6 @@
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation } from "@apollo/client";
 import { useNavigation, useTheme } from "@react-navigation/native";
-import gql from "graphql-tag";
+import { gql } from "@apollo/client";
 import React, { useContext, useLayoutEffect } from "react";
 import { FlatList, TouchableOpacity, View } from "react-native";
 import i18n from "../../../i18n";

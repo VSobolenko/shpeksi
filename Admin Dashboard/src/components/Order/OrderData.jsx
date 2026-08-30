@@ -1,14 +1,13 @@
 /* eslint-disable react/display-name */
 import React, { useEffect, useState } from 'react'
 import { withTranslation } from 'react-i18next'
-import { transformToNewline } from '../../utils/stringManipulations'
 import DataTable from 'react-data-table-component'
 import orderBy from 'lodash/orderBy'
 import CustomLoader from '../Loader/CustomLoader'
 import { subscribePlaceOrder, orderCount } from '../../apollo/server'
 import { Media, InputGroup, Input, InputGroupAddon, Button } from 'reactstrap'
-import { compose, Query } from 'react-apollo'
-import gql from 'graphql-tag'
+import { Query } from '@apollo/client/react/components'
+import { gql } from '@apollo/client'
 
 const ORDERCOUNT = gql`
   ${orderCount}
@@ -120,17 +119,11 @@ const OrdersData = props => {
       cell: row => (
         <>{new Date(row.createdAt).toLocaleString().replace(/ /g, '\n')}</>
       )
-    },
-    {
-      name: 'Address',
-      cell: row => (
-        <>{transformToNewline(row.delivery_address.delivery_address, 3)}</>
-      )
     }
   ]
   const conditionalRowStyles = [
     {
-      when: row => row.order_status !== 'DELIVERED',
+      when: row => row.order_status !== 'COMPLETED',
       style: {
         backgroundColor: 'rgba(240, 173, 78,0.2)'
       }
@@ -208,4 +201,4 @@ const OrdersData = props => {
     </Query>
   )
 }
-export default compose(withTranslation())(OrdersData)
+export default withTranslation()(OrdersData)

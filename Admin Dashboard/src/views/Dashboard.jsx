@@ -2,6 +2,26 @@ import React, { useState } from 'react'
 // node.js library that concatenates classes (strings)
 // react plugin used to create charts
 import { Line, Bar } from 'react-chartjs-2'
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Tooltip,
+  Legend
+} from 'chart.js'
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Tooltip,
+  Legend
+)
 // reactstrap components
 import {
   Button,
@@ -17,13 +37,13 @@ import {
 } from 'reactstrap'
 
 import Header from '../components/Headers/Header.jsx'
-import { Query } from 'react-apollo'
+import { Query } from '@apollo/client/react/components'
 import {
   getDashboardTotal,
   getDashboardSales,
   getDashboardOrders
 } from '../apollo/server'
-import gql from 'graphql-tag'
+import { gql } from '@apollo/client'
 
 const GET_DASHBOARD_TOTAL = gql`
   ${getDashboardTotal}
@@ -39,7 +59,7 @@ const dataLine = {
   datasets: {
     label: 'Sales Amount',
     fill: false,
-    lineTension: 0.1,
+    tension: 0.1,
     backgroundColor: 'rgba(75,192,192,0.4)',
     borderColor: 'rgba(75,192,192,1)',
     borderCapStyle: 'butt',
@@ -217,7 +237,6 @@ const Dashboard = props => {
                         type="date"
                         max={new Date().toISOString().substr(0, 10)}
                         onChange={event => {
-                          console.log(event.target.value)
                           setStartingDate(event.target.value)
                         }}
                         value={startingDate}

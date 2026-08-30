@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Routes, Route, useLocation } from 'react-router-dom'
 // reactstrap components
 import { Container } from 'reactstrap'
 // core components
@@ -8,8 +8,10 @@ import AdminFooter from '../components/Footers/AdminFooter.jsx'
 import Sidebar from '../components/Sidebar/Sidebar.jsx'
 
 import routes from './../routes.js'
+import logo from '../assets/img/brand/logo.png'
 
-const Admin = props => {
+const Admin = () => {
+  const location = useLocation()
   var divRef = useRef(null)
   useEffect(() => {
     document.documentElement.scrollTop = 0
@@ -19,24 +21,17 @@ const Admin = props => {
   function getRoutes(routes) {
     return routes.map((prop, key) => {
       if (prop.layout === '/admin') {
+        const Component = prop.component
         return (
-          <Route
-            path={prop.layout + prop.path}
-            component={prop.component}
-            key={key}
-          />
+          <Route path={prop.path.slice(1)} element={<Component />} key={key} />
         )
-      } else {
-        return null
       }
+      return null
     })
   }
-  function getBrandText(path) {
+  function getBrandText(pathname) {
     for (let i = 0; i < routes.length; i++) {
-      if (
-        props.location.pathname.indexOf(routes[i].layout + routes[i].path) !==
-        -1
-      ) {
+      if (pathname.indexOf(routes[i].layout + routes[i].path) !== -1) {
         return routes[i].name
       }
     }
@@ -45,20 +40,16 @@ const Admin = props => {
   return (
     <>
       <Sidebar
-        {...props}
         routes={routes}
         logo={{
           innerLink: '/admin/dashboard',
-          imgSrc: require('../assets/img/brand/logo.png'),
+          imgSrc: logo,
           imgAlt: '...'
         }}
       />
       <div className="main-content" ref={divRef}>
-        <AdminNavbar
-          {...props}
-          brandText={getBrandText(props.location.pathname)}
-        />
-        <Switch>{getRoutes(routes)}</Switch>
+        <AdminNavbar brandText={getBrandText(location.pathname)} />
+        <Routes>{getRoutes(routes)}</Routes>
         <Container fluid>
           <AdminFooter />
         </Container>

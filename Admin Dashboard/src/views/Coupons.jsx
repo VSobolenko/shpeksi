@@ -1,7 +1,7 @@
 /* eslint-disable react/display-name */
 import React, { useState } from 'react'
-import gql from 'graphql-tag'
-import { Query, Mutation } from 'react-apollo'
+import { gql } from '@apollo/client'
+import { Query, Mutation } from '@apollo/client/react/components'
 import { withTranslation } from 'react-i18next'
 import CouponComponent from '../components/Coupon/Coupon'
 // reactstrap components

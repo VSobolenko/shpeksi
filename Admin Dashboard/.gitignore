@@ -2,3 +2,10 @@
 /node_modules
 package-lock.json
 yarn.lock
+
+# env files (real secrets) — keep .env.example tracked with placeholders
+.env
+.env.local
+.env.development
+.env.staging
+.env.production

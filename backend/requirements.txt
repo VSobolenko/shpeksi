@@ -1,0 +1,36 @@
+# Web framework
+fastapi
+uvicorn[standard]
+
+# GraphQL
+strawberry-graphql[fastapi,cli]
+
+# Database (MongoDB via Beanie/Motor)
+# Beanie 2.x dropped Motor in favour of pymongo.asynchronous; pin to 1.x
+# (Motor-based) to match the Motor client used in app/db.py.
+motor>=3.5,<4.0
+beanie>=1.25.0,<2.0.0
+
+# Config / validation
+pydantic>=2.7
+pydantic-settings>=2.2
+
+# Auth
+python-jose[cryptography]
+bcrypt
+
+# Pub/Sub (optional; in-memory pub/sub is used when REDIS_URL is unset)
+redis
+
+# Payments
+stripe
+paypalrestsdk
+
+# Notifications
+firebase-admin
+
+# Email
+aiosmtplib
+
+# HTTP client (OAuth token verification)
+httpx

@@ -14,10 +14,10 @@ function Footer(props) {
             © {t('2019-20')}{' '}
             <a
               className="font-weight-bold ml-1"
-              href="https://enatega.com/"
+              href="/"
               rel="noopener noreferrer"
               target="_blank">
-              Enatega
+              Pickup
             </a>
           </div>
         </Col>
@@ -26,10 +26,10 @@ function Footer(props) {
           <Nav className="nav-footer justify-content-center justify-content-xl-end">
             <NavItem>
               <NavLink
-                href="https://enatega.com/"
+                href="/"
                 rel="noopener noreferrer"
                 target="_blank">
-                Enatega
+                Pickup
               </NavLink>
             </NavItem>
 

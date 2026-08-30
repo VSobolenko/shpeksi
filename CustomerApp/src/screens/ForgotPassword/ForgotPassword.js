@@ -1,6 +1,6 @@
-import { useMutation } from '@apollo/react-hooks'
+import { useMutation } from '@apollo/client'
 import { useTheme } from '@react-navigation/native'
-import gql from 'graphql-tag'
+import { gql } from '@apollo/client'
 import React, { useState } from 'react'
 import {
   KeyboardAvoidingView,
@@ -9,11 +9,11 @@ import {
   TouchableOpacity,
   View
 } from 'react-native'
-import { FilledTextField } from 'react-native-material-textfield'
+import { FilledTextField } from '../../components'
 import i18n from '../../../i18n'
 import { forgotPassword } from '../../apollo/server'
 import {
-  EnategaImage,
+  PickupImage,
   FlashMessage,
   RegistrationHeader,
   Spinner,
@@ -86,7 +86,7 @@ function ForgotPassword() {
             <RegistrationHeader title={'Forget Password'} back />
             <View style={styles.subContainer}>
               <View style={[styles.flex, styles.upperContainer]}>
-                <EnategaImage
+                <PickupImage
                   imgStyle={styles.imgResponsive}
                   imgSource={Logo}
                   spinnerProps={{ style: styles.loadingView }}

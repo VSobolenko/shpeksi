@@ -13,8 +13,8 @@ import {
   Modal
 } from 'reactstrap'
 import { withTranslation } from 'react-i18next'
-import { Query, compose, withApollo } from 'react-apollo'
-import gql from 'graphql-tag'
+import { Query } from '@apollo/client/react/components'
+import { gql } from '@apollo/client'
 import OptionsComponent from '../Option'
 import { getOptions } from '../../../apollo/server'
 
@@ -80,4 +80,4 @@ function List(props) {
   )
 }
 
-export default compose(withApollo, withTranslation())(List)
+export default withTranslation()(List)

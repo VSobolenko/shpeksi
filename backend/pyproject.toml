@@ -1,0 +1,26 @@
+[project]
+name = "pickup-backend"
+version = "0.1.0"
+description = "Self-collect food ordering backend (FastAPI + Strawberry GraphQL + Beanie/MongoDB)"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "strawberry-graphql[fastapi,cli]",
+    "motor>=3.5,<4.0",
+    "beanie>=1.25.0,<2.0.0",
+    "pydantic>=2.7",
+    "pydantic-settings>=2.2",
+    "python-jose[cryptography]",
+    "bcrypt",
+    "redis",
+    "stripe",
+    "paypalrestsdk",
+    "firebase-admin",
+    "aiosmtplib",
+    "httpx",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

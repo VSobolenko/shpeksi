@@ -1,10 +1,10 @@
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation } from "@apollo/client";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation, useTheme } from "@react-navigation/native";
 import * as Device from "expo-device";
 import * as Localization from "expo-localization";
 import * as Notifications from "expo-notifications";
-import gql from "graphql-tag";
+import { gql } from "@apollo/client";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import {
   AppState,
@@ -141,7 +141,7 @@ function Settings() {
   }
 
   async function selectLanguage() {
-    const lang = await AsyncStorage.getItem("enatega-language");
+    const lang = await AsyncStorage.getItem("pickup-language");
     if (lang) {
       const defLang = languageTypes.findIndex((el) => el.code === lang);
       const langName = languageTypes[defLang].value;
@@ -156,11 +156,11 @@ function Settings() {
       const localization = await Localization.getLocalizationAsync();
       localization.locale = languageTypes[languageInd].code;
       await AsyncStorage.setItem(
-        "enatega-language",
+        "pickup-language",
         languageTypes[languageInd].code
       );
       i18n.locale = languageTypes[languageInd].code;
-      const lang = await AsyncStorage.getItem("enatega-language");
+      const lang = await AsyncStorage.getItem("pickup-language");
       console.log(lang);
       const defLang = languageTypes.findIndex((el) => el.code === lang);
       const langName = languageTypes[defLang].value;
