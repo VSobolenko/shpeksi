@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import { createDrawerNavigator, useDrawerProgress } from "@react-navigation/drawer";
 import { NavigationContainer, useTheme } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as Notifications from "expo-notifications";
 import React, { useEffect } from "react";
 import { Text, useColorScheme, View } from "react-native";
-import Animated from "react-native-reanimated";
+import Animated, { interpolate, useAnimatedStyle } from "react-native-reanimated";
 import {
   initialWindowMetrics,
   SafeAreaProvider,
@@ -46,9 +46,6 @@ const SideDrawer = createDrawerNavigator();
 
 function Drawer() {
   const { colors } = useTheme();
-  let animatedStyle = {};
-  let opacity;
-  let OuterWindowSlide, InnerWindowSlide;
   return (
     <SideDrawer.Navigator
       drawerType="slide"
@@ -65,75 +62,40 @@ function Drawer() {
         },
         sceneContainerStyle: { backgroundColor: colors.drawerBackground },
       }}
-      // drawerStyle={{
-      //   flex: 1,
-      //   backgroundColor: colors.drawerBackground,
-      //   width: "60%",
-      //   justifyContent: "space-between",
-      //   borderRightWidth: 0,
-      //   shadowOpacity: 0,
-      //   elevation: 0,
-      // }}
-      // sceneContainerStyle={{ backgroundColor: colors.drawerBackground }}
-
-      drawerContent={(props) => {
-        const scale = Animated.interpolate(props.progress, {
-          inputRange: [0, 1],
-          outputRange: [1, 0.7],
-        });
-        const Animatedopacity = Animated.interpolate(props.progress, {
-          inputRange: [0, 0.6, 1],
-          outputRange: [0, 0, 1],
-        });
-        const AnimatedOuterSlide = Animated.interpolate(props.progress, {
-          inputRange: [0, 1],
-          outputRange: [0, -35],
-        });
-        const AnimatedInnerSlide = Animated.interpolate(props.progress, {
-          inputRange: [0, 1],
-          outputRange: [0, -15],
-        });
-        const borderRadius = Animated.interpolate(props.progress, {
-          inputRange: [0, 1],
-          outputRange: [0, 20],
-        });
-        animatedStyle = { borderRadius, transform: [{ scale }] };
-        opacity = Animatedopacity;
-        OuterWindowSlide = AnimatedOuterSlide;
-        InnerWindowSlide = AnimatedInnerSlide;
-
-        return <Sidebar {...props} />;
-      }}
+      drawerContent={(props) => <Sidebar {...props} />}
     >
       <SideDrawer.Screen name="noDrawer" options={{ headerShown: false }}>
-        {(props) => (
-          <NoDrawer
-            {...props}
-            style={animatedStyle}
-            opacity={opacity}
-            OuterWindowSlide={OuterWindowSlide}
-            InnerWindowSlide={InnerWindowSlide}
-          />
-        )}
+        {(props) => <NoDrawer {...props} />}
       </SideDrawer.Screen>
     </SideDrawer.Navigator>
   );
 }
 
-function NoDrawer({ style, opacity = 1, OuterWindowSlide, InnerWindowSlide }) {
+function NoDrawer() {
   const { colors } = useTheme();
+  const progress = useDrawerProgress();
+
+  const cardStyle = useAnimatedStyle(() => {
+    const scale = interpolate(progress.value, [0, 1], [1, 0.7]);
+    const borderRadius = interpolate(progress.value, [0, 1], [0, 20]);
+    return { borderRadius, transform: [{ scale }] };
+  });
+  const outerSlideStyle = useAnimatedStyle(() => ({
+    marginLeft: interpolate(progress.value, [0, 1], [0, -35]),
+  }));
+  const innerSlideStyle = useAnimatedStyle(() => ({
+    marginLeft: interpolate(progress.value, [0, 1], [0, -15]),
+  }));
+  const closeStyle = useAnimatedStyle(() => ({
+    opacity: interpolate(progress.value, [0, 0.6, 1], [0, 0, 1]),
+  }));
 
   return (
     <React.Fragment>
-      <Animated.View
-        style={[styles.outerView, style, { marginLeft: OuterWindowSlide }]}
-      />
-      <Animated.View
-        style={[styles.innerView, style, { marginLeft: InnerWindowSlide }]}
-      />
-      <Animated.View style={[styles.animatedView, style]}>
+      <Animated.View style={[styles.outerView, cardStyle, outerSlideStyle]} />
+      <Animated.View style={[styles.innerView, cardStyle, innerSlideStyle]} />
+      <Animated.View style={[styles.animatedView, cardStyle]}>
         <NavigationStack.Navigator
-          //mode="modal"
           presentation="modal"
           screenOptions={screenOptions({
             textColor: colors.headerTextColor,
@@ -251,7 +213,7 @@ function NoDrawer({ style, opacity = 1, OuterWindowSlide, InnerWindowSlide }) {
           />
         </NavigationStack.Navigator>
       </Animated.View>
-      <Animated.View style={[styles.closeView, { opacity: opacity }]}>
+      <Animated.View style={[styles.closeView, closeStyle]}>
         <TextDefault H4 medium>
           {"Close X"}
         </TextDefault>

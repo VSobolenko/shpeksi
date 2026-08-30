@@ -1,14 +1,9 @@
 import { useTheme } from '@react-navigation/native'
-import React, {
-  forwardRef,
-  useImperativeHandle,
-  useRef,
-  useState
-} from 'react'
+import React, { useImperativeHandle, useRef, useState } from 'react'
 import { Text, TextInput, View } from 'react-native'
 import useStyle from './styles'
 
-const TextField = forwardRef(function TextField(props, ref) {
+function TextField(props) {
   const { colors } = useTheme()
   const styles = useStyle()
   const inputRef = useRef(null)
@@ -32,7 +27,7 @@ const TextField = forwardRef(function TextField(props, ref) {
       ? tintColor
       : baseColor
 
-  useImperativeHandle(ref, () => ({
+  useImperativeHandle(props.ref, () => ({
     setValue: text => setInternalValue(text),
     focus: () => inputRef.current && inputRef.current.focus(),
     blur: () => inputRef.current && inputRef.current.blur(),
@@ -101,6 +96,6 @@ const TextField = forwardRef(function TextField(props, ref) {
       ) : null}
     </View>
   )
-})
+}
 
 export default TextField

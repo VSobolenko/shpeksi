@@ -40,15 +40,28 @@ module.exports = ({ config }) => {
     STRIPE_STORE_NAME: process.env.STRIPE_STORE_NAME
   }
 
-  const mapsKey = process.env.GOOGLE_MAPS_API_KEY
-  if (mapsKey) {
-    config.ios = config.ios || {}
-    config.ios.config = config.ios.config || {}
-    config.ios.config.googleMapsApiKey = mapsKey
+  // Account-specific values are sourced from the environment (set per EAS
+  // build profile) so no owner id, EAS project id, or updates URL is
+  // hardcoded in the repo.
+  if (process.env.EAS_PROJECT_ID) {
+    config.extra.eas = { projectId: process.env.EAS_PROJECT_ID }
+  }
+  if (process.env.EXPO_OWNER) {
+    config.owner = process.env.EXPO_OWNER
+  }
+  if (process.env.EXPO_UPDATES_URL) {
+    config.updates = {
+      ...(config.updates || {}),
+      url: process.env.EXPO_UPDATES_URL
+    }
+  }
+
+  // Reference the Android Google services file only when it is present so
+  // builds without it (CI/local) still work; the file itself is git-ignored.
+  const googleServicesFile = './google-services-prod.json'
+  if (fs.existsSync(path.join(__dirname, googleServicesFile))) {
     config.android = config.android || {}
-    config.android.config = config.android.config || {}
-    config.android.config.googleMaps = config.android.config.googleMaps || {}
-    config.android.config.googleMaps.apiKey = mapsKey
+    config.android.googleServicesFile = googleServicesFile
   }
 
   return config

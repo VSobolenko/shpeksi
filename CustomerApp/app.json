@@ -5,81 +5,68 @@
     "scheme": "pickup",
     "description": "Pickup is a self-collect food ordering app built in React Native using Expo for iOS and Android.",
     "slug": "pickup",
-    "owner": "ninjas_code",
-    "currentFullName": "@ninjas_code/pickup",
-    "originalFullName": "@ninjas_code/pickup",
-    "privacy": "public",
-    "androidStatusBar": {
-      "backgroundColor": "#000000"
-    },
     "platforms": [
       "ios",
       "android"
     ],
-    "orientation": "portrait",
+    "androidStatusBar": {
+      "backgroundColor": "#000000"
+    },
     "icon": "./assets/icon.png",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#febb2c"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0,
-      "url": "https://u.expo.dev/e7c3fd70-4054-4dc8-bbdb-a572a3cc6fb1"
-    },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.pickup.vendor",
-      "config": {
-        "googleMapsApiKey": ""
-      },
       "usesAppleSignIn": true,
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "This app uses the location to determine the delivery address for your orders.",
         "NSUserTrackingUsageDescription": "Allow this app to collect app-related data that can be used for tracking you or your device."
       }
-    },
-    "notification": {
-      "iosDisplayInForeground": true,
-      "color": "#d83765",
-      "icon": "./assets/not-icon.png",
-      "androidMode": "default",
-      "androidCollapsedTitle": "Pickup"
     },
     "android": {
       "versionCode": 26,
       "package": "com.pickup.vendor",
-      "googleServicesFile": "./google-services-prod.json",
-      "config": {
-        "googleMaps": {
-          "apiKey": ""
-        }
-      },
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#febb2c"
-      },
-      "permissions": [
-        "ACCESS_FINE_LOCATION",
-        "ACCESS_COARSE_LOCATION"
-      ]
+      }
     },
     "plugins": [
+      "expo-asset",
+      "expo-font",
+      "expo-localization",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash.png",
+          "resizeMode": "cover",
+          "backgroundColor": "#febb2c"
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/not-icon.png",
+          "color": "#d83765"
+        }
+      ],
       [
         "expo-tracking-transparency",
         {
           "userTrackingPermission": "Allow this app to collect app-related data that can be used for tracking you or your device."
         }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "targetSdkVersion": 36,
+            "edgeToEdgeEnabled": true
+          }
+        }
       ]
     ],
-    "extra": {
-      "eas": {
-        "projectId": "e7c3fd70-4054-4dc8-bbdb-a572a3cc6fb1"
-      }
-    },
     "runtimeVersion": {
       "policy": "sdkVersion"
     }

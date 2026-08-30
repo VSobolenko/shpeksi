@@ -1,5 +1,9 @@
 /node_modules
 
+# build output & expo dev cache
+dist/
+.expo/
+
 # secrets (keep .env.example tracked with placeholders)
 .env
 google-services*.json

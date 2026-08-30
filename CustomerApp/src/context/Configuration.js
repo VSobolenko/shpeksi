@@ -18,9 +18,9 @@ export const ConfigurationProvider = props => {
     ? { currency: '', currency_symbol: '' }
     : data.configuration
   return (
-    <ConfigurationContext.Provider value={configuration}>
+    <ConfigurationContext value={configuration}>
       {props.children}
-    </ConfigurationContext.Provider>
+    </ConfigurationContext>
   )
 }
 

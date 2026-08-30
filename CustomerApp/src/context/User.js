@@ -213,7 +213,7 @@ export const UserProvider = props => {
   }
 
   return (
-    <UserContext.Provider
+    <UserContext
       value={{
         isLoggedIn: !!token && dataProfile && !!dataProfile.profile,
         loadingProfile: loadingProfile && calledProfile,
@@ -237,7 +237,7 @@ export const UserProvider = props => {
         addCartItem
       }}>
       {props.children}
-    </UserContext.Provider>
+    </UserContext>
   )
 }
 

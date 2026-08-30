@@ -1,6 +1,5 @@
 import { ApolloProvider } from '@apollo/client'
 import * as Font from 'expo-font'
-import * as Location from 'expo-location'
 import * as Notifications from 'expo-notifications'
 import * as SplashScreen from 'expo-splash-screen'
 import React, { useEffect, useState } from 'react'
@@ -57,7 +56,6 @@ export default function App() {
       icomoon: require('./src/assets/font/icomoon.ttf')
     })
 
-    await permissionForLocationAsync()
     await permissionForPushNotificationsAsync()
 
     BackHandler.addEventListener('hardwareBackPress', exitAlert)
@@ -92,20 +90,6 @@ export default function App() {
       })
     }
   }
-  async function permissionForLocationAsync() {
-    const { status: existingStatus } =
-      await Location.getForegroundPermissionsAsync()
-    // only ask if permissions have not already been determined, because
-    // iOS won't necessarily prompt the user a second time.
-    if (existingStatus !== 'granted') {
-      // Android location permissions are granted during the app
-      // install, so this will only ask on iOS
-      const { status } = await Location.requestForegroundPermissionsAsync()
-      // eslint-disable-next-line no-undef
-      finalStatus = status
-    }
-  }
-
   if (fontLoaded && client) {
     return (
       <ApolloProvider client={client}>
