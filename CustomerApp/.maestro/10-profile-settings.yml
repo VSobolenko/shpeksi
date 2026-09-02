@@ -1,0 +1,67 @@
+appId: com.pickup.vendor
+name: Profile, Settings and Addresses while logged in
+tags: [account, e2e]
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: "Featured"
+    timeout: 30000
+# --- Login ---
+- tapOn:
+    id: "open-navigation-menu"
+- tapOn: "Login/Create Account"
+- extendedWaitUntil:
+    visible: "Get Started!"
+    timeout: 15000
+- tapOn: "Already a member? Log in"
+- extendedWaitUntil:
+    visible: "Email or Phone"
+    timeout: 15000
+- tapOn:
+    id: "login-email"
+- inputText: "customer@example.com"
+- tapOn:
+    id: "login-password"
+- inputText: "password123"
+- hideKeyboard
+- tapOn:
+    id: "login-submit"
+- extendedWaitUntil:
+    visible: "Featured"
+    timeout: 30000
+# --- Profile ---
+- tapOn:
+    id: "open-navigation-menu"
+- tapOn: "Profile"
+- extendedWaitUntil:
+    visible: "Change Password"
+    timeout: 15000
+- assertVisible: "Test Customer"
+- assertVisible: "customer@example.com"
+# Toggle into edit mode via the header pencil; "Save Changes" only shows in edit mode.
+- tapOn:
+    id: "profile-edit"
+- extendedWaitUntil:
+    visible: "Save Changes"
+    timeout: 15000
+- assertVisible: "Cancel"
+- takeScreenshot: 10-profile
+# --- Settings ---
+- tapOn:
+    id: "open-navigation-menu"
+- tapOn: "Settings"
+- extendedWaitUntil:
+    visible: "Language"
+    timeout: 15000
+# Settings rows render their labels with surrounding whitespace, so use a partial regex.
+- assertVisible: ".*Receive Special Offers.*"
+- takeScreenshot: 10-settings
+# --- My Addresses ---
+- tapOn:
+    id: "open-navigation-menu"
+- tapOn: "My Addresses"
+- extendedWaitUntil:
+    visible: "Add New Address"
+    timeout: 15000
+- takeScreenshot: 10-addresses

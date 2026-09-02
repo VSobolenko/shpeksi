@@ -1,10 +1,10 @@
-import { useApolloClient } from "@apollo/client";
-import { useNavigation, useTheme } from "@react-navigation/native";
-import React, { useContext, useLayoutEffect } from "react";
-import { FlatList, TouchableOpacity, View } from "react-native";
-import uuid from "uuid";
-import i18n from "../../../i18n";
-import EmptyOrder from "../../assets/images/SVG/imageComponents/EmptyOrder";
+import { useApolloClient } from '@apollo/client'
+import { useNavigation, useTheme } from '@react-navigation/native'
+import React, { useContext, useLayoutEffect } from 'react'
+import { FlatList, TouchableOpacity, View } from 'react-native'
+import uuid from 'uuid'
+import i18n from '../../../i18n'
+import EmptyOrder from '../../assets/images/SVG/imageComponents/EmptyOrder'
 import {
   ActiveOrders,
   CustomIcon,
@@ -12,24 +12,24 @@ import {
   Spinner,
   TextDefault,
   TextError,
-  WrapperView,
-} from "../../components";
-import ConfigurationContext from "../../context/Configuration";
-import UserContext from "../../context/User";
-import { alignment } from "../../utils/alignment";
-import { ICONS_NAME, NAVIGATION_SCREEN } from "../../utils/constant";
-import { scale } from "../../utils/scaling";
-import useStyle from "./style";
+  WrapperView
+} from '../../components'
+import ConfigurationContext from '../../context/Configuration'
+import UserContext from '../../context/User'
+import { alignment } from '../../utils/alignment'
+import { ICONS_NAME, NAVIGATION_SCREEN } from '../../utils/constant'
+import { scale } from '../../utils/scaling'
+import useStyle from './style'
 
-const orderStatusActive = ["PENDING", "ACCEPTED", "READY"];
-const orderStatusInactive = ["COMPLETED"];
+const orderStatusActive = ['PENDING', 'ACCEPTED', 'READY']
+const orderStatusInactive = ['COMPLETED']
 
 function MyOrders() {
-  const styles = useStyle();
-  const { colors } = useTheme();
-  const client = useApolloClient();
-  const navigation = useNavigation();
-  const configuration = useContext(ConfigurationContext);
+  const styles = useStyle()
+  const { colors } = useTheme()
+  const client = useApolloClient()
+  const navigation = useNavigation()
+  const configuration = useContext(ConfigurationContext)
   const {
     orders,
     loadingOrders,
@@ -37,15 +37,15 @@ function MyOrders() {
     fetchOrders,
     fetchMoreOrdersFunc,
     networkStatusOrders,
-    updateCart,
-  } = useContext(UserContext);
+    updateCart
+  } = useContext(UserContext)
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: i18n.t("titleOrders"),
-      headerRight: null,
-    });
-  }, [navigation]);
+      headerTitle: i18n.t('titleOrders'),
+      headerRight: null
+    })
+  }, [navigation])
 
   // add items to cart and navigate to cart screen
   async function onReOrder({ order }) {
@@ -54,30 +54,30 @@ function MyOrders() {
         return {
           ...item.food,
           key: uuid.v4(),
-          __typename: "CartItem",
+          __typename: 'CartItem',
           variation: {
-            __typename: "ItemVariation",
-            _id: item.variation._id,
+            __typename: 'ItemVariation',
+            _id: item.variation._id
           },
           quantity: item.quantity,
           addons: item.addons.map((addon) => ({
             ...addon,
-            __typename: "ItemAddon",
+            __typename: 'ItemAddon',
             options: addon.options.map(({ _id }) => ({
               _id,
-              __typename: "ItemOption",
-            })),
-          })),
-        };
-      }),
-    };
-    await updateCart(data.cartItems);
-    navigation.navigate(NAVIGATION_SCREEN.Cart);
+              __typename: 'ItemOption'
+            }))
+          }))
+        }
+      })
+    }
+    await updateCart(data.cartItems)
+    navigation.navigate(NAVIGATION_SCREEN.Cart)
   }
 
   function emptyView() {
-    if (loadingOrders) return <Spinner visible={loadingOrders} />;
-    if (errorOrders) return <TextError text={errorOrders.message} />;
+    if (loadingOrders) return <Spinner visible={loadingOrders} />
+    if (errorOrders) return <TextError text={errorOrders.message} />
     else {
       return (
         <View style={styles.subContainerImage}>
@@ -86,7 +86,7 @@ function MyOrders() {
           </View>
           <View style={styles.descriptionEmpty}>
             <TextDefault bolder center H4>
-              {i18n.t("noOrdersFound")}
+              {i18n.t('noOrdersFound')}
             </TextDefault>
           </View>
           <TouchableOpacity
@@ -95,15 +95,14 @@ function MyOrders() {
             onPress={() => navigation.navigate(NAVIGATION_SCREEN.Menu)}
           >
             <TextDefault textColor={colors.buttonText} bold H5 center>
-              {i18n.t("startShopping")}
+              {i18n.t('startShopping')}
             </TextDefault>
           </TouchableOpacity>
         </View>
-      );
+      )
     }
   }
 
-  console.log(orders);
   return (
     <WrapperView>
       <FlatList
@@ -111,8 +110,8 @@ function MyOrders() {
           loadingOrders || errorOrders
             ? []
             : orders.filter((o) =>
-                orderStatusInactive.includes(o.order_status)
-              )
+              orderStatusInactive.includes(o.order_status)
+            )
         }
         style={styles.container}
         contentContainerStyle={styles.contentContainer}
@@ -130,7 +129,7 @@ function MyOrders() {
             error={errorOrders}
           />
         }
-        //keyExtractor={(item) => item._id}
+        // keyExtractor={(item) => item._id}
         keyExtractor={(item, index) => String(index)}
         refreshing={networkStatusOrders === 4}
         onRefresh={() => networkStatusOrders === 7 && fetchOrders()}
@@ -140,7 +139,7 @@ function MyOrders() {
             onPress={() =>
               navigation.navigate(NAVIGATION_SCREEN.OrderDetail, {
                 _id: item._id,
-                currency_symbol: configuration.currency_symbol,
+                currency_symbol: configuration.currency_symbol
               })
             }
           >
@@ -154,7 +153,7 @@ function MyOrders() {
               </View>
               <View style={styles.infoContainer}>
                 <TextDefault H5 bold style={alignment.MBxSmall}>
-                  {i18n.t("idVar")}
+                  {i18n.t('idVar')}
                   {item.order_id}
                 </TextDefault>
                 <TextDefault line={3} textColor={colors.tagColor} H5 medium>
@@ -169,7 +168,7 @@ function MyOrders() {
                 style={styles.subContainerRight}
               >
                 <View>
-                  <View style={{ alignSelf: "center" }}>
+                  <View style={{ alignSelf: 'center' }}>
                     <CustomIcon
                       name={ICONS_NAME.Refresh}
                       size={scale(28)}
@@ -182,7 +181,7 @@ function MyOrders() {
                     bold
                     center
                   >
-                    {"Re-Order"}
+                    {'Re-Order'}
                   </TextDefault>
                 </View>
               </TouchableOpacity>
@@ -192,7 +191,7 @@ function MyOrders() {
         onEndReached={fetchMoreOrdersFunc}
       />
     </WrapperView>
-  );
+  )
 }
 
-export default MyOrders;
+export default MyOrders

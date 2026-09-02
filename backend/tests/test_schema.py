@@ -14,6 +14,7 @@ def test_schema_exposes_pickup_operations():
         "getOrderStatuses",
         "getPaymentStatuses",
         "order_id_prefix",
+        "coupon(coupon",
     ]:
         assert fragment in sdl
 

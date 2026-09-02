@@ -1,0 +1,15 @@
+appId: com.pickup.vendor
+name: Category opens product list
+tags: [categories, e2e]
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: "Featured"
+    timeout: 30000
+- tapOn: "Burgers"
+- extendedWaitUntil:
+    visible: "Classic Burger"
+    timeout: 15000
+- assertVisible: "Cheese Burger"
+- takeScreenshot: 05-categories

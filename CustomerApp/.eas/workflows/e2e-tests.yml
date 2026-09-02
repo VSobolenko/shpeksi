@@ -1,0 +1,46 @@
+name: E2E Tests
+
+on:
+  pull_request:
+    branches: ['*']
+
+jobs:
+  build_android:
+    name: Build Android for E2E
+    type: build
+    params:
+      platform: android
+      profile: e2e-test
+
+  build_ios:
+    name: Build iOS for E2E
+    type: build
+    params:
+      platform: ios
+      profile: e2e-test
+
+  test_android:
+    name: Run Maestro tests (Android)
+    needs: [build_android]
+    type: maestro
+    params:
+      build_id: ${{ needs.build_android.outputs.build_id }}
+      flow_path:
+        - .maestro/01-menu.yml
+        - .maestro/02-login.yml
+        - .maestro/03-navigation.yml
+        - .maestro/04-cart.yml
+        - .maestro/05-categories.yml
+
+  test_ios:
+    name: Run Maestro tests (iOS)
+    needs: [build_ios]
+    type: maestro
+    params:
+      build_id: ${{ needs.build_ios.outputs.build_id }}
+      flow_path:
+        - .maestro/01-menu.yml
+        - .maestro/02-login.yml
+        - .maestro/03-navigation.yml
+        - .maestro/04-cart.yml
+        - .maestro/05-categories.yml

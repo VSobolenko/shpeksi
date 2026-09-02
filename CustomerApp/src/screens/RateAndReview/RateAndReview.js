@@ -1,11 +1,11 @@
-import { useMutation } from '@apollo/client'
+import { useMutation, gql } from '@apollo/client'
 import { EvilIcons } from '@expo/vector-icons'
 import { useNavigation, useRoute, useTheme } from '@react-navigation/native'
-import { gql } from '@apollo/client'
+
 import React, { useLayoutEffect, useState } from 'react'
 import { TextInput, TouchableOpacity, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import StarRating from 'react-native-star-rating'
+import StarRating from '../../components/StarRating/StarRating'
 import i18n from '../../../i18n'
 import { reviewOrder } from '../../apollo/server'
 import { FlashMessage } from '../../components/FlashMessage/FlashMessage'
@@ -52,8 +52,8 @@ function RateAndReview() {
     mutate({
       variables: {
         orderId: id,
-        rating: rating,
-        description: description
+        rating,
+        description
       }
     })
   }
@@ -102,6 +102,7 @@ function RateAndReview() {
         <View style={styles.inputContainer}>
           <View style={styles.inputSubContainer}>
             <TextInput
+              testID="review-description"
               style={[styles.textinput, { color: colors.fontMainColor }]}
               placeholderTextColor={colors.fontSecondColor}
               onChangeText={onChangeText}
@@ -114,6 +115,7 @@ function RateAndReview() {
             {loadingMutation && <Spinner />}
             {!loadingMutation && (
               <TouchableOpacity
+                testID="review-submit"
                 activeOpacity={0.7}
                 onPress={onSubmit}
                 style={styles.btnTouch}>

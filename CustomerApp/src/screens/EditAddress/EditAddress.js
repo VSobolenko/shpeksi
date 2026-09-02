@@ -1,7 +1,6 @@
-import { useMutation } from '@apollo/client'
+import { useMutation, gql } from '@apollo/client'
 import { Ionicons } from '@expo/vector-icons'
 import { useNavigation, useRoute, useTheme } from '@react-navigation/native'
-import { gql } from '@apollo/client'
 import React, { useLayoutEffect, useState } from 'react'
 import {
   KeyboardAvoidingView,
@@ -10,15 +9,15 @@ import {
   TouchableOpacity,
   View
 } from 'react-native'
-import { FilledTextField } from '../../components'
-import i18n from '../../../i18n'
-import { editAddress } from '../../apollo/server'
 import {
+  FilledTextField,
   FlashMessage,
   Spinner,
   TextDefault,
   WrapperView
 } from '../../components'
+import i18n from '../../../i18n'
+import { editAddress } from '../../apollo/server'
 import { alignment } from '../../utils/alignment'
 import { scale } from '../../utils/scaling'
 import useStyle from './styles'
@@ -226,7 +225,7 @@ function EditAddress() {
                   mutate({
                     variables: {
                       addressInput: {
-                        _id: _id,
+                        _id,
                         delivery_address: deliveryAddress.trim(),
                         details: deliveryDetails.trim(),
                         label: selectedLabel
@@ -237,18 +236,20 @@ function EditAddress() {
               }}
               activeOpacity={0.5}
               style={styles.saveBtnContainer}>
-              {loading ? (
+              {loading
+                ? (
                 <View style={styles.spinnerView}>
                   <Spinner
                     backColor="transparent"
                     spinnerColor={colors.buttonText}
                   />
                 </View>
-              ) : (
+                  )
+                : (
                 <TextDefault textColor={colors.buttonText} H5 bold>
                   {i18n.t('saveContBtn')}
                 </TextDefault>
-              )}
+                  )}
             </TouchableOpacity>
             <TouchableOpacity
               style={[alignment.PBsmall, alignment.PTsmall]}

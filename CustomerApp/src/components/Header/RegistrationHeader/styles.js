@@ -1,9 +1,7 @@
-import { useTheme } from '@react-navigation/native'
 import { StyleSheet } from 'react-native'
 import { moderateScale, scale } from '../../../utils/scaling'
 
 const useStyle = () => {
-  const { colors } = useTheme()
   return StyleSheet.create({
     headerContainer: {
       paddingHorizontal: moderateScale(20),

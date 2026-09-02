@@ -9,7 +9,7 @@ const useStyles = () => {
     flex: {
       flex: 1,
       alignItems: 'center',
-      backgroundColor: colors.background,
+      backgroundColor: colors.background
     },
     mainContainer: {
       ...alignment.PTlarge,

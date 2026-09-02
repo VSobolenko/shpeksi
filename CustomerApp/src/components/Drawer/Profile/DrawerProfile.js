@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native'
+import { DrawerActions } from '@react-navigation/native'
 import React, { useContext } from 'react'
 import { TouchableOpacity, View } from 'react-native'
 import UserContext from '../../../context/User'
@@ -8,9 +8,8 @@ import { TextDefault } from '../../Text'
 import useStyle from './styles'
 import i18n from '../../../../i18n'
 
-function DrawerProfile() {
+function DrawerProfile({ navigation }) {
   const styles = useStyle()
-  const navigation = useNavigation()
   const { isLoggedIn, loadingProfile, profile } = useContext(UserContext)
 
   if (loadingProfile) return <TextDefault>Loading...</TextDefault>
@@ -20,7 +19,10 @@ function DrawerProfile() {
         <View style={styles.logInContainer}>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate(NAVIGATION_SCREEN.CreateAccount)
+              navigation.navigate('noDrawer', {
+                screen: NAVIGATION_SCREEN.CreateAccount
+              })
+              navigation.dispatch(DrawerActions.closeDrawer())
             }}>
             <TextDefault textColor={styles.whiteFont.color} bold H4>
               {i18n.t('loginOrCreateAcc')}

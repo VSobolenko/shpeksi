@@ -1,52 +1,52 @@
-import { useNavigation, useTheme } from "@react-navigation/native";
-import React, { useContext } from "react";
-import { FlatList, TouchableOpacity, View } from "react-native";
-import ConfigurationContext from "../../../context/Configuration";
-import UserContext from "../../../context/User";
-import { alignment } from "../../../utils/alignment";
-import { NAVIGATION_SCREEN } from "../../../utils/constant";
-import Spinner from "../../Spinner/Spinner";
-import TextDefault from "../../Text/TextDefault/TextDefault";
-import TextError from "../../Text/TextError/TextError";
-import useStyle from "./styles";
-import i18n from "../../../../i18n";
+import { useNavigation, useTheme } from '@react-navigation/native'
+import React, { useContext } from 'react'
+import { FlatList, TouchableOpacity, View } from 'react-native'
+import ConfigurationContext from '../../../context/Configuration'
+import UserContext from '../../../context/User'
+import { alignment } from '../../../utils/alignment'
+import { NAVIGATION_SCREEN } from '../../../utils/constant'
+import Spinner from '../../Spinner/Spinner'
+import TextDefault from '../../Text/TextDefault/TextDefault'
+import TextError from '../../Text/TextError/TextError'
+import useStyle from './styles'
+import i18n from '../../../../i18n'
 
 export const orderStatuses = {
   PENDING: {
     status: 1,
-    statusText: "orderPending",
+    statusText: 'orderPending'
   },
   ACCEPTED: {
     status: 2,
-    statusText: "prepFood",
+    statusText: 'prepFood'
   },
   READY: {
     status: 3,
-    statusText: "readyForPickup",
+    statusText: 'readyForPickup'
   },
   COMPLETED: {
     status: 4,
-    statusText: "completeOrder",
-  },
-};
+    statusText: 'completeOrder'
+  }
+}
 
-const orderStatusActive = ["PENDING", "ACCEPTED", "READY"];
+const orderStatusActive = ['PENDING', 'ACCEPTED', 'READY']
 
 const StatusCard = () => {
-  const { colors } = useTheme();
-  const styles = useStyle();
-  const navigation = useNavigation();
+  const { colors } = useTheme()
+  const styles = useStyle()
+  const navigation = useNavigation()
   const {
     loadingOrders,
     errorOrders,
     orders,
     networkStatusOrders,
-    fetchOrders,
-  } = useContext(UserContext);
-  const configuration = useContext(ConfigurationContext);
+    fetchOrders
+  } = useContext(UserContext)
+  const configuration = useContext(ConfigurationContext)
 
-  if (loadingOrders) return <Spinner />;
-  if (errorOrders) return <TextError>{errorOrders.message}</TextError>;
+  if (loadingOrders) return <Spinner />
+  if (errorOrders) return <TextError>{errorOrders.message}</TextError>
 
   return (
     <FlatList
@@ -65,24 +65,24 @@ const StatusCard = () => {
           onPress={() =>
             navigation.navigate(NAVIGATION_SCREEN.OrderDetail, {
               _id: item._id,
-              currency_symbol: configuration.currency_symbol,
+              currency_symbol: configuration.currency_symbol
             })
           }
         >
           <View key={index} style={styles.statusContainer}>
             <View style={styles.textContainer}>
               <TextDefault H5 medium textColor={styles.lightText.color}>
-                {i18n.t("orderId")}
+                {i18n.t('orderId')}
               </TextDefault>
               <TextDefault style={{ ...alignment.PBlarge }} H4 bolder>
                 {item.order_id}
               </TextDefault>
               <TextDefault H5 textColor={colors.placeHolderColor} medium>
-                {i18n.t("status")}
+                {i18n.t('status')}
               </TextDefault>
 
-              <TextDefault textColor={"#00b9c6"} H5 medium>
-                {i18n.t(item.order_status)}{" "}
+              <TextDefault textColor={'#00b9c6'} H5 medium>
+                {i18n.t(item.order_status)}{' '}
                 <TextDefault numberOfLines={2} medium>
                   {`(${i18n.t(orderStatuses[item.order_status]?.statusText)})`}
                 </TextDefault>
@@ -92,7 +92,7 @@ const StatusCard = () => {
         </TouchableOpacity>
       )}
     />
-  );
-};
+  )
+}
 
-export default StatusCard;
+export default StatusCard

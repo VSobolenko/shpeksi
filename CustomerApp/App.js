@@ -2,10 +2,11 @@ import { ApolloProvider } from '@apollo/client'
 import * as Font from 'expo-font'
 import * as Notifications from 'expo-notifications'
 import * as SplashScreen from 'expo-splash-screen'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   ActivityIndicator,
   BackHandler,
+  LogBox,
   Platform,
   StatusBar,
   StyleSheet,
@@ -25,11 +26,17 @@ import { requestTrackingPermissions } from './src/utils/useAppTrackingTransparen
 
 SplashScreen.preventAutoHideAsync().catch(() => {})
 
+LogBox.ignoreLogs([
+  'InteractionManager has been deprecated',
+  'Bridgeless doesn\'t support CatalystInstance'
+])
+
 export default function App() {
   const colorScheme = useColorScheme()
   const isDark = colorScheme === 'dark'
   const [fontLoaded, setFontLoaded] = useState(false)
   const [client, setupClient] = useState(null)
+  const backHandlerRef = useRef(null)
 
   useEffect(() => {
     requestTrackingPermissions()
@@ -37,7 +44,9 @@ export default function App() {
   useEffect(() => {
     loadAppData()
     return () => {
-      BackHandler.removeEventListener('hardwareBackPress', exitAlert)
+      if (backHandlerRef.current) {
+        backHandlerRef.current.remove()
+      }
     }
   }, [])
 
@@ -58,7 +67,10 @@ export default function App() {
 
     await permissionForPushNotificationsAsync()
 
-    BackHandler.addEventListener('hardwareBackPress', exitAlert)
+    backHandlerRef.current = BackHandler.addEventListener(
+      'hardwareBackPress',
+      exitAlert
+    )
     setFontLoaded(true)
   }
 

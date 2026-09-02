@@ -49,6 +49,9 @@ function LeftButton(props) {
                 opacity: pressed ? 0.7 : 1
               }
             ]}
+            accessibilityRole="button"
+            accessibilityLabel="Open navigation menu"
+            testID="open-navigation-menu"
             onPress={() => navigation.toggleDrawer()}>
             <HeaderIcon iconColor={iconColor} icon={icon} />
           </Pressable>
@@ -118,7 +121,9 @@ function RightButton(props) {
     onPress = () => null,
     icon = null,
     iconColor = colors.iconColor,
-    iconSize = scale(20)
+    iconSize = scale(20),
+    testID = null,
+    accessibilityLabel = null
   } = props
   const styles = useStyles()
   const { cartCount } = useContext(UserContext)
@@ -150,6 +155,9 @@ function RightButton(props) {
                 opacity: pressed ? 0.7 : 1
               }
             ]}
+            accessibilityRole="button"
+            accessibilityLabel="Open cart"
+            testID="open-cart"
             onPress={() => navigateCart()}>
             <HeaderIcon iconColor={iconColor} icon={icon} />
             <View style={styles.cartCount}>
@@ -179,6 +187,9 @@ function RightButton(props) {
                 opacity: pressed ? 0.7 : 1
               }
             ]}
+            accessibilityRole="button"
+            accessibilityLabel={accessibilityLabel}
+            testID={testID}
             onPress={onPress}>
             <HeaderIcon iconColor={iconColor} icon={icon} iconSize={iconSize} />
           </Pressable>

@@ -1,9 +1,8 @@
-import { useMutation } from '@apollo/client'
+import { useMutation, gql } from '@apollo/client'
 import { useNavigation, useTheme } from '@react-navigation/native'
 import * as Device from 'expo-device'
 import * as Localization from 'expo-localization'
 import * as Notifications from 'expo-notifications'
-import { gql } from '@apollo/client'
 import React, { useContext, useState } from 'react'
 import {
   KeyboardAvoidingView,
@@ -12,10 +11,8 @@ import {
   TouchableOpacity,
   View
 } from 'react-native'
-import { FilledTextField } from '../../components'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { createUser } from '../../apollo/server'
 import {
+  FilledTextField,
   CustomIcon,
   PickupImage,
   FlashMessage,
@@ -23,12 +20,14 @@ import {
   TextDefault,
   WrapperView
 } from '../../components'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { createUser } from '../../apollo/server'
 import UserContext from '../../context/User'
 import { alignment } from '../../utils/alignment'
 import Analytics from '../../utils/analytics'
 import { ICONS_NAME, NAVIGATION_SCREEN } from '../../utils/constant'
 // eslint-disable-next-line camelcase
-import country_codes from '../../utils/country_codes'
+import countryCodes from '../../utils/country_codes'
 import { scale, verticalScale } from '../../utils/scaling'
 import useStyle from './styles'
 import i18n from '../../../i18n'
@@ -106,7 +105,7 @@ function Register() {
       setTokenAsync(data.createUser.token)
       navigation.navigate(NAVIGATION_SCREEN.Menu)
     } catch (e) {
-      console.log(e)
+      console.error(e)
     } finally {
       setLoading(false)
     }
@@ -118,7 +117,7 @@ function Register() {
         message: error.graphQLErrors[0].message
       })
     } catch (e) {
-      console.log(e)
+      console.error(e)
     } finally {
       setLoading(false)
     }
@@ -138,6 +137,7 @@ function Register() {
     if (loading) return <Spinner />
     return (
       <TouchableOpacity
+        testID="register-submit"
         style={styles.joinBtn}
         activeOpacity={0.7}
         onPress={async() => {
@@ -145,7 +145,7 @@ function Register() {
             const user = {
               phone: phone.trim(),
               email: email.toLowerCase().trim(),
-              password: password,
+              password,
               name: firstname + ' ' + lastname,
               picture: ''
             }
@@ -158,7 +158,7 @@ function Register() {
   }
 
   function updateCountryCode() {
-    const timezone = country_codes.find(
+    const timezone = countryCodes.find(
       value =>
         value.timezone.toLowerCase() === Localization.timezone.toLowerCase()
     )
@@ -206,6 +206,7 @@ function Register() {
               </View>
               <View style={styles.width100}>
                 <FilledTextField
+                  testID="register-firstname"
                   error={firstnameError}
                   label="First name"
                   labelFontSize={scale(12)}
@@ -225,6 +226,7 @@ function Register() {
                   maxLength={15}
                 />
                 <FilledTextField
+                  testID="register-lastname"
                   error={lastnameError}
                   label="Last name"
                   labelFontSize={scale(12)}
@@ -244,6 +246,7 @@ function Register() {
                   maxLength={15}
                 />
                 <FilledTextField
+                  testID="register-email"
                   error={emailError}
                   keyboardType={'email-address'}
                   label="Email address"
@@ -263,6 +266,7 @@ function Register() {
                   }}
                 />
                 <FilledTextField
+                  testID="register-phone"
                   prefix="+"
                   value={phone}
                   error={phoneError}
@@ -285,6 +289,7 @@ function Register() {
                   }}
                 />
                 <FilledTextField
+                  testID="register-password"
                   error={passwordError}
                   label="Password"
                   secureTextEntry={true}

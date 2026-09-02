@@ -15,7 +15,8 @@ function RegistrationHeader({ title, back = false }) {
 
   return (
     <View style={styles.headerContainer}>
-      {back ? (
+      {back
+        ? (
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={[styles.backBtnWidth, styles.backBtn]}>
@@ -25,9 +26,10 @@ function RegistrationHeader({ title, back = false }) {
             color={colors.iconColor}
           />
         </TouchableOpacity>
-      ) : (
+          )
+        : (
         <View style={styles.backBtnWidth} />
-      )}
+          )}
       <TextDefault center H4 bold>
         {title || ''}
       </TextDefault>

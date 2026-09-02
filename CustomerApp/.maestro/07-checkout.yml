@@ -1,0 +1,52 @@
+appId: com.pickup.vendor
+name: Full self-pickup order (login -> add to cart -> place order)
+tags: [checkout, e2e]
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: "Featured"
+    timeout: 30000
+# --- Login ---
+- tapOn:
+    id: "open-navigation-menu"
+- tapOn: "Login/Create Account"
+- extendedWaitUntil:
+    visible: "Get Started!"
+    timeout: 15000
+- tapOn: "Already a member? Log in"
+- extendedWaitUntil:
+    visible: "Email or Phone"
+    timeout: 15000
+- tapOn:
+    id: "login-email"
+- inputText: "customer@example.com"
+- tapOn:
+    id: "login-password"
+- inputText: "password123"
+- hideKeyboard
+- tapOn:
+    id: "login-submit"
+- extendedWaitUntil:
+    visible: "Featured"
+    timeout: 30000
+# --- Add to cart ---
+- tapOn: "Burgers"
+- extendedWaitUntil:
+    visible: "Classic Burger"
+    timeout: 15000
+- tapOn: "Classic Burger"
+- extendedWaitUntil:
+    visible: "Add To Cart"
+    timeout: 15000
+- tapOn: "Add To Cart"
+- extendedWaitUntil:
+    visible: "Place order"
+    timeout: 15000
+# --- Place order (cash on pickup) ---
+- tapOn: "Place order"
+- extendedWaitUntil:
+    visible: "Thank You!"
+    timeout: 30000
+- assertVisible: "Your Order Id"
+- takeScreenshot: 07-checkout

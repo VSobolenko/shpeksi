@@ -61,9 +61,9 @@ function CartComponent(props) {
             !props.disabled
               ? styles.btnContainer
               : {
-                ...styles.btnContainer,
-                backgroundColor: colors.buttonBackgroundBlue
-              }
+                  ...styles.btnContainer,
+                  backgroundColor: colors.buttonBackgroundBlue
+                }
           }>
           <TextDefault textColor={colors.buttonText} H5 bold center>
             Add To Cart

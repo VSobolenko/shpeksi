@@ -16,6 +16,7 @@ from app.models import (
     OrderItem,
     OrderOption,
     OrderVariation,
+    Review,
     StatusQueue,
 )
 
@@ -134,6 +135,7 @@ async def place_order(
         payment_status="PENDING",
         order_status="PENDING",
         status_queue=StatusQueue(pending=iso(now)),
+        review=Review(rating=0, createdAt=now, updatedAt=now),
         createdAt=now,
         updatedAt=now,
     )

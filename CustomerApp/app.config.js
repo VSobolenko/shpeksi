@@ -3,7 +3,7 @@ const path = require('path')
 
 // Minimal `.env` loader so app.config.js has no runtime dependency on dotenv.
 // Values already present in the environment (CI/EAS build profiles) win.
-function loadEnvFile (filePath) {
+function loadEnvFile(filePath) {
   if (!fs.existsSync(filePath)) return
   const lines = fs.readFileSync(filePath, 'utf8').split(/\r?\n/)
   for (const line of lines) {

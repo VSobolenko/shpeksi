@@ -1,0 +1,28 @@
+appId: com.pickup.vendor
+name: Product detail and add to cart
+tags: [product, cart, e2e]
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: "Featured"
+    timeout: 30000
+- tapOn: "Burgers"
+- extendedWaitUntil:
+    visible: "Classic Burger"
+    timeout: 15000
+# Classic Burger has variations + addons, so it opens the detail screen.
+- tapOn: "Classic Burger"
+- extendedWaitUntil:
+    visible: "Select Variation"
+    timeout: 15000
+- assertVisible: "Add To Cart"
+# Optional addon is available and can be selected.
+- tapOn: "Cheese"
+- tapOn: "Add To Cart"
+# Adding navigates to the cart with the item.
+- extendedWaitUntil:
+    visible: "My Cart"
+    timeout: 15000
+- assertVisible: "Classic Burger(Regular)"
+- takeScreenshot: 06-product-detail

@@ -1,7 +1,7 @@
 import { useNavigation, useTheme } from '@react-navigation/native'
 import React, { useLayoutEffect, useState } from 'react'
 import { TouchableOpacity, View } from 'react-native'
-import { TextField } from '../../components'
+import { TextField, WrapperView } from '../../components'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import i18n from '../../../i18n'
 import TextDefault from '../../components/Text/TextDefault/TextDefault'
@@ -9,7 +9,6 @@ import TextLine from '../../components/Text/TextLine/TextLine'
 import { NAVIGATION_SCREEN } from '../../utils/constant'
 import { scale } from '../../utils/scaling'
 import useStyle from './styles'
-import { WrapperView } from '../../components'
 
 function SelectVoucher() {
   const styles = useStyle()

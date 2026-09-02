@@ -18,10 +18,22 @@
       },
       "channel": "preview"
     },
+    "e2e-test": {
+      "distribution": "internal",
+      "ios": {
+        "simulator": true
+      },
+      "android": {
+        "buildType": "apk"
+      }
+    },
     "production": {
       "channel": "production",
       "android": {
         "buildType": "apk"
+      },
+      "ios": {
+        "image": "latest"
       }
     }
   },

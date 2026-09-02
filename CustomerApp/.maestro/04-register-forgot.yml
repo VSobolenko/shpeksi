@@ -1,0 +1,41 @@
+appId: com.pickup.vendor
+name: Register form renders and forgot password works
+tags: [register, forgot, e2e]
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: "Featured"
+    timeout: 30000
+# Register form via the Create Account gate.
+- tapOn:
+    id: "open-navigation-menu"
+- tapOn: "Login/Create Account"
+- extendedWaitUntil:
+    visible: "Get Started!"
+    timeout: 15000
+- tapOn: "Signup using Email"
+- extendedWaitUntil:
+    visible: "Signup"
+    timeout: 15000
+- assertVisible: "First name"
+- assertVisible: "Last name"
+- assertVisible: "Email address"
+- assertVisible: "Mobile number"
+- assertVisible: "Password"
+- takeScreenshot: 04-register
+# The register screen links to the forgot-password form.
+- tapOn: "Forgot Password?"
+- extendedWaitUntil:
+    visible: "Forget Password"
+    timeout: 15000
+- tapOn:
+    id: "forgot-email"
+- inputText: "customer@example.com"
+- hideKeyboard
+- tapOn:
+    id: "forgot-submit"
+- extendedWaitUntil:
+    visible: "Reset password link sent on your email"
+    timeout: 15000
+- takeScreenshot: 04-forgot

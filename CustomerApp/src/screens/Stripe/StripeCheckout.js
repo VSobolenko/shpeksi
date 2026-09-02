@@ -2,10 +2,10 @@ import React, { useLayoutEffect, useState } from 'react'
 import { ActivityIndicator, Platform } from 'react-native'
 import { WebView } from 'react-native-webview'
 import { myOrders } from '../../apollo/server'
-import { gql } from '@apollo/client'
+import { gql, useApolloClient } from '@apollo/client'
 import { stripeCurrencies } from '../../utils/currencies'
 import getEnvVars from '../../../environment'
-import { useApolloClient } from '@apollo/client'
+
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { WrapperView } from '../../components'
 
@@ -122,11 +122,13 @@ window.onload = function() {
           if (data.title === 'success') onPaymentSuccess()
         }}
       />
-      {loading ? (
+      {loading
+        ? (
         <ActivityIndicator
           style={{ position: 'absolute', bottom: '50%', left: '50%' }}
         />
-      ) : null}
+          )
+        : null}
     </WrapperView>
   )
 }

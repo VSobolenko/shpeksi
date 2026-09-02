@@ -101,6 +101,15 @@ def _apply_status(order: Order, status: str) -> None:
     order.updatedAt = utc_now()
 
 
+async def _get_or_create_config() -> Configuration:
+    """Return the singleton Configuration document, creating it if absent."""
+    config = await Configuration.find_one({})
+    if config is None:
+        config = Configuration()
+        await config.insert()
+    return config
+
+
 @strawberry.type
 class Mutation:
     # --- Auth ------------------------------------------------------------- #
@@ -631,20 +640,24 @@ class Mutation:
             await coupon.delete()
         return True
 
-    # --- Configuration ---------------------------------------------------- #
+    @strawberry.mutation
+    async def coupon(self, coupon: str) -> CouponType:
+        """Lookup a coupon by code (used by the mobile checkout voucher flow)."""
+        doc = await Coupon.find_one(Coupon.code == coupon)
+        if not doc:
+            raise Exception("Invalid coupon")
+        return CouponType(
+            id=str(doc.id), code=doc.code, discount=doc.discount, enabled=doc.enabled
+        )
 
-    async def _config(self) -> Configuration:
-        config = await Configuration.find_one({})
-        if not config:
-            config = await Configuration().insert()
-        return config
+    # --- Configuration ---------------------------------------------------- #
 
     @strawberry.mutation
     async def saveOrderConfiguration(
         self, info: strawberry.Info, configurationInput: OrderConfigurationInput
     ) -> ConfigurationType:
         require_admin(info)
-        config = await self._config()
+        config = await _get_or_create_config()
         config.order_id_prefix = configurationInput.order_id_prefix
         await config.save()
         return build_configuration(config)
@@ -654,7 +667,7 @@ class Mutation:
         self, info: strawberry.Info, configurationInput: EmailConfigurationInput
     ) -> ConfigurationType:
         require_admin(info)
-        config = await self._config()
+        config = await _get_or_create_config()
         config.email = configurationInput.email
         config.password = configurationInput.password
         config.enable_email = configurationInput.enable_email
@@ -666,7 +679,7 @@ class Mutation:
         self, info: strawberry.Info, configurationInput: PaypalConfigurationInput
     ) -> ConfigurationType:
         require_admin(info)
-        config = await self._config()
+        config = await _get_or_create_config()
         config.client_id = configurationInput.client_id
         config.client_secret = configurationInput.client_secret
         config.sandbox = configurationInput.sandbox
@@ -678,7 +691,7 @@ class Mutation:
         self, info: strawberry.Info, configurationInput: StripeConfigurationInput
     ) -> ConfigurationType:
         require_admin(info)
-        config = await self._config()
+        config = await _get_or_create_config()
         config.publishable_key = configurationInput.publishable_key
         config.secret_key = configurationInput.secret_key
         await config.save()
@@ -689,7 +702,7 @@ class Mutation:
         self, info: strawberry.Info, configurationInput: CurrencyConfigurationInput
     ) -> ConfigurationType:
         require_admin(info)
-        config = await self._config()
+        config = await _get_or_create_config()
         config.currency = configurationInput.currency
         config.currency_symbol = configurationInput.currency_symbol
         await config.save()
@@ -710,7 +723,7 @@ class Mutation:
     @strawberry.mutation
     async def uploadToken(self, info: strawberry.Info, pushToken: str) -> UploadTokenResult:
         require_admin(info)
-        config = await self._config()
+        config = await _get_or_create_config()
         config.push_token = pushToken
         await config.save()
         return UploadTokenResult(id=str(config.id), push_token=config.push_token)

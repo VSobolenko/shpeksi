@@ -143,6 +143,20 @@ npx skills add expo/skills --skill expo-upgrade -a cursor --copy -y   # repeat -
 GitHub MCP is intentionally omitted (needs a personal access token); add it in
 Cursor Settings → MCP if desired.
 
+**Team onboarding (MCP):** `.cursor/mcp.json` is committed — teammates get the
+same servers on clone, and `npx -y` auto-installs the packages. What is *not*
+automatic (by design, for security): (1) each developer enables the servers in
+Cursor Settings → MCP (one-time) and reloads the window; (2) credential-bearing
+servers (`expo` OAuth, `firebase login`, `mongodb` connection string) are
+per-developer. Keep secrets out of `.cursor/mcp.json` — use `${env:VAR}`
+interpolation or a local `.env`. To verify a fresh checkout is wired up, run:
+
+```bash
+node scripts/setup-mcp.mjs
+```
+
+It resolves every `npx`-based server and prints what still needs manual setup.
+
 ### Rules (`.cursor/rules/`)
 
 Framework rules were taken from the

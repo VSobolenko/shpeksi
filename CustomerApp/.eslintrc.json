@@ -1,0 +1,48 @@
+{
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "extends": [
+    "plugin:react/recommended",
+    "standard"
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 2020,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "react"
+  ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "globals": {
+    "__DEV__": "readonly",
+    "fetch": "readonly",
+    "FormData": "readonly",
+    "URL": "readonly"
+  },
+  "rules": {
+    "space-before-function-paren": ["error", "never"],
+    "react/prop-types": 0,
+    "react/display-name": 0
+  },
+  "overrides": [
+    {
+      "files": [
+        "__tests__/**/*.js",
+        "**/*.test.js",
+        "**/*.spec.js"
+      ],
+      "env": {
+        "jest": true
+      }
+    }
+  ]
+}

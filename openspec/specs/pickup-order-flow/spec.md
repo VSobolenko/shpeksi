@@ -97,3 +97,14 @@ The change SHALL include an automated backend test suite and an end-to-end picku
 #### Scenario: Smoke test targets any endpoint
 - **WHEN** the pickup smoke test is run
 - **THEN** it accepts the backend URL (HTTP and WebSocket) as parameters and drives both requests and subscriptions against that endpoint (e.g. the Caddy proxy), rather than a hardcoded `localhost:8000`
+
+### Requirement: Customer GraphQL contract immutability
+The CustomerApp SHALL preserve its GraphQL contract exactly: the operations and snake_case field names in `src/apollo/*.js` SHALL NOT change as part of this modernization.
+
+#### Scenario: Snapshot diff is empty
+- **WHEN** a snapshot of `src/apollo/*.js` is taken before the change and diffed against the files after the change
+- **THEN** the diff of GraphQL operation names and snake_case field names is empty
+
+#### Scenario: Contract matches specs
+- **WHEN** the `src/apollo/*.js` files are diffed against the GraphQL contract documented in the specs
+- **THEN** there are no operation or field differences

@@ -18,9 +18,11 @@ const FdGoogleBtn = props => {
       style={styles.mainContainer}
       onPressIn={props.onPressIn}
       onPress={props.onPress}>
-      {props.loadingIcon ? (
+      {props.loadingIcon
+        ? (
         <Spinner backColor="rgba(0,0,0,0.1)" spinnerColor={colors.tagColor} />
-      ) : (
+          )
+        : (
         <>
           <Image
             source={{
@@ -38,7 +40,7 @@ const FdGoogleBtn = props => {
             {i18n.t('signupGoogle')}
           </TextDefault>
         </>
-      )}
+          )}
     </TouchableOpacity>
   )
 }

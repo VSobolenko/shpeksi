@@ -1,0 +1,33 @@
+appId: com.pickup.vendor
+name: Help is public and auth-gated sections redirect to the gate
+tags: [help, gate, e2e]
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: "Featured"
+    timeout: 30000
+# Help is accessible without login.
+- tapOn:
+    id: "open-navigation-menu"
+- tapOn: "Help"
+- extendedWaitUntil:
+    visible: "About Us"
+    timeout: 15000
+- assertVisible: "Product Page"
+- takeScreenshot: 09-help
+# Auth-gated sections redirect to the Create Account gate when logged out.
+- tapOn:
+    id: "open-navigation-menu"
+- tapOn: "Profile"
+- extendedWaitUntil:
+    visible: "Get Started!"
+    timeout: 15000
+- back
+- tapOn:
+    id: "open-navigation-menu"
+- tapOn: "Settings"
+- extendedWaitUntil:
+    visible: "Get Started!"
+    timeout: 15000
+- takeScreenshot: 09-gate

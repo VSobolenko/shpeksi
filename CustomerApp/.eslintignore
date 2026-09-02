@@ -1,0 +1,8 @@
+# GraphQL contract files are frozen — do not auto-format or lint them.
+# Operations/field names are fixed by the frontend contract and must stay
+# byte-identical to their snapshot.
+src/apollo/**
+
+# Generated / build output
+dist/
+node_modules/

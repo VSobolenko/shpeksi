@@ -13,7 +13,7 @@ function TextDefault(props) {
     textStyles.Regular,
     textStyles.Normal
   ])
-  var customStyles = [defaultStyle]
+  let customStyles = [defaultStyle]
 
   if (props.light) customStyles.push(textStyles.Light)
   if (props.medium) customStyles.push(textStyles.Medium)

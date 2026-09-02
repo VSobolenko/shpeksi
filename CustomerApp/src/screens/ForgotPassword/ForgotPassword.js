@@ -1,6 +1,5 @@
-import { useMutation } from '@apollo/client'
+import { useMutation, gql } from '@apollo/client'
 import { useTheme } from '@react-navigation/native'
-import { gql } from '@apollo/client'
 import React, { useState } from 'react'
 import {
   KeyboardAvoidingView,
@@ -9,10 +8,8 @@ import {
   TouchableOpacity,
   View
 } from 'react-native'
-import { FilledTextField } from '../../components'
-import i18n from '../../../i18n'
-import { forgotPassword } from '../../apollo/server'
 import {
+  FilledTextField,
   PickupImage,
   FlashMessage,
   RegistrationHeader,
@@ -20,6 +17,8 @@ import {
   TextDefault,
   WrapperView
 } from '../../components'
+import i18n from '../../../i18n'
+import { forgotPassword } from '../../apollo/server'
 import { alignment } from '../../utils/alignment'
 import { scale } from '../../utils/scaling'
 import useStyle from './styles'
@@ -101,6 +100,7 @@ function ForgotPassword() {
                   To reset your password, please enter your Email address below.
                 </TextDefault>
                 <FilledTextField
+                  testID="forgot-email"
                   error={emailError}
                   keyboardType={'email-address'}
                   label={i18n.t('email')}
@@ -120,6 +120,7 @@ function ForgotPassword() {
                   }}
                 />
                 <TouchableOpacity
+                  testID="forgot-submit"
                   disabled={loading}
                   style={styles.actionBtn}
                   activeOpacity={0.7}
@@ -130,11 +131,13 @@ function ForgotPassword() {
                       })
                     }
                   }}>
-                  {loading ? (
+                  {loading
+                    ? (
                     <Spinner spinnerColor={colors.buttonText} />
-                  ) : (
+                      )
+                    : (
                     <TextDefault bold>CONTINUE</TextDefault>
-                  )}
+                      )}
                 </TouchableOpacity>
               </View>
             </View>

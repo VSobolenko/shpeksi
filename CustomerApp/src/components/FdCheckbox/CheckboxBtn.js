@@ -18,9 +18,11 @@ function CheckboxBtn(props) {
           ? { backgroundColor: colors.selected }
           : { backgroundColor: colors.white }
       ]}>
-      {props.checked ? (
+      {props.checked
+        ? (
         <AntDesign name="check" size={scale(15)} color={colors.fontWhite} />
-      ) : null}
+          )
+        : null}
     </TouchableOpacity>
   )
 }

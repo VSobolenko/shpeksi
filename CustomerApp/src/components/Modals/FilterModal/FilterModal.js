@@ -20,10 +20,10 @@ const FilterModal = props => {
   const configuration = useContext(ConfigurationContext)
   const [filters, setFilters] = useState({})
 
-  const localizedSortData = {};
+  const localizedSortData = {}
   Object.keys(SORT_DATA).forEach(key => {
-    localizedSortData[key] = i18n.t(SORT_DATA[key]);
-  });
+    localizedSortData[key] = i18n.t(SORT_DATA[key])
+  })
 
   useEffect(() => {
     setFilters({

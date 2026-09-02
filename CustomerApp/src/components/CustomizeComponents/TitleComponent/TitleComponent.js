@@ -1,13 +1,13 @@
-import { useTheme } from "@react-navigation/native";
-import PropTypes from "prop-types";
-import React from "react";
-import { View } from "react-native";
-import { alignment } from "../../../utils/alignment";
-import { TextDefault } from "../../Text";
-import styles from "./styles";
+import { useTheme } from '@react-navigation/native'
+import PropTypes from 'prop-types'
+import React from 'react'
+import { View } from 'react-native'
+import { alignment } from '../../../utils/alignment'
+import { TextDefault } from '../../Text'
+import styles from './styles'
 
 function TitleComponent(props) {
-  const { colors } = useTheme();
+  const { colors } = useTheme()
 
   return (
     <View style={styles.mainContainer}>
@@ -36,13 +36,13 @@ function TitleComponent(props) {
         ({props.status})
       </TextDefault>
     </View>
-  );
+  )
 }
 TitleComponent.propTypes = {
   title: PropTypes.string.isRequired,
   subTitle: PropTypes.string,
   error: PropTypes.bool,
-  status: PropTypes.string,
-};
+  status: PropTypes.string
+}
 
-export default TitleComponent;
+export default TitleComponent

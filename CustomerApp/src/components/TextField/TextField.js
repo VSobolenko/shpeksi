@@ -42,7 +42,8 @@ function TextField(props) {
   return (
     <View style={styles.wrapper}>
       <View style={[styles.inputContainer, props.inputContainerStyle]}>
-        {props.label ? (
+        {props.label
+          ? (
           <Text
             style={[
               styles.label,
@@ -53,13 +54,16 @@ function TextField(props) {
             numberOfLines={1}>
             {props.label}
           </Text>
-        ) : null}
+            )
+          : null}
         <View style={styles.inputRow}>
-          {props.prefix ? (
+          {props.prefix
+            ? (
             <Text style={[styles.prefix, { color: inputColor }]}>
               {props.prefix}
             </Text>
-          ) : null}
+              )
+            : null}
           <TextInput
             ref={inputRef}
             style={[
@@ -71,6 +75,8 @@ function TextField(props) {
             value={value}
             editable={props.editable}
             onChangeText={handleChangeText}
+            testID={props.testID}
+            accessibilityLabel={props.accessibilityLabel}
             onFocus={event => {
               setFocused(true)
               if (props.onFocus) props.onFocus(event)
@@ -89,11 +95,13 @@ function TextField(props) {
           />
         </View>
       </View>
-      {props.error ? (
+      {props.error
+        ? (
         <Text style={[styles.error, { color: errorColor }]} numberOfLines={2}>
           {props.error}
         </Text>
-      ) : null}
+          )
+        : null}
     </View>
   )
 }

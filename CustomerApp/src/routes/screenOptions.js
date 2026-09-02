@@ -13,8 +13,8 @@ import { textStyles } from '../utils/textStyles'
 const screenOptions = props => ({
   headerTitleAlign: 'center',
   headerBackTitleVisible: false,
-  headerTransparent: true,
   headerStyle: {
+    backgroundColor: 'transparent',
     elevation: 0,
     shadowOpacity: 0,
     borderBottomWidth: 0

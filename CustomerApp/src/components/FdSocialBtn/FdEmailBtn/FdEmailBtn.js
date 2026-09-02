@@ -20,9 +20,11 @@ const FdEmailBtn = props => {
       activeOpacity={0.7}
       style={styles.mainContainer}
       onPress={props.onPress}>
-      {props.loadingIcon ? (
+      {props.loadingIcon
+        ? (
         <Spinner backColor="rgba(0,0,0,0.1)" spinnerColor={colors.tagColor} />
-      ) : (
+          )
+        : (
         <>
           <CustomIcon
             style={styles.marginLeft5}
@@ -34,7 +36,7 @@ const FdEmailBtn = props => {
             {i18n.t('signupEmail')}
           </TextDefault>
         </>
-      )}
+          )}
     </TouchableOpacity>
   )
 }

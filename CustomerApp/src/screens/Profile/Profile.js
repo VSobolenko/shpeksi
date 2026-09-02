@@ -1,148 +1,142 @@
-import { useMutation } from "@apollo/client";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useNavigation, useRoute, useTheme } from "@react-navigation/native";
-import { gql } from "@apollo/client";
+import { useMutation, gql } from '@apollo/client'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { useNavigation, useRoute, useTheme } from '@react-navigation/native'
 import React, {
   useContext,
   useEffect,
   useLayoutEffect,
   useRef,
-  useState,
-} from "react";
+  useState
+} from 'react'
 import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
   TouchableOpacity,
-  View,
-} from "react-native";
-import { TextField } from "../../components";
-import i18n from "../../../i18n";
-import { updateUser } from "../../apollo/server";
+  View
+} from 'react-native'
 import {
+  TextField,
   FlashMessage,
   RightButton,
   TextDefault,
-  WrapperView,
-} from "../../components";
-import UserContext from "../../context/User";
-import { alignment } from "../../utils/alignment";
-import { ICONS_NAME } from "../../utils/constant";
-import { moderateScale, scale } from "../../utils/scaling";
-import { textStyles } from "../../utils/textStyles";
-import ChangePassword from "./ChangePassword";
-import useStyle from "./styles";
+  WrapperView
+} from '../../components'
+import i18n from '../../../i18n'
+import { updateUser } from '../../apollo/server'
+import UserContext from '../../context/User'
+import { alignment } from '../../utils/alignment'
+import { ICONS_NAME } from '../../utils/constant'
+import { moderateScale, scale } from '../../utils/scaling'
+import { textStyles } from '../../utils/textStyles'
+import ChangePassword from './ChangePassword'
+import useStyle from './styles'
 
 const UPDATEUSER = gql`
   ${updateUser}
-`;
+`
 
 function Profile() {
-  const refName = useRef();
-  const route = useRoute();
-  const styles = useStyle();
-  const refPhone = useRef(null);
-  const { colors } = useTheme();
-  const navigation = useNavigation();
+  const refName = useRef()
+  const route = useRoute()
+  const styles = useStyle()
+  const refPhone = useRef(null)
+  const { colors } = useTheme()
+  const navigation = useNavigation()
 
-  const [nameError, setNameError] = useState("");
-  const [phoneError, setPhoneError] = useState("");
-  const [toggleView, setToggleView] = useState(true);
-  const [modelVisible, setModalVisible] = useState(false);
+  const [nameError, setNameError] = useState('')
+  const [phoneError, setPhoneError] = useState('')
+  const [toggleView, setToggleView] = useState(true)
+  const [modelVisible, setModalVisible] = useState(false)
 
-  const { profile } = useContext(UserContext);
-  const backScreen = route.params ? route.params.backScreen : null;
+  const { profile } = useContext(UserContext)
+  const backScreen = route.params ? route.params.backScreen : null
 
   const [mutate, { loading: loadingMutation }] = useMutation(UPDATEUSER, {
     onCompleted,
-    onError,
-  });
+    onError
+  })
 
-  const [title, setTitle] = useState('titleProfile');
+  const [title] = useState('titleProfile')
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      // headerTitle: () => (
-      //   <TextDefault center H4 bold>
-      //     {title || 'Profile'}
-      //   </TextDefault>
-      // ),
-      // title: "Profile",
       headerTitle: i18n.t(title),
       headerRight: () => (
         <RightButton
           icon={toggleView ? ICONS_NAME.Pencil : ICONS_NAME.Cross}
           onPress={viewHideAndShow}
           iconSize={scale(18)}
+          testID="profile-edit"
+          accessibilityLabel={toggleView ? 'Edit profile' : 'Cancel edit'}
         />
-      ),
-    });
-  }, [navigation, toggleView]);
-
+      )
+    })
+  }, [navigation, toggleView])
 
   useEffect(() => {
     if (backScreen) {
-      viewHideAndShow();
-      setPhoneError(i18n.t('phoneNumberRequired'));
+      viewHideAndShow()
+      setPhoneError(i18n.t('phoneNumberRequired'))
       FlashMessage({
-        message: i18n.t('phoneNumberMissing'),
-      });
+        message: i18n.t('phoneNumberMissing')
+      })
     }
-  }, [backScreen]);
+  }, [backScreen])
 
   function viewHideAndShow() {
-    setToggleView((prev) => !prev);
+    setToggleView((prev) => !prev)
   }
 
   function onCompleted({ updateUser }) {
     if (updateUser) {
       FlashMessage({
-        message: i18n.t('userInfoUpdated'),
-      });
+        message: i18n.t('userInfoUpdated')
+      })
       if (backScreen) {
-        navigation.goBack();
+        navigation.goBack()
       }
     }
   }
 
   function validateInfo() {
     // clear errors
-    setNameError("");
-    setPhoneError("");
+    setNameError('')
+    setPhoneError('')
 
-    const name = refName.current.value();
-    const phone = refPhone.current.value();
+    const name = refName.current.value()
+    const phone = refPhone.current.value()
 
     if (name === profile.name && phone === profile.phone && phone.length > 0) {
-      return;
+      return
     }
-    let res = true;
+    let res = true
     if (!name.trim()) {
-      refName.current.focus();
-      setNameError(i18n.t('nameReq'));
-      res = false;
+      refName.current.focus()
+      setNameError(i18n.t('nameReq'))
+      res = false
     }
-    const num = phone.trim().replace(".", "");
+    const num = phone.trim().replace('.', '')
     if (num.length < 11 || num.length > 15 || isNaN(num)) {
-      setPhoneError(i18n.t('minWords'));
+      setPhoneError(i18n.t('minWords'))
       if (res) {
-        refPhone.current.focus();
+        refPhone.current.focus()
       }
-      res = false;
+      res = false
     }
-    return res;
+    return res
   }
 
   function onError(error) {
     try {
       if (error.graphQLErrors) {
         FlashMessage({
-          message: error.graphQLErrors[0].message,
-        });
+          message: error.graphQLErrors[0].message
+        })
       } else if (error.networkError) {
         FlashMessage({
-          message: error.networkError.result.errors[0].message,
-        });
+          message: error.networkError.result.errors[0].message
+        })
       }
     } catch (err) {}
   }
@@ -151,7 +145,7 @@ function Profile() {
     return (
       <View style={styles.containerInfo}>
         <TextField
-          label={i18n.t("name")}
+          label={i18n.t('name')}
           ref={refName}
           editable={false}
           defaultValue={profile.name ? profile.name : null}
@@ -160,27 +154,27 @@ function Profile() {
           style={{
             ...textStyles.Medium,
             ...textStyles.H5,
-            color: colors.fontMainColor,
+            color: colors.fontMainColor
           }}
           maxLength={20}
           textColor={colors.fontMainColor}
           baseColor={colors.fontSecondColor}
           errorColor={colors.errorColor}
-          tintColor={!nameError ? colors.tagColor : "red"}
+          tintColor={!nameError ? colors.tagColor : 'red'}
           labelTextStyle={{
             ...textStyles.Normal,
-            paddingTop: scale(1),
+            paddingTop: scale(1)
           }}
           error={nameError}
         />
         <View style={{ ...alignment.MTxSmall }}></View>
         <TextField
-          keyboardType={"email-address"}
-          label={i18n.t("email")}
+          keyboardType={'email-address'}
+          label={i18n.t('email')}
           style={{
             ...textStyles.Medium,
             ...textStyles.H5,
-            color: colors.fontMainColor,
+            color: colors.fontMainColor
           }}
           editable={false}
           defaultValue={profile.email}
@@ -192,20 +186,20 @@ function Profile() {
           tintColor={colors.tagColor}
           labelTextStyle={{
             ...textStyles.Normal,
-            paddingTop: scale(1),
+            paddingTop: scale(1)
           }}
         />
         <View style={{ ...alignment.MTxSmall }}></View>
         <TextField
-          keyboardType={"phone-pad"}
-          label={i18n.t("phone")}
+          keyboardType={'phone-pad'}
+          label={i18n.t('phone')}
           ref={refPhone}
           editable={false}
           defaultValue={profile.phone}
           style={{
             ...textStyles.Medium,
             ...textStyles.H5,
-            color: colors.fontMainColor,
+            color: colors.fontMainColor
           }}
           labelFontSize={scale(12)}
           fontSize={scale(12)}
@@ -213,10 +207,10 @@ function Profile() {
           textColor={colors.fontMainColor}
           baseColor={colors.fontSecondColor}
           errorColor={colors.errorColor}
-          tintColor={!phoneError ? colors.tagColor : "red"}
+          tintColor={!phoneError ? colors.tagColor : 'red'}
           labelTextStyle={{
             ...textStyles.Normal,
-            paddingTop: scale(1),
+            paddingTop: scale(1)
           }}
           error={phoneError}
         />
@@ -226,13 +220,13 @@ function Profile() {
         >
           <TextDefault>{i18n.t('changePass')}</TextDefault>
           <MaterialCommunityIcons
-            name={"pencil"}
+            name={'pencil'}
             size={20}
             color={colors.tagColor}
           />
         </TouchableOpacity>
       </View>
-    );
+    )
   }
 
   return (
@@ -240,12 +234,12 @@ function Profile() {
       <ChangePassword
         modalVisible={modelVisible}
         hideModal={() => {
-          setModalVisible(false);
+          setModalVisible(false)
         }}
       />
       <View style={styles.formContainer}>
         <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : null}
+          behavior={Platform.OS === 'ios' ? 'padding' : null}
           style={styles.flex}
         >
           <ScrollView style={styles.flex}>
@@ -254,15 +248,15 @@ function Profile() {
                 style={{
                   width: scale(100),
                   paddingTop: scale(10),
-                  position: "absolute",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  position: 'absolute',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                   height: scale(100),
                   top: moderateScale(-50),
                   borderColor: colors.buttonBackground,
                   borderWidth: 2,
                   borderRadius: scale(10),
-                  borderStyle: "dashed",
+                  borderStyle: 'dashed'
                 }}
               >
                 <View style={styles.imgContainer}>
@@ -271,20 +265,22 @@ function Profile() {
                   </TextDefault>
                 </View>
               </View>
-              {toggleView ? (
-                changePasswordTab()
-              ) : (
+              {toggleView
+                ? (
+                    changePasswordTab()
+                  )
+                : (
                 <View style={styles.containerInfo}>
                   <View>
                     <View style={{ margin: scale(0) }}></View>
                     <TextField
-                      label={i18n.t("name")}
+                      label={i18n.t('name')}
                       ref={refName}
                       defaultValue={profile.name}
                       style={{
                         ...textStyles.Bold,
                         ...textStyles.H5,
-                        color: colors.fontMainColor,
+                        color: colors.fontMainColor
                       }}
                       labelFontSize={scale(12)}
                       fontSize={scale(12)}
@@ -292,21 +288,21 @@ function Profile() {
                       textColor={colors.fontMainColor}
                       baseColor={colors.fontSecondColor}
                       errorColor={colors.errorColor}
-                      tintColor={!nameError ? colors.buttonBackground : "red"}
+                      tintColor={!nameError ? colors.buttonBackground : 'red'}
                       labelTextStyle={{
                         ...textStyles.Normal,
-                        paddingTop: scale(1),
+                        paddingTop: scale(1)
                       }}
                       error={nameError}
                     />
                     <View style={{ ...alignment.MTxSmall }}></View>
                     <TextField
-                      keyboardType={"email-address"}
-                      label={i18n.t("email")}
+                      keyboardType={'email-address'}
+                      label={i18n.t('email')}
                       style={{
                         ...textStyles.Bold,
                         ...textStyles.H5,
-                        color: colors.fontMainColor,
+                        color: colors.fontMainColor
                       }}
                       editable={false}
                       defaultValue={profile.email}
@@ -318,17 +314,17 @@ function Profile() {
                       tintColor={colors.buttonBackground}
                       labelTextStyle={{
                         ...textStyles.Normal,
-                        paddingTop: scale(1),
+                        paddingTop: scale(1)
                       }}
                     />
                     <View style={{ ...alignment.MTxSmall }}></View>
                     <TextField
-                      keyboardType={"phone-pad"}
-                      label={i18n.t("phone")}
+                      keyboardType={'phone-pad'}
+                      label={i18n.t('phone')}
                       style={{
                         ...textStyles.Bold,
                         ...textStyles.H5,
-                        color: colors.fontMainColor,
+                        color: colors.fontMainColor
                       }}
                       ref={refPhone}
                       defaultValue={profile.phone}
@@ -338,10 +334,10 @@ function Profile() {
                       textColor={colors.fontMainColor}
                       baseColor={colors.fontSecondColor}
                       errorColor={colors.errorColor}
-                      tintColor={!phoneError ? colors.buttonBackground : "red"}
+                      tintColor={!phoneError ? colors.buttonBackground : 'red'}
                       labelTextStyle={{
                         ...textStyles.Normal,
-                        paddingTop: scale(1),
+                        paddingTop: scale(1)
                       }}
                       error={phoneError}
                     />
@@ -357,9 +353,9 @@ function Profile() {
                           variables: {
                             name: refName.current.value(),
                             phone: refPhone.current.value(),
-                            is_active: true,
-                          },
-                        });
+                            is_active: true
+                          }
+                        })
                       }
                     }}
                   >
@@ -369,11 +365,11 @@ function Profile() {
                       bold
                       style={[alignment.MTsmall, alignment.MBsmall]}
                     >
-                      {i18n.t("saveBtn")}
+                      {i18n.t('saveBtn')}
                     </TextDefault>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    style={{ alignSelf: "center", ...alignment.MTsmall }}
+                    style={{ alignSelf: 'center', ...alignment.MTsmall }}
                     activeOpacity={0.7}
                     onPress={viewHideAndShow}
                   >
@@ -387,7 +383,7 @@ function Profile() {
                     </TextDefault>
                   </TouchableOpacity>
                 </View>
-              )}
+                  )}
             </View>
             <TextDefault
               center
@@ -400,7 +396,7 @@ function Profile() {
         </KeyboardAvoidingView>
       </View>
     </WrapperView>
-  );
+  )
 }
 
-export default Profile;
+export default Profile

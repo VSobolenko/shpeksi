@@ -1,34 +1,34 @@
-import CartItem from "./CartItem/CartItem";
+import CartItem from './CartItem/CartItem'
 import {
   CartComponent,
   CheckComponent,
   HeadingComponent,
   ImageHeader,
   RadioComponent,
-  TitleComponent,
-} from "./CustomizeComponents";
-import { DrawerProfile } from "./Drawer";
-import CheckboxBtn from "./FdCheckbox/CheckboxBtn";
-import RadioBtn from "./FdRadioBtn/RadioBtn";
-import { FdEmailBtn, FdGoogleBtn } from "./FdSocialBtn";
-import { FlashMessage } from "./FlashMessage/FlashMessage";
+  TitleComponent
+} from './CustomizeComponents'
+import { DrawerProfile } from './Drawer'
+import CheckboxBtn from './FdCheckbox/CheckboxBtn'
+import RadioBtn from './FdRadioBtn/RadioBtn'
+import { FdEmailBtn, FdGoogleBtn } from './FdSocialBtn'
+import { FlashMessage } from './FlashMessage/FlashMessage'
 import {
   BackButton,
   LeftButton,
   RightButton,
-  RegistrationHeader,
-} from "./Header";
-import { MenuCard, StatusCard } from "./Menu";
-import { FilterModal } from "./Modals";
-import ActiveOrders from "./MyOrders/ActiveOrders";
-import Sidebar from "./Sidebar/Sidebar";
-import Spinner from "./Spinner/Spinner";
-import { TextDefault, TextError, TextLine } from "./Text";
-import TextField from "./TextField/TextField";
-import Triangle from "./Triangle/Triangle";
-import PickupImage from "./PickupImage/PickupImage";
-import WrapperView from "./WrapperView/WrapperView";
-import { CustomIcon } from "./CustomIcon";
+  RegistrationHeader
+} from './Header'
+import { MenuCard, StatusCard } from './Menu'
+import { FilterModal } from './Modals'
+import ActiveOrders from './MyOrders/ActiveOrders'
+import Sidebar from './Sidebar/Sidebar'
+import Spinner from './Spinner/Spinner'
+import { TextDefault, TextError, TextLine } from './Text'
+import TextField from './TextField/TextField'
+import Triangle from './Triangle/Triangle'
+import PickupImage from './PickupImage/PickupImage'
+import WrapperView from './WrapperView/WrapperView'
+import { CustomIcon } from './CustomIcon'
 
 export {
   WrapperView,
@@ -62,5 +62,5 @@ export {
   TextLine,
   Spinner,
   TextField,
-  TextField as FilledTextField,
-};
+  TextField as FilledTextField
+}

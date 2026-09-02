@@ -1,9 +1,9 @@
 import React, { useState, useLayoutEffect } from 'react'
 import { WebView } from 'react-native-webview'
-import { gql } from '@apollo/client'
+import { gql, useApolloClient } from '@apollo/client'
 import { myOrders } from '../../apollo/server'
 import getEnvVars from '../../../environment'
-import { useApolloClient } from '@apollo/client'
+
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { ActivityIndicator } from 'react-native'
 import { WrapperView } from '../../components'
@@ -61,11 +61,13 @@ function Paypal() {
           loadingSetter(false)
         }}
       />
-      {loading ? (
+      {loading
+        ? (
         <ActivityIndicator
           style={{ position: 'absolute', bottom: '50%', left: '50%' }}
         />
-      ) : null}
+          )
+        : null}
     </WrapperView>
   )
 }

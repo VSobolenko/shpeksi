@@ -1,6 +1,5 @@
-import { useMutation } from '@apollo/client'
+import { useMutation, gql } from '@apollo/client'
 import { useTheme } from '@react-navigation/native'
-import { gql } from '@apollo/client'
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import { Alert, TouchableOpacity, View } from 'react-native'

@@ -1,0 +1,41 @@
+appId: com.pickup.vendor
+name: Login flow end-to-end
+tags: [login, e2e]
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: "Featured"
+    timeout: 30000
+# Open the drawer and tap the auth-gated entry to reach the Create Account gate.
+- tapOn:
+    id: "open-navigation-menu"
+- tapOn: "Login/Create Account"
+- extendedWaitUntil:
+    visible: "Get Started!"
+    timeout: 15000
+# Navigate from the gate to the login form.
+- tapOn: "Already a member? Log in"
+- extendedWaitUntil:
+    visible: "Email or Phone"
+    timeout: 15000
+- tapOn:
+    id: "login-email"
+- inputText: "customer@example.com"
+- tapOn:
+    id: "login-password"
+- inputText: "password123"
+- hideKeyboard
+- tapOn:
+    id: "login-submit"
+# Successful login returns to the menu with the featured catalog.
+- extendedWaitUntil:
+    visible: "Featured"
+    timeout: 30000
+# Verify the drawer now shows the logged-in customer name.
+- tapOn:
+    id: "open-navigation-menu"
+- extendedWaitUntil:
+    visible: "Test Customer"
+    timeout: 15000
+- takeScreenshot: 03-login

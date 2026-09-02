@@ -1,17 +1,16 @@
-import { useMutation } from "@apollo/client";
-import { FontAwesome } from "@expo/vector-icons";
-import { useNavigation, useTheme } from "@react-navigation/native";
+import { useMutation, gql } from '@apollo/client'
+import { FontAwesome } from '@expo/vector-icons'
+import { useNavigation, useTheme } from '@react-navigation/native'
 
-import * as AppleAuthentication from "expo-apple-authentication";
-import Constants from "expo-constants";
+import * as AppleAuthentication from 'expo-apple-authentication'
+import Constants from 'expo-constants'
 
-import * as Google from "expo-auth-session/providers/google";
-import * as Notifications from "expo-notifications";
-import { gql } from "@apollo/client";
-import React, { useContext, useEffect, useState } from "react";
-import { Platform, TouchableOpacity, View } from "react-native";
-import getEnvVars from "../../../environment";
-import { login } from "../../apollo/server";
+import * as Google from 'expo-auth-session/providers/google'
+import * as Notifications from 'expo-notifications'
+import React, { useContext, useEffect, useState } from 'react'
+import { TouchableOpacity, View } from 'react-native'
+import getEnvVars from '../../../environment'
+import { login } from '../../apollo/server'
 import {
   PickupImage,
   FdEmailBtn,
@@ -20,141 +19,140 @@ import {
   RegistrationHeader,
   Spinner,
   TextDefault,
-  WrapperView,
-} from "../../components";
-import UserContext from "../../context/User";
-import { alignment } from "../../utils/alignment";
-import Analytics from "../../utils/analytics";
-import { NAVIGATION_SCREEN } from "../../utils/constant";
-import { scale } from "../../utils/scaling";
-import useStyle from "./styles";
-import i18n from "../../../i18n";
+  WrapperView
+} from '../../components'
+import UserContext from '../../context/User'
+import { alignment } from '../../utils/alignment'
+import Analytics from '../../utils/analytics'
+import { NAVIGATION_SCREEN } from '../../utils/constant'
+import { scale } from '../../utils/scaling'
+import useStyle from './styles'
+import i18n from '../../../i18n'
 
 const {
   IOS_CLIENT_ID_GOOGLE,
   ANDROID_CLIENT_ID_GOOGLE,
-  EXPO_CLIENT_ID_GOOGLE,
-} = getEnvVars();
+  EXPO_CLIENT_ID_GOOGLE
+} = getEnvVars()
 
 const LOGIN = gql`
   ${login}
-`;
+`
 
-const Logo = require("../../../assets/logo.png");
+const Logo = require('../../../assets/logo.png')
 const CreateAccount = () => {
-  const styles = useStyle();
-  const { colors } = useTheme();
-  const navigation = useNavigation();
-  const [enableApple, setEnableApple] = useState(false);
-  const [loginButton, loginButtonSetter] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const styles = useStyle()
+  const { colors } = useTheme()
+  const navigation = useNavigation()
+  const [enableApple, setEnableApple] = useState(false)
+  const [loginButton, loginButtonSetter] = useState(null)
+  const [loading, setLoading] = useState(false)
 
-  const { setTokenAsync } = useContext(UserContext);
+  const { setTokenAsync } = useContext(UserContext)
 
   useEffect(() => {
-    checkIfSupportsAppleAuthentication();
-  }, []);
+    checkIfSupportsAppleAuthentication()
+  }, [])
 
-  const [mutate] = useMutation(LOGIN, { onCompleted, onError });
+  const [mutate] = useMutation(LOGIN, { onCompleted, onError })
 
   async function checkIfSupportsAppleAuthentication() {
-    setEnableApple(await AppleAuthentication.isAvailableAsync());
+    setEnableApple(await AppleAuthentication.isAvailableAsync())
   }
 
   async function onCompleted(data) {
     if (!data.login.is_active) {
       FlashMessage({
-        message: i18n.t('cantLogin'),
-      });
-      setLoading(false);
+        message: i18n.t('cantLogin')
+      })
+      setLoading(false)
     } else {
       try {
         const trackingOpts = {
           id: data.login.userId,
-          usernameOrEmail: data.login.email,
-        };
-        Analytics.identify(data.login.userId, trackingOpts);
-        Analytics.track(Analytics.events.USER_CREATED_ACCOUNT, trackingOpts);
-        setTokenAsync(data.login.token);
-        navigation.navigate(NAVIGATION_SCREEN.Menu);
+          usernameOrEmail: data.login.email
+        }
+        Analytics.identify(data.login.userId, trackingOpts)
+        Analytics.track(Analytics.events.USER_CREATED_ACCOUNT, trackingOpts)
+        setTokenAsync(data.login.token)
+        navigation.navigate(NAVIGATION_SCREEN.Menu)
       } catch (e) {
-        console.log(e);
+        console.error(e)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
     }
   }
   function onError(error) {
     try {
-      console.log(JSON.stringify(error));
       FlashMessage({
-        message: error.graphQLErrors[0].message,
-      });
-      loginButtonSetter(null);
+        message: error.graphQLErrors[0].message
+      })
+      loginButtonSetter(null)
     } catch (e) {
-      console.log(e);
+      console.error(e)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   }
 
   async function mutateLogin(user) {
-    setLoading(true);
-    let notificationToken = null;
+    setLoading(true)
+    let notificationToken = null
     if (Constants.isDevice) {
       const { status: existingStatus } =
-        await Notifications.getPermissionsAsync();
-      if (existingStatus === "granted") {
-        notificationToken = (await Notifications.getExpoPushTokenAsync()).data;
+        await Notifications.getPermissionsAsync()
+      if (existingStatus === 'granted') {
+        notificationToken = (await Notifications.getExpoPushTokenAsync()).data
       }
     }
-    mutate({ variables: { ...user, notificationToken } });
+    mutate({ variables: { ...user, notificationToken } })
   }
 
   function renderAppleAction() {
-    if (loading && loginButton === "Apple") {
+    if (loading && loginButton === 'Apple') {
       return (
         <View style={styles.buttonBackground}>
           <Spinner backColor="rgba(0,0,0,0.1)" spinnerColor={colors.tagColor} />
         </View>
-      );
+      )
     }
     return (
       <TouchableOpacity
         style={styles.appleBtn}
-        onPress={async () => {
+        onPress={async() => {
           try {
             const credential = await AppleAuthentication.signInAsync({
               requestedScopes: [
                 AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
-                AppleAuthentication.AppleAuthenticationScope.EMAIL,
-              ],
-            });
+                AppleAuthentication.AppleAuthenticationScope.EMAIL
+              ]
+            })
             if (credential) {
               const user = {
                 appleId: credential.user,
-                phone: "",
+                phone: '',
                 email: credential.email,
-                password: "",
+                password: '',
                 name:
                   credential.fullName.givenName +
-                  " " +
+                  ' ' +
                   credential.fullName.familyName,
-                picture: "",
-                type: "apple",
-              };
-              mutateLogin(user);
+                picture: '',
+                type: 'apple'
+              }
+              mutateLogin(user)
             }
 
-            loginButtonSetter("Apple");
+            loginButtonSetter('Apple')
             // signed in
           } catch (e) {
-            if (e.code === "ERR_CANCELLED") {
+            if (e.code === 'ERR_CANCELLED') {
               // handle that the user canceled the sign-in flow
-              loginButtonSetter(null);
+              loginButtonSetter(null)
             } else {
               // handle other errors
-              loginButtonSetter(null);
+              loginButtonSetter(null)
             }
           }
         }}
@@ -169,7 +167,7 @@ const CreateAccount = () => {
           {i18n.t('signupApple')}
         </TextDefault>
       </TouchableOpacity>
-    );
+    )
   }
 
   const [googleRequest, googleResponse, googlePromptAsync] =
@@ -179,61 +177,61 @@ const CreateAccount = () => {
       iosStandaloneAppClientId: IOS_CLIENT_ID_GOOGLE,
       androidClientId: ANDROID_CLIENT_ID_GOOGLE,
       androidStandaloneAppClientId: ANDROID_CLIENT_ID_GOOGLE,
-      //redirectUrl: `${AuthSession.OAuthRedirect}:/oauth2redirect/google`,
-      scopes: ["profile", "email"],
-      ...{ useProxy: true },
-    });
+      // redirectUrl: `${AuthSession.OAuthRedirect}:/oauth2redirect/google`,
+      scopes: ['profile', 'email'],
+      ...{ useProxy: true }
+    })
 
   const googleSignUp = () => {
-    if (googleResponse?.type === "success") {
+    if (googleResponse?.type === 'success') {
       const { authentication } = googleResponse;
-      (async () => {
+      (async() => {
         const userInfoResponse = await fetch(
-          "https://www.googleapis.com/oauth2/v1/userinfo?alt=json",
+          'https://www.googleapis.com/oauth2/v1/userinfo?alt=json',
           {
-            headers: { Authorization: `Bearer ${authentication.accessToken}` },
+            headers: { Authorization: `Bearer ${authentication.accessToken}` }
           }
-        );
-        const googleUser = await userInfoResponse.json();
+        )
+        const googleUser = await userInfoResponse.json()
         const user = {
-          phone: "",
+          phone: '',
           email: googleUser.email,
-          password: "",
+          password: '',
           name: googleUser.name,
           picture: googleUser.picture,
-          type: "google",
-        };
-        mutateLogin(user);
-      })();
+          type: 'google'
+        }
+        mutateLogin(user)
+      })()
     }
-  };
+  }
 
   useEffect(() => {
-    googleSignUp();
-  }, [googleResponse]);
+    googleSignUp()
+  }, [googleResponse])
 
   function renderGoogleAction() {
     return (
       <FdGoogleBtn
-        loadingIcon={loading && loginButton === "Google"}
+        loadingIcon={loading && loginButton === 'Google'}
         onPressIn={() => {
-          loginButtonSetter("Google");
+          loginButtonSetter('Google')
         }}
         disabled={!googleRequest}
         onPress={() => googlePromptAsync()}
       />
-    );
+    )
   }
   function renderEmailAction() {
     return (
       <FdEmailBtn
-        loadingIcon={loading && loginButton === "Email"}
+        loadingIcon={loading && loginButton === 'Email'}
         onPress={() => {
-          loginButtonSetter("Email");
-          navigation.navigate(NAVIGATION_SCREEN.Register);
+          loginButtonSetter('Email')
+          navigation.navigate(NAVIGATION_SCREEN.Register)
         }}
       />
-    );
+    )
   }
 
   return (
@@ -268,6 +266,6 @@ const CreateAccount = () => {
         </View>
       </View>
     </WrapperView>
-  );
-};
-export default CreateAccount;
+  )
+}
+export default CreateAccount

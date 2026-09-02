@@ -52,6 +52,8 @@ services:
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000,http://localhost:3006}
     expose:
       - "8000"
+    ports:
+      - "8000:8000"
     healthcheck:
       test:
         [

@@ -1,4 +1,4 @@
-import { useApolloClient, useMutation } from '@apollo/client'
+import { useApolloClient, useMutation, gql } from '@apollo/client'
 import { AntDesign } from '@expo/vector-icons'
 import {
   useIsFocused,
@@ -6,7 +6,6 @@ import {
   useRoute,
   useTheme
 } from '@react-navigation/native'
-import { gql } from '@apollo/client'
 import React, {
   useContext,
   useEffect,
@@ -97,7 +96,7 @@ function Cart() {
     {
       update,
       onCompleted: placeOrderCompleted,
-      errorPlaceOrder
+      onError: errorPlaceOrder
     }
   )
 
@@ -184,8 +183,13 @@ function Cart() {
     }
   }
   function errorPlaceOrder(error) {
+    const message =
+      error?.networkError?.result?.errors?.[0]?.message ||
+      error?.graphQLErrors?.[0]?.message ||
+      error?.message ||
+      i18n.t('paymentNotSupported')
     FlashMessage({
-      message: error.networkError.result.errors[0].message
+      message
     })
   }
 
@@ -349,7 +353,7 @@ function Cart() {
           return {
             ...cartItem,
             img_url: food.img_url,
-            title: title,
+            title,
             price: price.toFixed(2)
           }
         })
@@ -420,7 +424,8 @@ function Cart() {
                   <View
                     key={food.key}
                     style={[styles.itemContainer, styles.pB5]}>
-                    {food.price && food.title ? (
+                    {food.price && food.title
+                      ? (
                       <CartItem
                         quantity={food.quantity}
                         dealName={food.title}
@@ -435,9 +440,10 @@ function Cart() {
                           removeQuantity(food.key)
                         }}
                       />
-                    ) : (
+                        )
+                      : (
                       <Spinner backColor="transparent" />
-                    )}
+                        )}
                   </View>
                 ))}
               </View>
@@ -455,54 +461,55 @@ function Cart() {
                     {calculatePrice(false)}
                   </TextDefault>
                 </View>
-                {!validCoupon ? (
-                  <TouchableOpacity
-                    activeOpacity={0.7}
-                    style={[styles.pB10, styles.width100]}
-                    onPress={() => {
-                      navigation.navigate(NAVIGATION_SCREEN.Coupon)
-                      // alert('asd')
-                    }}>
-                    <TextDefault
-                      H5
-                      numberOfLines={1}
-                      textColor={colors.buttonBackgroundBlue}
-                      medium>
-                      {i18n.t('haveVoucher')}?
-                    </TextDefault>
-                  </TouchableOpacity>
-                ) : (
-                  <View style={[styles.floatView, styles.pB10]}>
-                    <TextDefault numberOfLines={1} style={{ width: '30%' }}>
-                      {validCoupon}
-                    </TextDefault>
-                    <View
-                      numberOfLines={1}
-                      style={[
-                        styles.floatText,
-                        styles.floatRight,
-                        { flexDirection: 'row', justifyContent: 'flex-end' }
-                      ]}>
-                      <TouchableOpacity
-                        activeOpacity={0.7}
-                        onPress={() => {
-                          setCoupon('')
-                          setValidCoupon(null)
-                          setDiscountPercent(null)
-                        }}>
-                        <TextDefault textColor={colors.buttonBackground}>
-                          {validCoupon}
-                        </TextDefault>
-                      </TouchableOpacity>
-                      <TextDefault>
-                        -{configuration.currency_symbol}
-                        {parseFloat(
-                          calculatePrice(false) - calculatePrice(true)
-                        ).toFixed(2)}
+                {!validCoupon
+                  ? (
+                    <TouchableOpacity
+                      activeOpacity={0.7}
+                      style={[styles.pB10, styles.width100]}
+                      onPress={() => {
+                        navigation.navigate(NAVIGATION_SCREEN.Coupon)
+                      }}>
+                      <TextDefault
+                        H5
+                        numberOfLines={1}
+                        textColor={colors.buttonBackgroundBlue}
+                        medium>
+                        {i18n.t('haveVoucher')}?
                       </TextDefault>
+                    </TouchableOpacity>
+                    )
+                  : (
+                    <View style={[styles.floatView, styles.pB10]}>
+                      <TextDefault numberOfLines={1} style={{ width: '30%' }}>
+                        {validCoupon}
+                      </TextDefault>
+                      <View
+                        numberOfLines={1}
+                        style={[
+                          styles.floatText,
+                          styles.floatRight,
+                          { flexDirection: 'row', justifyContent: 'flex-end' }
+                        ]}>
+                        <TouchableOpacity
+                          activeOpacity={0.7}
+                          onPress={() => {
+                            setCoupon('')
+                            setValidCoupon(null)
+                            setDiscountPercent(null)
+                          }}>
+                          <TextDefault textColor={colors.buttonBackground}>
+                            {validCoupon}
+                          </TextDefault>
+                        </TouchableOpacity>
+                        <TextDefault>
+                          -{configuration.currency_symbol}
+                          {parseFloat(
+                            calculatePrice(false) - calculatePrice(true)
+                          ).toFixed(2)}
+                        </TextDefault>
+                      </View>
                     </View>
-                  </View>
-                )}
+                    )}
                 <View
                   style={[
                     styles.horizontalLine,
@@ -581,9 +588,6 @@ function Cart() {
                       <TouchableOpacity
                         activeOpacity={0.7}
                         onPress={() => {
-                          // navigation.navigate(NAVIGATION_SCREEN.Payment, {
-                          //   payment: paymentMethod
-                          // })
                           modalizeRef.current.open()
                         }}>
                         <TextDefault textColor={colors.buttonBackgroundBlue} H5>
@@ -591,7 +595,8 @@ function Cart() {
                         </TextDefault>
                       </TouchableOpacity>
                     </View>
-                    {paymentMethod === null ? (
+                    {paymentMethod === null
+                      ? (
                       <TouchableOpacity
                         style={[styles.floatView, styles.pB10, styles.pT10]}
                         onPress={() => {
@@ -611,7 +616,8 @@ function Cart() {
                           {i18n.t('paymentMethod')}
                         </TextDefault>
                       </TouchableOpacity>
-                    ) : (
+                        )
+                      : (
                       <TouchableOpacity
                         style={[styles.floatView, styles.pB10, styles.pT10]}
                         onPress={() => {
@@ -637,7 +643,7 @@ function Cart() {
                           {calculatePrice(true)}
                         </TextDefault>
                       </TouchableOpacity>
-                    )}
+                        )}
                   </View>
                 </>
               )}
@@ -652,26 +658,30 @@ function Cart() {
             </ScrollView>
 
             <View style={styles.buttonContainer}>
-              {isLoggedIn && profile ? (
+              {isLoggedIn && profile
+                ? (
                 <TouchableOpacity
                   activeOpacity={0.7}
                   onPress={() => {
                     if (validateOrder()) onPayment()
                   }}
                   style={styles.button}>
-                  {loadingOrderMutation ? (
+                  {loadingOrderMutation
+                    ? (
                     <ActivityIndicator
                       size="large"
                       style={{ flex: 1, justifyContent: 'center' }}
                       color={colors.buttonText}
                     />
-                  ) : (
+                      )
+                    : (
                     <TextDefault textColor={colors.buttonText} medium H5 center>
                       {i18n.t('orderBtn')}
                     </TextDefault>
-                  )}
+                      )}
                 </TouchableOpacity>
-              ) : (
+                  )
+                : (
                 <TouchableOpacity
                   activeOpacity={0.7}
                   onPress={() => {
@@ -688,7 +698,7 @@ function Cart() {
                     {i18n.t('loginOrCreateAccount')}
                   </TextDefault>
                 </TouchableOpacity>
-              )}
+                  )}
             </View>
           </>
         )}

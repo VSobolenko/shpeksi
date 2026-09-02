@@ -1,0 +1,14 @@
+appId: com.pickup.vendor
+name: Menu screen renders categories on launch
+tags: [menu, e2e]
+---
+- launchApp:
+    clearState: true
+# Wait for the categories query to resolve and the catalog to render.
+- extendedWaitUntil:
+    visible: "Featured"
+    timeout: 30000
+- assertVisible: "Burgers"
+- assertVisible: "Pizza"
+- assertVisible: "Drinks"
+- takeScreenshot: 01-menu

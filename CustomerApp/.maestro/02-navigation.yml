@@ -1,0 +1,20 @@
+appId: com.pickup.vendor
+name: Drawer navigation lists all sections
+tags: [navigation, e2e]
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: "Featured"
+    timeout: 30000
+- tapOn:
+    id: "open-navigation-menu"
+- extendedWaitUntil:
+    visible: "Login/Create Account"
+    timeout: 15000
+- assertVisible: "Profile"
+- assertVisible: "My Orders"
+- assertVisible: "My Addresses"
+- assertVisible: "Help"
+- assertVisible: "Settings"
+- takeScreenshot: 02-navigation

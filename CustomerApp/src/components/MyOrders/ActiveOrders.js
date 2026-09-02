@@ -1,85 +1,85 @@
-import { useTheme } from "@react-navigation/native";
-import PropTypes from "prop-types";
-import React, { useContext } from "react";
-import { TouchableOpacity, View } from "react-native";
-import ConfigurationContext from "../../context/Configuration";
-import { COLORS } from "../../Theme/Colors";
-import { alignment } from "../../utils/alignment";
-import { ICONS_NAME, NAVIGATION_SCREEN } from "../../utils/constant";
-import { scale } from "../../utils/scaling";
-import { CustomIcon } from "../CustomIcon/index";
-import PickupImage from "../PickupImage/PickupImage";
-import TextDefault from "../Text/TextDefault/TextDefault";
-import TextError from "../Text/TextError/TextError";
-import TextLine from "../Text/TextLine/TextLine";
-import useStyle from "./styles";
-import i18n from "../../../i18n";
+import { useTheme } from '@react-navigation/native'
+import PropTypes from 'prop-types'
+import React, { useContext } from 'react'
+import { TouchableOpacity, View } from 'react-native'
+import ConfigurationContext from '../../context/Configuration'
+import { COLORS } from '../../Theme/Colors'
+import { alignment } from '../../utils/alignment'
+import { ICONS_NAME, NAVIGATION_SCREEN } from '../../utils/constant'
+import { scale } from '../../utils/scaling'
+import { CustomIcon } from '../CustomIcon/index'
+import PickupImage from '../PickupImage/PickupImage'
+import TextDefault from '../Text/TextDefault/TextDefault'
+import TextError from '../Text/TextError/TextError'
+import TextLine from '../Text/TextLine/TextLine'
+import useStyle from './styles'
+import i18n from '../../../i18n'
 
 export const orderStatuses = [
   {
-    key: "PENDING",
+    key: 'PENDING',
     status: 1,
     icon: ICONS_NAME.Clock,
-    color: COLORS.primary,
+    color: COLORS.primary
   },
   {
-    key: "ACCEPTED",
+    key: 'ACCEPTED',
     status: 2,
     icon: ICONS_NAME.Checked,
-    color: COLORS.blueColor,
+    color: COLORS.blueColor
   },
   {
-    key: "READY",
+    key: 'READY',
     status: 3,
     icon: ICONS_NAME.Checked,
-    color: COLORS.blueColor,
+    color: COLORS.blueColor
   },
   {
-    key: "COMPLETED",
+    key: 'COMPLETED',
     status: 4,
     icon: ICONS_NAME.Checked,
-    color: COLORS.blueColor,
-  },
-];
+    color: COLORS.blueColor
+  }
+]
 
 const ActiveOrders = ({
   navigation,
   loading,
   error,
   activeOrders,
-  pastOrders,
+  pastOrders
 }) => {
-  const styles = useStyle();
-  const { colors } = useTheme();
-  const configuration = useContext(ConfigurationContext);
+  const styles = useStyle()
+  const { colors } = useTheme()
+  const configuration = useContext(ConfigurationContext)
   if (loading) {
-    return <TextDefault small> Loading...</TextDefault>;
+    return <TextDefault small> Loading...</TextDefault>
   }
-  if (error) return <TextError text={error.message} />;
+  if (error) return <TextError text={error.message} />
   if (!activeOrders || (activeOrders && !activeOrders.length)) {
     if (!pastOrders || (pastOrders && !pastOrders.length)) {
-      return <TextDefault> </TextDefault>;
+      return <TextDefault> </TextDefault>
     }
     return (
       <TextLine
-        headerName={i18n.t("oldOrder")}
+        headerName={i18n.t('oldOrder')}
         textWidth="34%"
         lineWidth="28%"
       />
-    );
+    )
   }
 
   const checkStatus = (status) => {
     const obj = orderStatuses.filter((x) => {
-      return x.key === status;
-    });
-    return obj[0];
-  };
+      return x.key === status
+    })
+    return obj[0]
+  }
 
   return (
     <React.Fragment>
       <TextLine
-        headerName={i18n.t("activeOrder")}
+        headerName={i18n.t('activeOrder')}
         textWidth="40%"
         lineWidth="26%"
       />
@@ -89,7 +89,7 @@ const ActiveOrders = ({
           key={index.toString()}
           onPress={() =>
             navigation.navigate(NAVIGATION_SCREEN.OrderDetail, {
-              _id: item._id,
+              _id: item._id
             })
           }
         >
@@ -103,7 +103,7 @@ const ActiveOrders = ({
             </View>
             <View style={styles.infoContainer}>
               <TextDefault H5 bolder style={alignment.MBxSmall}>
-                {i18n.t("idVar")}
+                {i18n.t('idVar')}
                 {item.order_id}
               </TextDefault>
               <TextDefault line={3} textColor={colors.tagColor} H5 bold>
@@ -132,15 +132,15 @@ const ActiveOrders = ({
       ))}
       <TextLine headerName="Old Orders" textWidth="34%" lineWidth="26%" />
     </React.Fragment>
-  );
-};
+  )
+}
 
 ActiveOrders.propTypes = {
   loading: PropTypes.bool,
   error: PropTypes.object,
   activeOrders: PropTypes.arrayOf(PropTypes.object),
   navigation: PropTypes.object,
-  pastOrders: PropTypes.arrayOf(PropTypes.object),
-};
+  pastOrders: PropTypes.arrayOf(PropTypes.object)
+}
 
-export default ActiveOrders;
+export default ActiveOrders

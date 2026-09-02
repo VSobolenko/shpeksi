@@ -1,56 +1,56 @@
-import { useMutation } from "@apollo/client";
-import { useNavigation, useTheme } from "@react-navigation/native";
-import { gql } from "@apollo/client";
-import React, { useContext, useLayoutEffect } from "react";
-import { FlatList, TouchableOpacity, View } from "react-native";
-import i18n from "../../../i18n";
-import { selectAddress } from "../../apollo/server";
+import { useMutation, gql } from '@apollo/client'
+import { useNavigation, useTheme } from '@react-navigation/native'
+
+import React, { useContext, useLayoutEffect } from 'react'
+import { FlatList, TouchableOpacity, View } from 'react-native'
+import i18n from '../../../i18n'
+import { selectAddress } from '../../apollo/server'
 import {
   CustomIcon,
   RightButton,
   TextDefault,
-  WrapperView,
-} from "../../components";
-import RadioButton from "../../components/FdRadioBtn/RadioBtn";
-import UserContext from "../../context/User";
-import { alignment } from "../../utils/alignment";
-import { ICONS_NAME, NAVIGATION_SCREEN } from "../../utils/constant";
-import { scale } from "../../utils/scaling";
-import useStyle from "./styles";
+  WrapperView
+} from '../../components'
+import RadioButton from '../../components/FdRadioBtn/RadioBtn'
+import UserContext from '../../context/User'
+import { alignment } from '../../utils/alignment'
+import { ICONS_NAME, NAVIGATION_SCREEN } from '../../utils/constant'
+import { scale } from '../../utils/scaling'
+import useStyle from './styles'
 
 const SELECT_ADDRESS = gql`
   ${selectAddress}
-`;
+`
 
 function CartAddresses() {
-  const { colors } = useTheme();
-  const styles = useStyle();
-  const navigation = useNavigation();
-  const { profile } = useContext(UserContext);
+  const { colors } = useTheme()
+  const styles = useStyle()
+  const navigation = useNavigation()
+  const { profile } = useContext(UserContext)
 
-  const [mutate] = useMutation(SELECT_ADDRESS, { onError });
+  const [mutate] = useMutation(SELECT_ADDRESS, { onError })
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: i18n.t("myAddresses"),
+      title: i18n.t('myAddresses'),
       headerRight: () => (
         <RightButton
           icon={ICONS_NAME.Plus}
           iconSize={scale(18)}
           onPress={() => navigation.navigate(NAVIGATION_SCREEN.NewAddress)}
         />
-      ),
-    });
-  }, [navigation]);
+      )
+    })
+  }, [navigation])
 
   function onError(error) {
-    console.log(error);
+    console.error(error)
   }
 
   const onSelectAddress = (address) => {
-    mutate({ variables: { id: address._id } });
-    navigation.goBack();
-  };
+    mutate({ variables: { id: address._id } })
+    navigation.goBack()
+  }
 
   return (
     <WrapperView>
@@ -69,7 +69,7 @@ function CartAddresses() {
                 activeOpacity={0.7}
                 style={styles.width100}
                 onPress={() => {
-                  onSelectAddress(address);
+                  onSelectAddress(address)
                 }}
               >
                 <View style={styles.width100}>
@@ -79,14 +79,14 @@ function CartAddresses() {
                         size={10}
                         outerColor={colors.radioOuterColor}
                         innerColor={colors.radioColor}
-                        animation={"bounceIn"}
+                        animation={'bounceIn'}
                         isSelected={address.selected}
                         onPress={() => {
-                          onSelectAddress(address);
+                          onSelectAddress(address)
                         }}
                       />
                     </View>
-                    <TextDefault style={{ width: "70%" }} H5 bold>
+                    <TextDefault style={{ width: '70%' }} H5 bold>
                       {address.label}
                     </TextDefault>
                     <TouchableOpacity
@@ -94,7 +94,7 @@ function CartAddresses() {
                       style={styles.editButton}
                       onPress={() =>
                         navigation.navigate(NAVIGATION_SCREEN.EditAddress, {
-                          ...address,
+                          ...address
                         })
                       }
                     >
@@ -129,7 +129,7 @@ function CartAddresses() {
         />
       </View>
     </WrapperView>
-  );
+  )
 }
 
-export default CartAddresses;
+export default CartAddresses

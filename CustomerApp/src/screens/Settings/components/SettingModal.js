@@ -1,26 +1,26 @@
-import { useTheme } from "@react-navigation/native";
-import PropTypes from "prop-types";
-import React, { useState } from "react";
-import { TouchableOpacity, View } from "react-native";
-import RadioButton from "../../../components/FdRadioBtn/RadioBtn";
-import TextDefault from "../../../components/Text/TextDefault/TextDefault";
-import { alignment } from "../../../utils/alignment";
-import useStyle from "./styles";
+import { useTheme } from '@react-navigation/native'
+import PropTypes from 'prop-types'
+import React, { useState } from 'react'
+import { TouchableOpacity, View } from 'react-native'
+import RadioButton from '../../../components/FdRadioBtn/RadioBtn'
+import TextDefault from '../../../components/Text/TextDefault/TextDefault'
+import { alignment } from '../../../utils/alignment'
+import useStyle from './styles'
 import i18n from '../../../../i18n'
 
 const languageTypes = [
-  { value: "English", code: "en", index: 0 },
-  { value: "français", code: "fr", index: 1 },
-  { value: "ភាសាខ្មែរ", code: "km", index: 2 },
-  { value: "中文", code: "zh", index: 3 },
-  { value: "Deutsche", code: "de", index: 4 },
-  { value: "Arabic", code: "ar", index: 5 },
-];
+  { value: 'English', code: 'en', index: 0 },
+  { value: 'français', code: 'fr', index: 1 },
+  { value: 'ភាសាខ្មែរ', code: 'km', index: 2 },
+  { value: '中文', code: 'zh', index: 3 },
+  { value: 'Deutsche', code: 'de', index: 4 },
+  { value: 'Arabic', code: 'ar', index: 5 }
+]
 
 function SettingModal(props) {
-  const styles = useStyle();
-  const { colors } = useTheme();
-  const [activeRadio, activeRadioSetter] = useState(props.activeRadio);
+  const styles = useStyle()
+  const { colors } = useTheme()
+  const [activeRadio, activeRadioSetter] = useState(props.activeRadio)
 
   return (
     <View style={styles.flex}>
@@ -39,7 +39,7 @@ function SettingModal(props) {
             {item.value}
           </TextDefault>
           <RadioButton
-            animation={"bounceIn"}
+            animation={'bounceIn'}
             size={13}
             outerColor={colors.radioOuterColor}
             innerColor={colors.radioColor}
@@ -69,12 +69,12 @@ function SettingModal(props) {
       </TouchableOpacity>
       {/* </View> */}
     </View>
-  );
+  )
 }
 
 SettingModal.propTypes = {
   activeRadio: PropTypes.number,
   onSelectedLanguage: PropTypes.func,
-  onClose: PropTypes.func,
-};
-export default SettingModal;
+  onClose: PropTypes.func
+}
+export default SettingModal

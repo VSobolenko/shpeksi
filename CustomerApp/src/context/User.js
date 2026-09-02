@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { useState, useEffect } from 'react'
-import { useLazyQuery, useApolloClient } from '@apollo/client'
-import { gql } from '@apollo/client'
+import { useLazyQuery, useApolloClient, gql } from '@apollo/client'
+
 import uuid from 'uuid'
 import { profile, myOrders, orderStatusChanged } from '../apollo/server'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -32,9 +32,7 @@ export const UserProvider = props => {
       data: dataProfile
     }
   ] = useLazyQuery(PROFILE, {
-    fetchPolicy: 'network-only',
-    onCompleted,
-    onError
+    fetchPolicy: 'network-only'
   })
   const [
     fetchOrders,
@@ -48,9 +46,7 @@ export const UserProvider = props => {
       subscribeToMore: subscribeToMoreOrders
     }
   ] = useLazyQuery(ORDERS, {
-    fetchPolicy: 'network-only',
-    onCompleted,
-    onError
+    fetchPolicy: 'network-only'
   })
 
   useEffect(() => {
@@ -92,11 +88,6 @@ export const UserProvider = props => {
     }
   }, [])
 
-  function onCompleted({ profile, orders }) {}
-  function onError(error) {
-    console.log('error context', error)
-  }
-
   const setTokenAsync = async token => {
     await AsyncStorage.setItem('token', token)
     setToken(token)
@@ -106,9 +97,9 @@ export const UserProvider = props => {
     try {
       await AsyncStorage.removeItem('token')
       setToken(null)
-      await client.resetStore()
+      await client.clearStore()
     } catch (error) {
-      console.log('error on logout', error)
+      console.error('error on logout', error)
     }
   }
 
@@ -132,18 +123,18 @@ export const UserProvider = props => {
             const { orders } = prev
             const orderIndex = orders.findIndex(o => o._id === _id)
             if (orderIndex > -1) {
-              orders[orderIndex] =
+              const updatedOrders = [...orders]
+              updatedOrders[orderIndex] =
                 subscriptionData.data.orderStatusChanged.order
+              return { orders: updatedOrders }
             }
-            return {
-              orders: [...orders]
-            }
+            return prev
           }
         }
       })
-      client.onResetStore(unsubscribeOrders)
+      client.onClearStore(unsubscribeOrders)
     } catch (error) {
-      console.log('error subscribing order', error.message)
+      console.error('error subscribing order', error.message)
     }
   }
 
@@ -156,7 +147,6 @@ export const UserProvider = props => {
           if (!fetchMoreResult || fetchMoreResult.orders.length === 0) {
             return previousResult
           }
-          // setOrders(previousResult.orders.concat(fetchMoreResult.orders))
           return {
             // Append the new feed results to the old one
             orders: previousResult.orders.concat(fetchMoreResult.orders)
@@ -194,7 +184,7 @@ export const UserProvider = props => {
       cart.push({
         key: uuid.v4(),
         _id,
-        quantity: quantity,
+        quantity,
         variation: {
           _id: variation
         },
