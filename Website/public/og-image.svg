@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#ea580c"/>
+  <circle cx="1060" cy="80" r="300" fill="#ffffff" opacity="0.08"/>
+  <circle cx="140" cy="620" r="220" fill="#ffffff" opacity="0.06"/>
+  <path d="M600 250v-60a60 60 0 0 1 120 0v60" stroke="#ffffff" stroke-width="14" stroke-linecap="round" fill="none"/>
+  <rect x="540" y="250" width="180" height="90" rx="16" fill="#ffffff"/>
+  <text x="90" y="180" font-family="system-ui, sans-serif" font-size="100" font-weight="700" fill="#ffffff">Pickup</text>
+  <text x="92" y="250" font-family="system-ui, sans-serif" font-size="38" fill="#ffe0cc">Order ahead. Pick up. Enjoy.</text>
+</svg>

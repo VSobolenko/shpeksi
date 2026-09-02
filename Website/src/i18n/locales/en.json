@@ -1,0 +1,182 @@
+{
+  "brand": "Pickup",
+  "nav": {
+    "howItWorks": "How it works",
+    "features": "Features",
+    "menu": "Menu",
+    "about": "About",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "download": "Get the app",
+    "menuToggle": "Open menu"
+  },
+  "hero": {
+    "eyebrow": "Order ahead · Pick up in store",
+    "title": "Skip the line. Grab your food.",
+    "subtitle": "Pickup lets you order ahead from your favourite restaurants and collect your meal the moment it's ready.",
+    "primaryCta": "Get the app",
+    "secondaryCta": "See how it works"
+  },
+  "howItWorks": {
+    "eyebrow": "How it works",
+    "title": "From craving to carrying in three steps",
+    "subtitle": "Simple, fast, and built around your schedule.",
+    "steps": [
+      {
+        "title": "Browse & order",
+        "text": "Explore menus from nearby restaurants and place your order in a few taps."
+      },
+      {
+        "title": "Store prepares",
+        "text": "The restaurant starts your order right away and updates you when it's ready."
+      },
+      {
+        "title": "Pick up & enjoy",
+        "text": "Walk in, grab your bag, and enjoy your meal — no queue, no fuss."
+      }
+    ]
+  },
+  "features": {
+    "eyebrow": "Features",
+    "title": "Built for fast pickup",
+    "subtitle": "Everything you need for a smooth self-pickup experience.",
+    "items": [
+      {
+        "title": "Order ahead",
+        "text": "Place your order before you arrive so it's ready when you walk in."
+      },
+      {
+        "title": "Skip the queue",
+        "text": "Beat the line and head straight to the pickup counter."
+      },
+      {
+        "title": "Live status",
+        "text": "Follow your order from the kitchen to the pickup counter in real time."
+      },
+      {
+        "title": "Quick reorder",
+        "text": "Save your favourites and repeat past orders in a single tap."
+      },
+      {
+        "title": "Secure payments",
+        "text": "Pay safely in the app with your preferred method."
+      },
+      {
+        "title": "Pickup reminders",
+        "text": "Get notified the moment your order is ready to collect."
+      }
+    ]
+  },
+  "menu": {
+    "eyebrow": "Menu showcase",
+    "title": "A menu for every craving",
+    "subtitle": "A taste of what your favourite spots are serving.",
+    "items": [
+      {
+        "name": "Smash Burger",
+        "description": "Double patty, melted cheese, house sauce.",
+        "price": "$9.50"
+      },
+      {
+        "name": "Margherita Pizza",
+        "description": "Fresh basil, mozzarella, vine tomato.",
+        "price": "$11.00"
+      },
+      {
+        "name": "Chicken Bowl",
+        "description": "Grilled chicken, rice, crisp vegetables.",
+        "price": "$8.75"
+      },
+      {
+        "name": "Caesar Salad",
+        "description": "Crisp romaine, parmesan, croutons.",
+        "price": "$7.25"
+      },
+      {
+        "name": "Tonkotsu Ramen",
+        "description": "Rich broth, noodles, soft egg.",
+        "price": "$10.50"
+      },
+      {
+        "name": "Fruit Smoothie",
+        "description": "Blended fresh fruit, no added sugar.",
+        "price": "$5.00"
+      }
+    ]
+  },
+  "about": {
+    "eyebrow": "About",
+    "title": "Pickup, in a nutshell",
+    "text": "Pickup is a self-pickup food-ordering platform that connects you with the restaurants you love. Order ahead, walk in, and take your meal home — just great food on your schedule.",
+    "points": [
+      {
+        "title": "Fast & convenient",
+        "text": "Order in seconds and collect your meal the moment it's ready."
+      },
+      {
+        "title": "Restaurant-first",
+        "text": "Built to help local kitchens serve more people, faster."
+      },
+      {
+        "title": "No hidden fees",
+        "text": "The app is free to use — you only pay for your food."
+      }
+    ]
+  },
+  "faq": {
+    "eyebrow": "FAQ",
+    "title": "Frequently asked questions",
+    "subtitle": "Answers to common questions about Pickup.",
+    "items": [
+      {
+        "question": "What is Pickup?",
+        "answer": "Pickup is a self-pickup food-ordering platform. You order ahead from nearby restaurants and collect your meal in store."
+      },
+      {
+        "question": "Is Pickup pickup-only?",
+        "answer": "Yes. Pickup is a self-pickup service — you collect your order in store the moment it's ready."
+      },
+      {
+        "question": "How do I know when my order is ready?",
+        "answer": "The restaurant updates your order status in real time, and you'll get a notification when it's ready to collect."
+      },
+      {
+        "question": "How do I pay?",
+        "answer": "Pay securely in the app using your preferred payment method before you arrive."
+      },
+      {
+        "question": "Is Pickup free to use?",
+        "answer": "Yes. The app is free to download, and there are no hidden service fees."
+      },
+      {
+        "question": "Can I reorder my favourites?",
+        "answer": "Yes. Save your favourite items and repeat past orders with a single tap."
+      }
+    ]
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "Get in touch",
+    "subtitle": "Questions or feedback? We'd love to hear from you.",
+    "emailLabel": "Email",
+    "email": "hello@pickup.example",
+    "phoneLabel": "Phone",
+    "phone": "+1 (555) 010-0100",
+    "addressLabel": "Address",
+    "address": "123 Market Street, Suite 200"
+  },
+  "download": {
+    "eyebrow": "Get started",
+    "title": "Ready to skip the line?",
+    "subtitle": "Download the Pickup app and order your next meal ahead.",
+    "customerCta": "Get the customer app",
+    "adminCta": "Open the merchant panel",
+    "merchantNote": "Own a restaurant? Manage your menu and orders from the merchant panel."
+  },
+  "footer": {
+    "tagline": "Order ahead. Pick up. Enjoy.",
+    "navLabel": "Navigation",
+    "languageLabel": "Language",
+    "rights": "All rights reserved."
+  }
+}

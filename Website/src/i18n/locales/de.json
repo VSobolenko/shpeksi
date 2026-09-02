@@ -1,0 +1,182 @@
+{
+  "brand": "Pickup",
+  "nav": {
+    "howItWorks": "So funktioniert's",
+    "features": "Funktionen",
+    "menu": "Menü",
+    "about": "Über uns",
+    "faq": "FAQ",
+    "contact": "Kontakt",
+    "download": "App holen",
+    "menuToggle": "Menü öffnen"
+  },
+  "hero": {
+    "eyebrow": "Vorbestellen · Im Laden abholen",
+    "title": "An der Schlange vorbei. Essen abholen.",
+    "subtitle": "Mit Pickup bestellst du bei deinen Lieblingsrestaurants vor und holst dein Essen ab, sobald es fertig ist.",
+    "primaryCta": "App holen",
+    "secondaryCta": "So funktioniert's"
+  },
+  "howItWorks": {
+    "eyebrow": "So funktioniert's",
+    "title": "Vom Appetit zur Abholung in drei Schritten",
+    "subtitle": "Einfach, schnell und auf deinen Alltag abgestimmt.",
+    "steps": [
+      {
+        "title": "Stöbern & bestellen",
+        "text": "Durchstöbere die Menüs naher Restaurants und gib deine Bestellung mit wenigen Tipps auf."
+      },
+      {
+        "title": "Das Lokal bereitet zu",
+        "text": "Das Restaurant startet deine Bestellung sofort und meldet sich, wenn sie fertig ist."
+      },
+      {
+        "title": "Abholen & genießen",
+        "text": "Geh rein, hol deine Tüte ab und genieße dein Essen — ohne Warteschlange, ohne Stress."
+      }
+    ]
+  },
+  "features": {
+    "eyebrow": "Funktionen",
+    "title": "Für schnelles Abholen gebaut",
+    "subtitle": "Alles für ein reibungsloses Abhol-Erlebnis.",
+    "items": [
+      {
+        "title": "Vorbestellen",
+        "text": "Gib deine Bestellung auf, bevor du kommst, damit sie bei deiner Ankunft fertig ist."
+      },
+      {
+        "title": "Schlange überspringen",
+        "text": "Lass die Warteschlange hinter dir und geh direkt zur Abholtheke."
+      },
+      {
+        "title": "Live-Status",
+        "text": "Verfolge deine Bestellung von der Küche bis zur Abholtheke in Echtzeit."
+      },
+      {
+        "title": "Schnell nachbestellen",
+        "text": "Speichere Favoriten und wiederhole frühere Bestellungen mit einem Tipp."
+      },
+      {
+        "title": "Sichere Zahlung",
+        "text": "Zahle sicher in der App mit deiner bevorzugten Methode."
+      },
+      {
+        "title": "Abhol-Erinnerungen",
+        "text": "Erhalte eine Benachrichtigung, sobald deine Bestellung bereit ist."
+      }
+    ]
+  },
+  "menu": {
+    "eyebrow": "Menü-Auswahl",
+    "title": "Ein Menü für jeden Geschmack",
+    "subtitle": "Ein Vorgeschmack auf das Angebot deiner Lieblingsorte.",
+    "items": [
+      {
+        "name": "Smash Burger",
+        "description": "Doppeltes Patty, geschmolzener Käse, Haussauce.",
+        "price": "$9.50"
+      },
+      {
+        "name": "Pizza Margherita",
+        "description": "Frisches Basilikum, Mozzarella, Tomate.",
+        "price": "$11.00"
+      },
+      {
+        "name": "Chicken Bowl",
+        "description": "Gegrilltes Hähnchen, Reis, knackiges Gemüse.",
+        "price": "$8.75"
+      },
+      {
+        "name": "Caesar Salad",
+        "description": "Knackiger Römersalat, Parmesan, Croutons.",
+        "price": "$7.25"
+      },
+      {
+        "name": "Tonkotsu Ramen",
+        "description": "Kräftige Brühe, Nudeln, weiches Ei.",
+        "price": "$10.50"
+      },
+      {
+        "name": "Frucht-Smoothie",
+        "description": "Frisch gemixtes Obst, ohne Zuckerzusatz.",
+        "price": "$5.00"
+      }
+    ]
+  },
+  "about": {
+    "eyebrow": "Über uns",
+    "title": "Pickup in Kürze",
+    "text": "Pickup ist eine Food-Bestellplattform mit Selbstabholung, die dich mit deinen Lieblingsrestaurants verbindet. Bestelle vor, geh rein und nimm dein Essen mit — einfach gutes Essen zu deiner Zeit.",
+    "points": [
+      {
+        "title": "Schnell & bequem",
+        "text": "Bestelle in Sekunden und hole dein Essen ab, sobald es fertig ist."
+      },
+      {
+        "title": "Restaurants zuerst",
+        "text": "Entwickelt, damit lokale Küchen mehr Menschen schneller bedienen."
+      },
+      {
+        "title": "Keine versteckten Gebühren",
+        "text": "Die App ist kostenlos — du zahlst nur dein Essen."
+      }
+    ]
+  },
+  "faq": {
+    "eyebrow": "FAQ",
+    "title": "Häufig gestellte Fragen",
+    "subtitle": "Antworten auf häufige Fragen zu Pickup.",
+    "items": [
+      {
+        "question": "Was ist Pickup?",
+        "answer": "Pickup ist eine Food-Bestellplattform mit Selbstabholung. Du bestellst bei nahen Restaurants vor und holst dein Essen im Laden ab."
+      },
+      {
+        "question": "Ist Pickup reine Abholung?",
+        "answer": "Ja. Pickup ist ein reiner Abholservice — du holst deine Bestellung im Laden ab, sobald sie fertig ist."
+      },
+      {
+        "question": "Woher weiß ich, wann meine Bestellung fertig ist?",
+        "answer": "Das Restaurant aktualisiert deinen Bestellstatus in Echtzeit, und du bekommst eine Benachrichtigung, wenn sie abholbereit ist."
+      },
+      {
+        "question": "Wie bezahle ich?",
+        "answer": "Zahle sicher in der App mit deiner bevorzugten Zahlungsmethode, bevor du kommst."
+      },
+      {
+        "question": "Ist Pickup kostenlos?",
+        "answer": "Ja. Die App ist kostenlos und es gibt keine versteckten Servicegebühren."
+      },
+      {
+        "question": "Kann ich Favoriten nachbestellen?",
+        "answer": "Ja. Speichere deine Lieblingsgerichte und wiederhole frühere Bestellungen mit einem Tipp."
+      }
+    ]
+  },
+  "contact": {
+    "eyebrow": "Kontakt",
+    "title": "Schreib uns",
+    "subtitle": "Fragen oder Feedback? Wir freuen uns, von dir zu hören.",
+    "emailLabel": "E-Mail",
+    "email": "hello@pickup.example",
+    "phoneLabel": "Telefon",
+    "phone": "+1 (555) 010-0100",
+    "addressLabel": "Adresse",
+    "address": "123 Market Street, Suite 200"
+  },
+  "download": {
+    "eyebrow": "Los geht's",
+    "title": "Bereit, die Schlange zu überspringen?",
+    "subtitle": "Lade die Pickup-App herunter und bestelle deine nächste Mahlzeit vor.",
+    "customerCta": "Kunden-App holen",
+    "adminCta": "Händler-Panel öffnen",
+    "merchantNote": "Führst du ein Restaurant? Verwalte Menü und Bestellungen im Händler-Panel."
+  },
+  "footer": {
+    "tagline": "Vorbestellen. Abholen. Genießen.",
+    "navLabel": "Navigation",
+    "languageLabel": "Sprache",
+    "rights": "Alle Rechte vorbehalten."
+  }
+}

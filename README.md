@@ -13,6 +13,7 @@ admin panel, and a self-hosted backend.
 | `backend/`         | Self-hosted GraphQL API (HTTP + WebSocket)               | Python (FastAPI + Strawberry + Beanie/MongoDB + Redis) |
 | `Admin Dashboard/` | Merchant web panel for menu, orders, and settings        | React 18 + Vite + Apollo Client 3 |
 | `CustomerApp/`     | Customer mobile app for ordering and pickup              | React Native + Expo (SDK 50) + Apollo Client 3 |
+| `Website/`         | Public marketing/landing site                            | React 18 + Vite + i18next |
 
 > The legacy rider/delivery module (`RiderApp/`) has been removed. The platform
 > is pickup-only.
@@ -29,6 +30,7 @@ admin panel, and a self-hosted backend.
 backend/            Python GraphQL backend
 Admin Dashboard/    React admin panel
 CustomerApp/        React Native customer app (Expo)
+Website/            Public marketing/landing site
 openspec/           OpenSpec change proposals and task tracking
 AGENTS.md           Project conventions for AI agents
 ```
@@ -70,6 +72,20 @@ npm start                     # expo start
 
 Scan the QR code with Expo Go, or press `a`/`i` for an Android/iOS simulator.
 
+### 4. Website
+
+```bash
+cd Website
+npm install
+cp .env.example .env          # then fill in VITE_* link targets
+npm run dev                   # Vite dev server
+# or: npm run build && npm run preview
+```
+
+A single-page, six-language marketing site (`en`, `ar`, `de`, `fr`, `km`, `zh`)
+with Arabic RTL support. It is fully static — it does not call the GraphQL API.
+`npm run build` produces a static `dist/` that can be served by any static host.
+
 ## Configuration
 
 Secrets are kept out of source control. Each module ships an `.env.example`:
@@ -78,6 +94,8 @@ Secrets are kept out of source control. Each module ships an `.env.example`:
 - `Admin Dashboard/.env.example` — `VITE_SERVER_URL`, `VITE_WS_SERVER_URL`, Firebase.
 - `CustomerApp/.env.example` — `GRAPHQL_URL`, `WS_GRAPHQL_URL`, Stripe, Google
   OAuth, Amplitude, Google Maps.
+- `Website/.env.example` — `VITE_CUSTOMER_APP_URL`, `VITE_ADMIN_URL` (CTA link
+  targets).
 
 The frontends point at the self-hosted backend (`http://localhost:8000/graphql`)
 by default.

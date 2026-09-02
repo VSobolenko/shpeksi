@@ -1,0 +1,119 @@
+.hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(55% 80% at 100% 0%, var(--color-primary-soft) 0%, transparent 60%),
+    radial-gradient(45% 55% at 0% 100%, #eefbf1 0%, transparent 55%),
+    var(--color-bg);
+}
+
+.inner {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: var(--space-7);
+  padding-block: var(--space-9) var(--space-8);
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  padding-block: 6px;
+  padding-inline: 14px;
+  border-radius: var(--radius-pill);
+  background: var(--color-primary-soft);
+  color: var(--color-primary-strong);
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+}
+
+.title {
+  font-size: clamp(2.25rem, 5vw, 3.75rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.subtitle {
+  color: var(--color-muted);
+  font-size: 1.15rem;
+  max-width: 480px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.primary,
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  padding-block: 13px;
+  padding-inline: 24px;
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+  font-size: 1rem;
+  transition: background var(--transition), transform var(--transition),
+    border-color var(--transition), color var(--transition);
+}
+
+.primary {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.primary:hover {
+  background: var(--color-primary-strong);
+  transform: translateY(-1px);
+}
+
+.secondary {
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-ink);
+}
+
+.secondary:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.art {
+  display: flex;
+  justify-content: center;
+}
+
+.artSvg {
+  width: min(100%, 340px);
+  height: auto;
+}
+
+@media (max-width: 860px) {
+  .inner {
+    grid-template-columns: 1fr;
+    padding-block: var(--space-7);
+  }
+
+  .copy {
+    align-items: center;
+    text-align: center;
+  }
+
+  .art {
+    order: -1;
+  }
+
+  .artSvg {
+    width: min(100%, 220px);
+  }
+}
