@@ -82,9 +82,10 @@ npm run dev                   # Vite dev server
 # or: npm run build && npm run preview
 ```
 
-A single-page, six-language marketing site (`en`, `ar`, `de`, `fr`, `km`, `zh`)
-with Arabic RTL support. It is fully static — it does not call the GraphQL API.
-`npm run build` produces a static `dist/` that can be served by any static host.
+A single-page, seven-language marketing site (`en`, `ar`, `de`, `fr`, `km`, `ru`,
+`zh`) with Arabic RTL support. It is fully static — it does not call the
+GraphQL API. `npm run build` produces a static `dist/` that can be served by any
+static host.
 
 ## Configuration
 
