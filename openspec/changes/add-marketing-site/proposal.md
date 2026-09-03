@@ -1,13 +1,14 @@
 ## Why
 
-The platform now has a customer mobile app, a merchant admin panel, and a backend — but no public web presence. Anyone who hears about the product has no single page that introduces it, explains the pickup-only ordering flow, and points them to the apps. A marketing/landing site fills that gap: it is the brand's public face and the destination everyone sees when they want to learn about or start ordering from the product.
+The platform now has a customer mobile app, a merchant admin panel, and a backend — but no public web presence that sells the platform itself to restaurants. The product is a white-label, self-pickup ordering solution; the merchants who would adopt it have no single page that explains what the platform is, what it does for them, and how to get started. A business-to-business marketing site fills that gap: it advertises the platform to restaurants and points them to a demo and the merchant panel.
 
 ## What Changes
 
-- Add a new top-level module `Website/` — a public marketing/landing site for the **"Pickup"** brand.
+- Add a new top-level module `Website/` — a public, **business-to-business** marketing/landing site for the **"Pickup"** white-label ordering platform.
 - Build it with **Vite + React 18** (matching the Admin Dashboard's modernized stack) as a single-page landing site, producing a **static production build** (`dist/`) plus a local dev server.
 - Ship the site **multilingual** in seven languages — `en`, `ar`, `de`, `fr`, `km`, `ru`, `zh` — with `ar` rendered right-to-left and the initial language auto-detected from the visitor's browser/system locale (English fallback).
-- Provide a standard landing-page content set: hero, value proposition, "how it works" (order → store prepares → pickup), feature highlights, menu showcase, about, FAQ, contact, and download/CTA links to the CustomerApp and Admin Dashboard.
+- Position the site for **restaurants and merchants** (not consumers): white-label app, menu/order management, pickup-only (no delivery), and a "request a demo / get started" CTA plus a merchant-panel link.
+- Provide a merchant-focused landing content set: hero, "how it works" (set up menu → receive orders → hand over at pickup), platform features, a "for your customers" section, about, FAQ for restaurant owners, contact, and a get-started/demo CTA.
 - Follow the pickup-only model and neutral "Pickup" branding already established in the repo: no delivery, riders, couriers, or "Enatega" references anywhere.
 - No GraphQL contract or backend changes; the site is static and does not call the GraphQL API.
 
@@ -15,7 +16,7 @@ The platform now has a customer mobile app, a merchant admin panel, and a backen
 
 ### New Capabilities
 
-- `marketing-site`: The public "Pickup" marketing/landing website — its structure, content requirements, multilingual (RTL) behavior, pickup-only branding constraints, and static build/deploy contract.
+- `marketing-site`: The public "Pickup" marketing/landing website — its structure, B2B merchant-focused content requirements, multilingual (RTL) behavior, pickup-only branding constraints, and static build/deploy contract.
 
 ### Modified Capabilities
 

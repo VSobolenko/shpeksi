@@ -15,12 +15,12 @@
 
 ## 4. Landing sections
 
-- [ ] 4.1 Build the Hero section (brand, value proposition, primary CTA). Verify it renders translated copy and a working CTA in `en` and `ar`.
-- [ ] 4.2 Build the "How it works" section (order → store prepares → pickup). Verify the three steps render in all six languages.
-- [ ] 4.3 Build the Feature highlights section. Verify feature copy is pickup-only (no delivery/rider wording).
-- [ ] 4.4 Build the Menu showcase section. Verify it renders placeholder menu imagery/text with no broken assets.
-- [ ] 4.5 Build the About, FAQ (accordion), and Contact sections. Verify the FAQ accordion toggles and the contact section renders contact info.
-- [ ] 4.6 Build the Download/CTA section wired to configurable `VITE_CUSTOMER_APP_URL` and `VITE_ADMIN_URL` (with fallbacks). Verify CTAs resolve to the configured targets.
+- [ ] 4.1 Build the Hero section with a merchant-focused value proposition ("launch your own pickup ordering app") and a "request a demo / get started" primary CTA. Verify it renders translated copy and a working CTA in `en` and `ar`.
+- [ ] 4.2 Build the "How it works" section from the merchant's perspective (set up menu → receive orders → hand over at pickup). Verify the three steps render in all seven languages.
+- [ ] 4.3 Build the platform features section (white-label branding, menu/order management, pickup-only). Verify feature copy is white-label/merchant-focused and pickup-only (no delivery/rider wording, no consumer "order your food" framing).
+- [ ] 4.4 Build the "For your customers" section (what the merchant's end customers experience — order ahead, live status, pickup reminders). Verify it renders with no consumer menu showcase.
+- [ ] 4.5 Build the About, FAQ (accordion, restaurant-owner questions), and Contact sections. Verify the FAQ accordion toggles and the contact section renders contact info.
+- [ ] 4.6 Build the Get-started/CTA section wired to configurable demo and merchant-panel URLs (with fallbacks). Verify CTAs resolve to the configured targets.
 
 ## 5. Styling and responsiveness
 
@@ -34,6 +34,6 @@
 ## 7. Build, audit, and docs
 
 - [ ] 7.1 Run the production build. Verify `npm run build` completes with no errors and produces `dist/`.
-- [ ] 7.2 Audit the site for pickup-only branding. Verify no "Enatega", delivery, rider, or courier references remain in any content or asset.
+- [ ] 7.2 Audit the site for pickup-only, white-label, merchant-focused branding. Verify no "Enatega", delivery, rider, or courier references remain, and no consumer "order your food" framing or single-restaurant menu showcase.
 - [ ] 7.3 Do a runtime UI sweep: load the site in each language (including Arabic RTL and Russian) and at mobile + desktop widths, confirming no blank screens, missing translations, or dead navigation.
 - [ ] 7.4 Update the root `README.md` to document the `Website/` module and its run/build commands.
