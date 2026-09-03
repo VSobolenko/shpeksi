@@ -2,162 +2,81 @@
   "brand": "Pickup",
   "nav": {
     "howItWorks": "Comment ça marche",
-    "features": "Fonctionnalités",
-    "menu": "Menu",
+    "features": "Plateforme",
+    "forCustomers": "Pour vos clients",
     "about": "À propos",
     "faq": "FAQ",
     "contact": "Contact",
-    "download": "Télécharger l'app",
+    "getStarted": "Commencer",
     "menuToggle": "Ouvrir le menu"
   },
   "hero": {
-    "eyebrow": "Commandez à l'avance · Retrait en magasin",
-    "title": "Évitez la file. Récupérez votre repas.",
-    "subtitle": "Pickup vous permet de commander à l'avance dans vos restaurants préférés et de récupérer votre repas dès qu'il est prêt.",
-    "primaryCta": "Télécharger l'app",
+    "eyebrow": "Pour restaurants & cafés",
+    "title": "Lancez votre propre application de commande à emporter",
+    "subtitle": "Pickup est une plateforme de commande en marque blanche qui offre à votre restaurant une application à votre marque pour le retrait en magasin — sans flotte, sans surprise de commission.",
+    "primaryCta": "Demander une démo",
     "secondaryCta": "Comment ça marche"
   },
   "howItWorks": {
     "eyebrow": "Comment ça marche",
-    "title": "De l'envie au retrait en trois étapes",
-    "subtitle": "Simple, rapide et adapté à votre emploi du temps.",
+    "title": "Du menu au retrait en trois étapes",
+    "subtitle": "Mettez votre application de commande à votre marque en ligne en quelques jours, pas en plusieurs mois.",
     "steps": [
-      {
-        "title": "Parcourir & commander",
-        "text": "Explorez les menus des restaurants à proximité et passez commande en quelques gestes."
-      },
-      {
-        "title": "Le restaurant prépare",
-        "text": "Le restaurant lance votre commande immédiatement et vous prévient quand elle est prête."
-      },
-      {
-        "title": "Retrait & dégustation",
-        "text": "Entrez, prenez votre sac et savourez votre repas — sans file, sans tracas."
-      }
+      { "title": "Configurez votre menu", "text": "Ajoutez vos plats, prix et photos dans un tableau de bord simple — aucune compétence technique requise." },
+      { "title": "Recevez les commandes", "text": "Les nouvelles commandes apparaissent instantanément dans votre tableau de bord. Acceptez, préparez et marquez-les prêtes." },
+      { "title": "Remise au retrait", "text": "Les clients reçoivent une notification quand leur commande est prête et la récupèrent au comptoir." }
     ]
   },
   "features": {
-    "eyebrow": "Fonctionnalités",
-    "title": "Conçu pour un retrait rapide",
-    "subtitle": "Tout ce qu'il faut pour un retrait en libre-service fluide.",
+    "eyebrow": "Plateforme",
+    "title": "Tout ce dont votre restaurant a besoin",
+    "subtitle": "Une plateforme de commande en marque blanche complète, conçue pour le retrait en magasin.",
     "items": [
-      {
-        "title": "Commandez à l'avance",
-        "text": "Passez commande avant d'arriver pour qu'elle soit prête à votre entrée."
-      },
-      {
-        "title": "Évitez la file",
-        "text": "Devancez la queue et allez directement au comptoir de retrait."
-      },
-      {
-        "title": "Statut en direct",
-        "text": "Suivez votre commande de la cuisine au comptoir en temps réel."
-      },
-      {
-        "title": "Recommande rapide",
-        "text": "Enregistrez vos favoris et répétez vos commandes en un geste."
-      },
-      {
-        "title": "Paiements sécurisés",
-        "text": "Payez en toute sécurité dans l'app avec votre méthode préférée."
-      },
-      {
-        "title": "Rappels de retrait",
-        "text": "Soyez averti dès que votre commande est prête à être récupérée."
-      }
+      { "title": "Votre marque", "text": "Application en marque blanche avec votre logo, vos couleurs et votre nom — pas les nôtres." },
+      { "title": "Gestion du menu", "text": "Gérez plats, catégories, prix et stocks en temps réel." },
+      { "title": "Gestion des commandes", "text": "Acceptez, suivez et mettez à jour chaque commande depuis un seul tableau de bord." },
+      { "title": "Notifications push", "text": "Avertissez automatiquement les clients quand leur commande est prête." },
+      { "title": "Paiements flexibles", "text": "Espèces, carte et PayPal — le choix de vos clients." },
+      { "title": "Analyses", "text": "Consultez vos ventes, commandes et meilleurs plats en un coup d'œil." }
     ]
   },
-  "menu": {
-    "eyebrow": "Aperçu du menu",
-    "title": "Un menu pour chaque envie",
-    "subtitle": "Un avant-goût de ce que servent vos adresses préférées.",
+  "forCustomers": {
+    "eyebrow": "Pour vos clients",
+    "title": "Une expérience de retrait plus fluide",
+    "subtitle": "Offrez à vos clients un parcours de commande rapide et moderne qu'ils adoreront.",
     "items": [
-      {
-        "name": "Smash Burger",
-        "description": "Double steak, fromage fondu, sauce maison.",
-        "price": "$9.50"
-      },
-      {
-        "name": "Pizza Margherita",
-        "description": "Basilic frais, mozzarella, tomate.",
-        "price": "$11.00"
-      },
-      {
-        "name": "Bowl au poulet",
-        "description": "Poulet grillé, riz, légumes croquants.",
-        "price": "$8.75"
-      },
-      {
-        "name": "Salade César",
-        "description": "Romaine croquante, parmesan, croûtons.",
-        "price": "$7.25"
-      },
-      {
-        "name": "Ramen Tonkotsu",
-        "description": "Bouillon riche, nouilles, œuf mollet.",
-        "price": "$10.50"
-      },
-      {
-        "name": "Smoothie aux fruits",
-        "description": "Fruits frais mixés, sans sucre ajouté.",
-        "price": "$5.00"
-      }
+      { "title": "Commandez à l'avance", "text": "Les clients commandent avant d'arriver et évitent la file." },
+      { "title": "Statut en direct", "text": "Ils suivent leur commande de la cuisine au comptoir en temps réel." },
+      { "title": "Rappels de retrait", "text": "Ils reçoivent une notification dès qu'elle est prête à être récupérée." }
     ]
   },
   "about": {
     "eyebrow": "À propos",
     "title": "Pickup en bref",
-    "text": "Pickup est une plateforme de commande de repas en retrait libre-service qui vous relie aux restaurants que vous aimez. Commandez à l'avance, entrez et repartez avec votre repas — juste de la bonne cuisine à votre rythme.",
+    "text": "Pickup est une plateforme de commande en marque blanche pour restaurants et cafés. Nous vous offrons une application à votre marque pour le retrait en magasin — pour servir plus de monde, plus vite, sans la charge d'une flotte.",
     "points": [
-      {
-        "title": "Rapide & pratique",
-        "text": "Commandez en quelques secondes et récupérez votre repas dès qu'il est prêt."
-      },
-      {
-        "title": "Le restaurant d'abord",
-        "text": "Conçu pour aider les cuisines locales à servir plus de monde, plus vite."
-      },
-      {
-        "title": "Sans frais cachés",
-        "text": "L'app est gratuite — vous ne payez que votre repas."
-      }
+      { "title": "Lancement rapide", "text": "Mettez votre application en ligne en quelques jours, pas en plusieurs mois." },
+      { "title": "Retrait uniquement", "text": "Le retrait en magasin signifie aucune flotte à gérer et aucune commission par commande que vous n'avez pas acceptée." },
+      { "title": "À vous de posséder", "text": "Votre marque, vos clients, vos données." }
     ]
   },
   "faq": {
     "eyebrow": "FAQ",
     "title": "Questions fréquentes",
-    "subtitle": "Réponses aux questions courantes sur Pickup.",
+    "subtitle": "Réponses pour les restaurateurs.",
     "items": [
-      {
-        "question": "Qu'est-ce que Pickup ?",
-        "answer": "Pickup est une plateforme de commande de repas en retrait libre-service. Vous commandez à l'avance auprès des restaurants à proximité et récupérez votre repas en magasin."
-      },
-      {
-        "question": "Pickup est-il uniquement en retrait ?",
-        "answer": "Oui. Pickup est un service de retrait en libre-service — vous récupérez votre commande en magasin dès qu'elle est prête."
-      },
-      {
-        "question": "Comment savoir quand ma commande est prête ?",
-        "answer": "Le restaurant met à jour le statut de votre commande en temps réel, et vous recevez une notification dès qu'elle est prête."
-      },
-      {
-        "question": "Comment payer ?",
-        "answer": "Payez en toute sécurité dans l'app avec votre méthode de paiement préférée avant d'arriver."
-      },
-      {
-        "question": "Pickup est-il gratuit ?",
-        "answer": "Oui. L'app est gratuite et il n'y a pas de frais de service cachés."
-      },
-      {
-        "question": "Puis-je recommander mes favoris ?",
-        "answer": "Oui. Enregistrez vos plats préférés et répétez vos commandes en un geste."
-      }
+      { "question": "Qu'est-ce que Pickup ?", "answer": "Pickup est une plateforme de commande en marque blanche qui offre à votre restaurant une application à votre marque pour les commandes à emporter." },
+      { "question": "Pickup est-il uniquement en retrait ?", "answer": "Oui. C'est uniquement du retrait en magasin — les clients commandent à l'avance et récupèrent en magasin." },
+      { "question": "Ai-je besoin de compétences techniques ?", "answer": "Non. Vous gérez votre menu et vos commandes depuis un tableau de bord simple." },
+      { "question": "Puis-je utiliser ma propre marque ?", "answer": "Oui. L'application utilise votre logo, vos couleurs et votre nom." },
+      { "question": "Quels paiements sont pris en charge ?", "answer": "Espèces, carte et PayPal." },
+      { "question": "Combien de temps prend la mise en place ?", "answer": "La plupart des restaurants sont en ligne en quelques jours." }
     ]
   },
   "contact": {
     "eyebrow": "Contact",
     "title": "Contactez-nous",
-    "subtitle": "Une question ou un avis ? Nous serions ravis de vous lire.",
+    "subtitle": "Des questions ou prêt à vous lancer ? Nous serions ravis de vous lire.",
     "emailLabel": "E-mail",
     "email": "hello@pickup.example",
     "phoneLabel": "Téléphone",
@@ -165,16 +84,16 @@
     "addressLabel": "Adresse",
     "address": "123 Market Street, Suite 200"
   },
-  "download": {
-    "eyebrow": "C'est parti",
-    "title": "Prêt à éviter la file ?",
-    "subtitle": "Téléchargez l'app Pickup et commandez votre prochain repas à l'avance.",
-    "customerCta": "Télécharger l'app client",
-    "adminCta": "Ouvrir le panneau marchand",
-    "merchantNote": "Vous tenez un restaurant ? Gérez votre menu et vos commandes depuis le panneau marchand."
+  "getStarted": {
+    "eyebrow": "Commencer",
+    "title": "Prêt à lancer votre application de commande ?",
+    "subtitle": "Demandez une démo et découvrez comment Pickup peut faire grandir votre restaurant.",
+    "primaryCta": "Demander une démo",
+    "secondaryCta": "Ouvrir le panneau marchand",
+    "note": "Déjà marchand ? Gérez votre menu et vos commandes depuis le panneau."
   },
   "footer": {
-    "tagline": "Commandez à l'avance. Récupérez. Savourez.",
+    "tagline": "Commandes à emporter pour les restaurants.",
     "navLabel": "Navigation",
     "languageLabel": "Langue",
     "rights": "Tous droits réservés."

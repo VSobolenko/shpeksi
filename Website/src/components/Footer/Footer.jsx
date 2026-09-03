@@ -5,7 +5,7 @@ import styles from './Footer.module.css'
 const LINKS = [
   { id: 'how-it-works', key: 'nav.howItWorks' },
   { id: 'features', key: 'nav.features' },
-  { id: 'menu', key: 'nav.menu' },
+  { id: 'for-customers', key: 'nav.forCustomers' },
   { id: 'about', key: 'nav.about' },
   { id: 'faq', key: 'nav.faq' },
   { id: 'contact', key: 'nav.contact' }

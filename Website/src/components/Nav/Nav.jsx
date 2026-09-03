@@ -7,7 +7,7 @@ import styles from './Nav.module.css'
 const LINKS = [
   { id: 'how-it-works', key: 'nav.howItWorks' },
   { id: 'features', key: 'nav.features' },
-  { id: 'menu', key: 'nav.menu' },
+  { id: 'for-customers', key: 'nav.forCustomers' },
   { id: 'about', key: 'nav.about' },
   { id: 'faq', key: 'nav.faq' },
   { id: 'contact', key: 'nav.contact' }
@@ -38,8 +38,8 @@ export default function Nav() {
               {t(link.key)}
             </a>
           ))}
-          <a className={styles.cta} href="#download" onClick={close}>
-            {t('nav.download')}
+          <a className={styles.cta} href="#get-started" onClick={close}>
+            {t('nav.getStarted')}
           </a>
         </nav>
 
