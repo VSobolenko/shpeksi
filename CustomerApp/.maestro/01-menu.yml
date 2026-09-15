@@ -1,4 +1,4 @@
-appId: com.pickup.vendor
+appId: com.forkly.app
 name: Menu screen renders categories on launch
 tags: [menu, e2e]
 ---

@@ -33,7 +33,7 @@ Migrate CustomerApp and Admin Dashboard to `@apollo/client` 3.x first, replacing
 - **Why**: reduces the migration to a single client package and keeps the wire protocol unchanged, decoupling it from the backend rollout.
 - **Alternatives**: switch the client to `graphql-ws` (`graphql-transport-ws`) — rejected for now; it can be a follow-up since the backend already supports both.
 
-### 4. Pickup (self-collect) model
+### 4. Self-pickup (self-collect) model
 The `Order` document drops `delivery_address`, `delivery_charges`, and `rider`. `placeOrder` accepts items + contact (name/phone) + coupon + payment method only. Checkout collects contact details, not an address. `status_queue` becomes `pending`, `preparing`, `ready`, `completed`, `cancelled`. Order statuses are `PENDING → ACCEPTED → READY → COMPLETED` (+ `CANCELLED`). `Configuration` drops `delivery_charges`.
 - **Why**: the product is self-collect; there is nothing to deliver, so address and fees are meaningless and must be removed end-to-end.
 - **Decisions deferred in this design**: a "ready for pickup" push/email is sent on `READY`; no pickup time slot field is added (recorded as an open question below).
@@ -53,7 +53,7 @@ Use Redis pub/sub for production and an in-memory `PubSub` for the MVP/dev, behi
 - **Alternatives**: Redis-only — rejected to keep MVP startup minimal.
 
 ### 8. Secrets and configuration
-Move every hardcoded secret to `.env`/`.env.example` for backend and Admin; remove Firebase keys from `Admin Dashboard/src/index.js`, Stripe/Google/Amplitude keys from `CustomerApp/environment.js`, and Google Maps keys from `app.json`. Repoint the apps from `https://enatega-singlevendor.up.railway.app/graphql` to the self-hosted backend. Backend reads config via `pydantic-settings`.
+Move every hardcoded secret to `.env`/`.env.example` for backend and Admin; remove Firebase keys from `Admin Dashboard/src/index.js`, Stripe/Google/Amplitude keys from `CustomerApp/environment.js`, and Google Maps keys from `app.json`. Repoint the apps from the third-party demo GraphQL endpoint to the self-hosted backend. Backend reads config via `pydantic-settings`.
 - **Why**: security rule; no secrets in source control.
 
 ### 9. Admin modernization
@@ -64,10 +64,10 @@ Migrate Admin to React 18 + Vite (from CRA 2.1.8), `@apollo/client` 3.x, chart.j
 ### 10. CustomerApp modernization
 Upgrade Expo SDK 47 → 50+ via the official upgrade path, unify on `@apollo/client` 3.x, remove `deprecated-react-native-prop-types` if unused, replace `react-native-material-textfield` with a maintained input, and remove now-unused native deps (`react-native-maps`, `react-native-maps-directions`, `react-native-gifted-chat`, `react-native-timeline-flatlist`). Keep `i18n-js` (single solution after RiderApp removal).
 
-### 11. Neutral naming
-Rename the product from "Enatega" to "Pickup" everywhere in production artifacts: MongoDB database `pickup`, order prefix `ORD`, backend package `pickup-backend`, API title "Pickup API", and app display name "Pickup" (`app.json` name/slug/scheme/bundleId, branding components such as `EnategaImage` → `PickupImage`, and translation/UI strings). Root policy/docs files (`LICENSE`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `CONTRIBUTING.md`, `AGENTS.md`, `AGENT_PROMPT.md`, `README.md`) are left untouched.
-- **Why**: de-branding from the original white-label name; the repository is the long-lived identity.
-- **Alternatives**: keep "Enatega" in backend technical names — rejected.
+### 11. Forkly naming
+Brand the product "Forkly" everywhere in production artifacts: MongoDB database `forkly`, order prefix `FRK`, backend package `forkly-backend`, API title "Forkly API", and app display name "Forkly" (`app.json` name/slug/scheme/bundleId, branding components such as `ForklyImage`, and translation/UI strings). Root policy/docs files (`LICENSE`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `CONTRIBUTING.md`, `AGENTS.md`, `README.md`, `README_RU.md`) are updated in the same pass.
+- **Why**: the product is branded Forkly end-to-end; the repository and the product name align.
+- **Alternatives**: keep the previous technical names — rejected.
 
 ### 12. Production secrets fail-fast
 `JWT_SECRET`, `ADMIN_PASSWORD`, and payment/FCM credentials come only from environment. When `ENV=production`, startup fails with a clear error if a required secret is unset or still a placeholder (`change-me`).
@@ -126,7 +126,7 @@ Document a production deploy runbook (release build, env provisioning, cutover, 
 5. Phase 4 — cleanup: secrets to env, dead code, unused deps, i18n normalization.
 6. Phase 5 — modernization: React 18 + Vite, Apollo 3, Expo SDK, README.
 7. Phase 6 — E2E verification: full pickup scenario + lint/build of all modules.
-8. Phase 7 — production hardening & release: neutral naming, secrets fail-fast, health/readiness, Redis pub/sub, Docker/compose, CI + test suite, final build/lint/validate.
+8. Phase 7 — production hardening & release: Forkly naming, secrets fail-fast, health/readiness, Redis pub/sub, Docker/compose, CI + test suite, final build/lint/validate.
 
 Rollback: the backend is additive (new `backend/` dir), so the demo URL can be restored via env/config until cutover. Frontend modernizations land per-module and can be reverted via git (no history rewrite).
 

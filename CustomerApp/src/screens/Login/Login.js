@@ -14,7 +14,7 @@ import {
 } from 'react-native'
 import {
   FilledTextField,
-  PickupImage,
+  ForklyImage,
   FlashMessage,
   RegistrationHeader,
   TextDefault,
@@ -202,7 +202,7 @@ function Login() {
             <RegistrationHeader title={i18n.t('loginBtn')} back />
             <View style={styles.subContainer}>
               <View style={[styles.flex, styles.upperContainer]}>
-                <PickupImage
+                <ForklyImage
                   imgStyle={styles.imgResponsive}
                   imgSource={Logo}
                   spinnerProps={{ style: styles.loadingView }}

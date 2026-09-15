@@ -14,7 +14,7 @@ import {
 import {
   FilledTextField,
   CustomIcon,
-  PickupImage,
+  ForklyImage,
   FlashMessage,
   Spinner,
   TextDefault,
@@ -195,7 +195,7 @@ function Register() {
             </View>
             <View style={styles.subContainer}>
               <View style={[styles.flex, styles.upperContainer]}>
-                <PickupImage
+                <ForklyImage
                   imgStyle={[
                     styles.imgResponsive,
                     { backgroundColor: 'transparent' }

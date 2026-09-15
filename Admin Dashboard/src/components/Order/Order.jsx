@@ -537,7 +537,11 @@ function Order(props) {
                                     pill>
                                     {item.quantity}
                                   </Badge>
-                                  {`${item.food.title}(${item.variation.title})`}
+                                  {`${item.food ? item.food.title : 'Unknown item'}${
+                                    item.variation
+                                      ? `(${item.variation.title})`
+                                      : ''
+                                  }`}
                                   <Badge
                                     style={{
                                       fontSize: '12px',
@@ -547,7 +551,8 @@ function Order(props) {
                                     pill>
                                     {data.configuration.currency_symbol}{' '}
                                     {(
-                                      item.variation.price * item.quantity
+                                      (item.variation ? item.variation.price : 0) *
+                                      item.quantity
                                     ).toFixed(2)}
                                   </Badge>
                                   {!!item.addons.length && (

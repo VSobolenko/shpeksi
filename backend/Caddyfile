@@ -1,7 +1,7 @@
-# Caddy reverse proxy: terminates TLS in front of the Pickup backend.
+# Caddy reverse proxy: terminates TLS in front of the Forkly backend.
 #
 #   SITE_ADDRESS:
-#     - production: "pickup.example.com"  -> automatic HTTPS via Let's Encrypt
+#     - production: "forkly.example.com"  -> automatic HTTPS via Let's Encrypt
 #     - local test: ":80"                 -> plain HTTP, no TLS
 #
 # The backend app itself is reachable only on the internal compose network

@@ -1,4 +1,4 @@
-package com.pickup.vendor
+package com.forkly.app
 
 import android.app.Application
 import android.content.res.Configuration

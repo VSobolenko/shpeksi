@@ -30,7 +30,7 @@ The product SHALL NOT charge or display any delivery fee or `delivery_charges` i
 - **WHEN** a customer views the cart and checkout totals
 - **THEN** the totals reflect item cost and discounts only, with no delivery fee line item
 
-### Requirement: Pickup order statuses in the client
+### Requirement: Self-pickup order statuses in the client
 The CustomerApp SHALL present order status using the pickup set (`PENDING`, `ACCEPTED`, `READY`, `COMPLETED`, `CANCELLED`) and SHALL NOT show `PICKED` or `DELIVERED`.
 
 #### Scenario: Status display
@@ -65,20 +65,20 @@ The CustomerApp translations (`en`, `ar`, `de`, `fr`, `km`, `zh`) SHALL contain 
 - **WHEN** the change is complete
 - **THEN** no delivery-, courier-, or tracking-related keys or strings remain in any translation file
 
-### Requirement: Neutral product naming
-The product SHALL NOT use the "Enatega" name (any casing) in production artifacts; the database, order prefix, backend package, API title, and app branding SHALL use the neutral name "Pickup".
+### Requirement: Forkly product naming
+The product SHALL use the "Forkly" name consistently in production artifacts and SHALL NOT reference third-party white-label project names; the database, order prefix, backend package, API title, and app branding SHALL use the name "Forkly".
 
-#### Scenario: No Enatega in product artifacts
+#### Scenario: Consistent product branding
 - **WHEN** the change is complete
-- **THEN** no file under `backend/`, `Admin Dashboard/`, or `CustomerApp/` references "Enatega"; the database is named `pickup`, the order prefix is `ORD`, and the apps display "Pickup"
+- **THEN** no file under `backend/`, `Admin Dashboard/`, `CustomerApp/`, or `Website/` references a third-party project name; the database is named `forkly`, the order prefix is `FRK`, and the apps display "Forkly"
 
-#### Scenario: Neutral order identifiers
+#### Scenario: Order identifiers
 - **WHEN** an order is placed
-- **THEN** its `order_id` begins with `ORD-` and never with `ENATEGA-`
+- **THEN** its `order_id` begins with `FRK-`
 
 #### Scenario: Root policy files preserved
 - **WHEN** the change is complete
-- **THEN** the root-level files (`LICENSE`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `CONTRIBUTING.md`, `AGENTS.md`, `AGENT_PROMPT.md`, `README.md`) remain present and are not renamed or deleted
+- **THEN** the root-level files (`LICENSE`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `CONTRIBUTING.md`, `AGENTS.md`, `README.md`, `README_RU.md`) remain present and are not renamed or deleted
 
 ### Requirement: Configurable backend endpoint
 The frontends SHALL resolve the backend GraphQL URL from environment/config and SHALL NOT contain a hardcoded demo URL.
@@ -90,7 +90,7 @@ The frontends SHALL resolve the backend GraphQL URL from environment/config and 
 ### Requirement: Automated verification
 The change SHALL include an automated backend test suite and an end-to-end pickup-flow smoke test that can run in CI.
 
-#### Scenario: Pickup flow covered by automated tests
+#### Scenario: Self-pickup flow covered by automated tests
 - **WHEN** the test suite runs
 - **THEN** it exercises the pickup lifecycle (place → accept → ready → complete → customer sees status) and passes
 

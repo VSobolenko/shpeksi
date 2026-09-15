@@ -1,12 +1,17 @@
 ---
-description: Project-specific facts and conventions for Enatega Single Vendor that override generic framework rules (always applies)
+description: Project-specific facts and conventions for Forkly that override generic framework rules (always applies)
 alwaysApply: true
 ---
 
-# Enatega Single Vendor — project context
+# Forkly — project context
 
-Monorepo with three frontends: `Admin Dashboard/`, `CustomerApp/`, `RiderApp/`.
-No `backend/` yet — it is planned as Python (FastAPI + Strawberry GraphQL + Beanie/MongoDB + Redis). Full roadmap in `AGENT_PROMPT.md`; read `AGENTS.md` first for large changes.
+Monorepo with a real backend and three frontends: `backend/` (Python: FastAPI +
+Strawberry GraphQL + Beanie/MongoDB + Redis), `Admin Dashboard/` (React 18 +
+Vite 5 + `@apollo/client` 3.8), `CustomerApp/` (React Native 0.86 / Expo SDK 57 /
+React 19 / Apollo Client 3.8), and `Website/` (Vite + React 18 marketing landing
+page, 7 locales incl. Russian). `RiderApp/` and all delivery/rider functionality
+have been REMOVED — the product is self-pickup only. Read `AGENTS.md` first for
+large changes; the Russian onboarding doc is `README_RU.md`.
 
 ## Conventions that OVERRIDE generic rules
 
@@ -15,25 +20,28 @@ The repo's own rules (from `.eslintrc.json`, `.prettierrc` equivalents, `package
 - **Plain JavaScript (ES modules), NOT TypeScript.** Ignore generic "use TypeScript" guidance.
 - **StandardJS**: no semicolons, single quotes, 2-space indent; `space-before-function-paren: never`; `react/prop-types: 0`. Prettier uses `prettier-config-standard`.
 - **Navigation is React Navigation** (`@react-navigation/*`), NOT Expo Router.
-- **Apollo Client v2** (`apollo-client` + `apollo-link` + `react-apollo`/`@apollo/react-hooks`), NOT `@apollo/client` v3. Migrating to v3 is on the roadmap.
-- **Subscriptions use the legacy `subscriptions-transport-ws` protocol** (`apollo-link-ws`), NOT `graphql-transport-ws`. Critical compatibility point.
+- **Apollo Client v3** (`@apollo/client` 3.8) in Admin Dashboard and CustomerApp, NOT the legacy v2 packages (`apollo-client`/`apollo-link`/`react-apollo`).
+- **Subscriptions use the legacy `subscriptions-transport-ws` protocol** on the client (`apollo-link-ws`/`WebSocketLink`); the backend also supports `graphql-transport-ws`. Do NOT drop the legacy protocol — it is a critical compatibility point.
 - **Backend DB is MongoDB via Beanie**, NOT SQLAlchemy/asyncpg.
 
 ## GraphQL contract (fixed by the frontends)
 
-- Operations are template-literal strings in `src/apollo/server.js` (Admin) and `src/apollo/*.js` (Customer/Rider).
-- Backend must implement operation/field names 1:1 — do NOT rename or invent. Fields are snake_case (`order_amount`, `payment_status`).
+- Operations are template-literal strings in `src/apollo/server.js` (Admin) and `src/apollo/*.js` (Customer).
+- Backend must implement operation/field names 1:1 — do NOT rename or invent. Fields are snake_case (`order_amount`, `payment_status`); ids are `_id`.
 - Auth: JWT via `Authorization: Bearer <token>`.
 - GraphQL endpoint path is hardcoded as `/graphql` (HTTP + WebSocket).
 
 ## Localization
 
-- CustomerApp uses `i18n-js`; every user-facing string must be added to ALL of `src/translations/*.js` (en, ar, de, fr, km, zh). RiderApp uses i18next (being removed).
+- CustomerApp uses `i18n-js`; every user-facing string must be added to ALL of `CustomerApp/translations/*.js` (en, ar, de, fr, km, zh).
+- Website uses `i18next` with locale JSON in `Website/src/i18n/locales/` (en, ar, de, fr, km, ru, zh; `ar` is RTL).
 
-## Admin env / config
+## Env / config
 
-- Admin reads `REACT_APP_*` from `.env.development` / `.env.staging` / `.env.production` (see `.env.example`).
-- CustomerApp reads `environment.js`.
+- Admin reads `VITE_*` from `.env` / `.env.*` (see `.env.example`).
+- CustomerApp reads `.env` (see `.env.example`).
+- Backend reads `backend/.env` (see `.env.example`).
+- Frontends point at the self-hosted backend (`http://localhost:8000/graphql`) by default.
 
 ## Environment
 

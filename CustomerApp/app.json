@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "Pickup",
+    "name": "Forkly",
     "version": "1.0.22",
-    "scheme": "pickup",
-    "description": "Pickup is a self-collect food ordering app built in React Native using Expo for iOS and Android.",
-    "slug": "pickup",
+    "scheme": "forkly",
+    "description": "Forkly is a self-pickup food ordering app built in React Native using Expo for iOS and Android.",
+    "slug": "forkly",
     "platforms": [
       "ios",
       "android"
@@ -18,7 +18,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.pickup.vendor",
+      "bundleIdentifier": "com.forkly.app",
       "usesAppleSignIn": true,
       "infoPlist": {
         "NSUserTrackingUsageDescription": "Allow this app to collect app-related data that can be used for tracking you or your device."
@@ -45,7 +45,7 @@
     },
     "android": {
       "versionCode": 26,
-      "package": "com.pickup.vendor",
+      "package": "com.forkly.app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#febb2c"

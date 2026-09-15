@@ -33,8 +33,8 @@ work is done.
      change's `proposal.md` / `specs/**` / `tasks.md`.
    - `AGENTS.md` and the `.cursor/rules/*.mdc` (conventions + security rules).
    Note any fixed contracts the diff must not break (GraphQL operation/field
-   names, snake_case, `subscriptions-transport-ws` protocol, pickup-only model,
-   no `Enatega`/delivery/rider remnants).
+   names, snake_case, `subscriptions-transport-ws` protocol, self-pickup-only
+   model, no third-party brand/delivery/rider remnants).
 
 3. **Run lightweight verification as evidence (do not claim without output)**
 
@@ -57,8 +57,7 @@ work is done.
      Diff: <uncommitted changes | branch changes>
      Change Description: <one line on what this work does>
      Custom Instructions: Verify the diff conforms to the OpenSpec specs in
-     openspec/specs/ (GraphQL contract, pickup-only model, neutral "Pickup"
-     naming). Flag any spec drift, broken contract, or missing evidence, not
+     openspec/specs/ (GraphQL contract, self-pickup-only model, "Forkly" naming). Flag any spec drift, broken contract, or missing evidence, not
      just style. Include file paths and line numbers for each finding.
      ```
    - **security-review** — description exactly `Security Review`, prompt:

@@ -1,4 +1,4 @@
-appId: com.pickup.vendor
+appId: com.forkly.app
 name: Login flow end-to-end
 tags: [login, e2e]
 ---

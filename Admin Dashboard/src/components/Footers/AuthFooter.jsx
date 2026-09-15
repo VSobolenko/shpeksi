@@ -16,28 +16,14 @@ function AuthFooter(props) {
               <div className="copyright text-center text-xl-left text-muted">
                 © {t('2019-20')}{' '}
                 <a className="font-weight-bold ml-1" href={server_url}>
-                  Pickup
+                  Forkly
                 </a>
               </div>
             </Col>
             <Col xl="6">
               <Nav className="nav-footer justify-content-center justify-content-xl-end">
                 <NavItem>
-                  <NavLink href={server_url}>Pickup</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink
-                    href="https://ninjascode.com/our-team"
-                    target="_blank">
-                    {t('About Us')}
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink
-                    href="https://medium.com/@sharangohar"
-                    target="_blank">
-                    {t('Blog')}
-                  </NavLink>
+                  <NavLink href={server_url}>Forkly</NavLink>
                 </NavItem>
               </Nav>
             </Col>

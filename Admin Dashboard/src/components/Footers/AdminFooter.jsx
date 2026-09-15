@@ -17,7 +17,7 @@ function Footer(props) {
               href="/"
               rel="noopener noreferrer"
               target="_blank">
-              Pickup
+              Forkly
             </a>
           </div>
         </Col>
@@ -29,25 +29,7 @@ function Footer(props) {
                 href="/"
                 rel="noopener noreferrer"
                 target="_blank">
-                Pickup
-              </NavLink>
-            </NavItem>
-
-            <NavItem>
-              <NavLink
-                href="https://ninjascode.com/our-team"
-                rel="noopener noreferrer"
-                target="_blank">
-                {t('About Us')}
-              </NavLink>
-            </NavItem>
-
-            <NavItem>
-              <NavLink
-                href="https://medium.com/@sharangohar"
-                rel="noopener noreferrer"
-                target="_blank">
-                {t('Blog')}
+                Forkly
               </NavLink>
             </NavItem>
           </Nav>

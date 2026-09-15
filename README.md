@@ -1,18 +1,18 @@
-# Enatega — Food Ordering with Self-Pickup
+# Forkly — Food Ordering with Self-Pickup
 
 A white-label **food ordering platform with self-pickup**. Customers browse the
 menu, place an order, and pick it up at the restaurant — no delivery, no riders.
 
 This repository is a monorepo containing the customer mobile app, the merchant
-admin panel, and a self-hosted backend.
+admin panel, the public marketing site, and a self-hosted backend.
 
 ## Modules
 
 | Module             | Description                                              | Stack |
 | ------------------ | -------------------------------------------------------- | ----- |
 | `backend/`         | Self-hosted GraphQL API (HTTP + WebSocket)               | Python (FastAPI + Strawberry + Beanie/MongoDB + Redis) |
-| `Admin Dashboard/` | Merchant web panel for menu, orders, and settings        | React 18 + Vite + Apollo Client 3 |
-| `CustomerApp/`     | Customer mobile app for ordering and pickup              | React Native + Expo (SDK 50) + Apollo Client 3 |
+| `Admin Dashboard/` | Merchant web panel for menu, orders, and settings        | React 18 + Vite 5 + Apollo Client 3.8 |
+| `CustomerApp/`     | Customer mobile app for ordering and self-pickup         | React Native 0.86 + Expo SDK 57 + React 19 + Apollo Client 3.8 |
 | `Website/`         | Public marketing/landing site                            | React 18 + Vite + i18next |
 
 > The legacy rider/delivery module (`RiderApp/`) has been removed. The platform
@@ -94,7 +94,7 @@ Secrets are kept out of source control. Each module ships an `.env.example`:
 - `backend/.env.example` — MongoDB URI, JWT secret, SMTP, Stripe/PayPal, Firebase.
 - `Admin Dashboard/.env.example` — `VITE_SERVER_URL`, `VITE_WS_SERVER_URL`, Firebase.
 - `CustomerApp/.env.example` — `GRAPHQL_URL`, `WS_GRAPHQL_URL`, Stripe, Google
-  OAuth, Amplitude, Google Maps.
+  OAuth, Amplitude.
 - `Website/.env.example` — `VITE_CUSTOMER_APP_URL`, `VITE_ADMIN_URL` (CTA link
   targets).
 
@@ -105,9 +105,9 @@ by default.
 
 - **Backend**: FastAPI, Strawberry GraphQL, Beanie (MongoDB ODM), Redis, JWT,
   `subscriptions-transport-ws` + `graphql-transport-ws` dual-protocol WebSockets.
-- **Admin Dashboard**: React 18, Vite, Apollo Client 3, Chart.js 4, React Router 6.
-- **CustomerApp**: React Native, Expo SDK 50, React Navigation 6, Apollo Client 3,
-  i18n-js.
+- **Admin Dashboard**: React 18, Vite 5, Apollo Client 3.8, Chart.js 4, React Router 6.
+- **CustomerApp**: React Native 0.86, Expo SDK 57, React 19, React Navigation 7,
+  Apollo Client 3.8, i18n-js.
 
 ## GraphQL contract
 

@@ -8,7 +8,7 @@ import { alignment } from '../../utils/alignment'
 import { ICONS_NAME, NAVIGATION_SCREEN } from '../../utils/constant'
 import { scale } from '../../utils/scaling'
 import { CustomIcon } from '../CustomIcon/index'
-import PickupImage from '../PickupImage/PickupImage'
+import ForklyImage from '../ForklyImage/ForklyImage'
 import TextDefault from '../Text/TextDefault/TextDefault'
 import TextError from '../Text/TextError/TextError'
 import TextLine from '../Text/TextLine/TextLine'
@@ -95,7 +95,7 @@ const ActiveOrders = ({
         >
           <View style={styles.container}>
             <View style={styles.imgContainer}>
-              <PickupImage
+              <ForklyImage
                 imgStyle={styles.imgResponsive}
                 imgSource={{ uri: item?.items[0]?.food?.img_url }}
                 spinnerProps={{ style: styles.loadingView }}

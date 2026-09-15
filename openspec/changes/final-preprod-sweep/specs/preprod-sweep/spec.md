@@ -1,6 +1,6 @@
 ## Purpose
 
-Defines the acceptance criteria for the final pre-release verification sweep of the entire Pickup system (backend, Admin Dashboard, and CustomerApp) and the mandatory fix-loop applied to every finding.
+Defines the acceptance criteria for the final pre-release verification sweep of the entire Forkly system (backend, Admin Dashboard, and CustomerApp) and the mandatory fix-loop applied to every finding.
 
 ## ADDED Requirements
 
@@ -13,7 +13,7 @@ The backend SHALL pass its automated test suite, byte-compile cleanly, and pass 
 - **WHEN** `python -m pytest -q` and `python -m compileall -q app tests` run from `backend/`
 - **THEN** both commands exit successfully with no errors
 
-#### Scenario: Pickup smoke test passes
+#### Scenario: Self-pickup smoke test passes
 
 - **WHEN** the pickup smoke test runs against the running backend
 - **THEN** the full lifecycle (admin login, catalog create, place order, ACCEPTED → READY → COMPLETED transitions, and realtime subscriptions) passes
@@ -57,12 +57,12 @@ Placing an order, registering a customer, and admin catalog/coupon changes SHALL
 
 ### Requirement: Branding, localization, and secrets hygiene
 
-The system SHALL use "Pickup" branding, the `ORD` order prefix, and the `pickup` database; SHALL contain no "Enatega" or delivery/rider artifacts; SHALL keep all six CustomerApp translations complete; and SHALL contain no committed secrets.
+The system SHALL use "Forkly" branding, the `FRK` order prefix, and the `forkly` database; SHALL contain no third-party branding or delivery/rider artifacts; SHALL keep all six CustomerApp translations complete; and SHALL contain no committed secrets.
 
 #### Scenario: Branding audit
 
 - **WHEN** the codebase and runtime UI are searched
-- **THEN** no "Enatega", rider, courier, or delivery artifacts remain; orders use the `ORD-` prefix; and the database is named `pickup`
+- **THEN** no third-party branding, rider, courier, or delivery artifacts remain; orders use the `FRK-` prefix; and the database is named `forkly`
 
 #### Scenario: Localization completeness
 

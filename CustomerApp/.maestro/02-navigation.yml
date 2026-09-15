@@ -1,4 +1,4 @@
-appId: com.pickup.vendor
+appId: com.forkly.app
 name: Drawer navigation lists all sections
 tags: [navigation, e2e]
 ---

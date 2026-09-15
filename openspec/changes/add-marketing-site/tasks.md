@@ -34,6 +34,6 @@
 ## 7. Build, audit, and docs
 
 - [ ] 7.1 Run the production build. Verify `npm run build` completes with no errors and produces `dist/`.
-- [ ] 7.2 Audit the site for pickup-only, white-label, merchant-focused branding. Verify no "Enatega", delivery, rider, or courier references remain, and no consumer "order your food" framing or single-restaurant menu showcase.
+- [ ] 7.2 Audit the site for self-pickup-only, white-label, merchant-focused branding. Verify no third-party branding, delivery, rider, or courier references remain, and no consumer "order your food" framing or single-restaurant menu showcase.
 - [ ] 7.3 Do a runtime UI sweep: load the site in each language (including Arabic RTL and Russian) and at mobile + desktop widths, confirming no blank screens, missing translations, or dead navigation.
 - [ ] 7.4 Update the root `README.md` to document the `Website/` module and its run/build commands.

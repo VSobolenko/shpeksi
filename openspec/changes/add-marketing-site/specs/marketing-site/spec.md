@@ -1,15 +1,15 @@
 ## Purpose
 
-The public marketing website for the Pickup ordering platform, positioned business-to-business: it sells the white-label self-pickup ordering platform to restaurants, cafés, and merchants who want to launch their own branded ordering app, across seven languages.
+The public marketing website for the Forkly ordering platform, positioned business-to-business: it sells the white-label self-pickup ordering platform to restaurants, cafés, and merchants who want to launch their own branded ordering app, across seven languages.
 
 ## ADDED Requirements
 
 ### Requirement: Business-to-business marketing site
-The product SHALL include a public marketing website that advertises the Pickup white-label ordering platform to restaurants and merchants, positioning it as a way to launch their own branded self-pickup ordering app.
+The product SHALL include a public marketing website that advertises the Forkly white-label ordering platform to restaurants and merchants, positioning it as a way to launch their own branded self-pickup ordering app.
 
 #### Scenario: Merchant reaches the home page
 - **WHEN** a restaurant owner or merchant opens the site root
-- **THEN** the site renders a hero section with the Pickup platform name, a merchant-focused value proposition ("launch your own pickup ordering app"), and a call-to-action to request a demo or get started
+- **THEN** the site renders a hero section with the Forkly platform name, a merchant-focused value proposition ("launch your own pickup ordering app"), and a call-to-action to request a demo or get started
 
 ### Requirement: Merchant-focused landing sections
 The site SHALL present a coherent merchant-focused content set: hero, "how it works" for the merchant (set up menu → receive orders → hand over at pickup), platform features, a "for your customers" section, about, FAQ for restaurant owners, contact, and a get-started/demo CTA.
@@ -25,12 +25,12 @@ The site SHALL describe the platform as a white-label solution — the merchant'
 - **WHEN** the site content is reviewed
 - **THEN** the copy sells the platform to merchants (branded app, menu/order management, no delivery overhead), with no consumer "order your food" messaging and no single restaurant's menu showcase
 
-### Requirement: Pickup-only branding
-The site SHALL describe the product as a pickup-only service and SHALL NOT mention delivery, riders, couriers, or the "Enatega" name (any casing) in any content or asset.
+### Requirement: Self-pickup-only branding
+The site SHALL describe the product as a self-pickup-only service and SHALL NOT mention delivery, riders, couriers, or third-party branding in any content or asset.
 
 #### Scenario: No delivery or legacy branding
 - **WHEN** the site content and assets are reviewed
-- **THEN** no delivery-, rider-, courier-, or "Enatega"-related text or imagery is present
+- **THEN** no delivery-, rider-, courier-, or third-party-branding-related text or imagery is present
 
 ### Requirement: Multilingual content
 The site SHALL support seven languages — `en`, `ar`, `de`, `fr`, `km`, `ru`, `zh` — and every user-facing string SHALL be available in all seven languages.

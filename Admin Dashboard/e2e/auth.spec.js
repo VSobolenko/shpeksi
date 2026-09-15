@@ -32,7 +32,7 @@ test.describe('Authentication flow', () => {
     // After login the app stores the token and lands on the dashboard.
     await page.waitForURL('**/#/admin/dashboard')
     await expect(page.getByText(/Total Orders/)).toBeVisible()
-    const stored = await page.evaluate(() => localStorage.getItem('user-pickup'))
+    const stored = await page.evaluate(() => localStorage.getItem('user-forkly'))
     expect(stored, 'token should be persisted after login').toBeTruthy()
 
     // Logout via the navbar user dropdown (toggle is the avatar link).
@@ -40,7 +40,7 @@ test.describe('Authentication flow', () => {
     await page.locator('#navbar-main .dropdown-item', { hasText: 'Logout' }).click()
     await page.waitForURL('**/#/auth/login')
     await expect(page.getByText('Sign in credentials')).toBeVisible()
-    const cleared = await page.evaluate(() => localStorage.getItem('user-pickup'))
+    const cleared = await page.evaluate(() => localStorage.getItem('user-forkly'))
     expect(cleared, 'token should be cleared after logout').toBeNull()
 
     expectNoUnhandledErrors(getErrors())

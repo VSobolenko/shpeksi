@@ -16,7 +16,7 @@ export const zh = {
   description3: '年龄不会减少从冰锥中舀出一勺冰淇淋的极度失望',
   getStarted: '开始吧！',
   welcome:
-    '欢迎来到Pickup，有时您需要的只是爱。但是偶尔会有点食物不会受到伤害。',
+    '欢迎来到Forkly，有时您需要的只是爱。但是偶尔会有点食物不会受到伤害。',
   loginBtn: '登录',
   registerBtn: '寄存器',
   name: '名称',
@@ -142,7 +142,7 @@ export const zh = {
   userInfoUpdated: '用户信息已更新',
   nameReq: '需要姓名',
   minWords: '最少11个字符，最多15个字符',
-  rightsReserved: '版权所有，Pickup保留所有权利',
+  rightsReserved: '版权所有，Forkly保留所有权利',
   changePass: '更改密码',
   currentPass: '当前密码',
   passReq: '需要密码',

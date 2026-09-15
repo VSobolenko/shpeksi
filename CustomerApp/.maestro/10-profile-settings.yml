@@ -1,4 +1,4 @@
-appId: com.pickup.vendor
+appId: com.forkly.app
 name: Profile, Settings and Addresses while logged in
 tags: [account, e2e]
 ---

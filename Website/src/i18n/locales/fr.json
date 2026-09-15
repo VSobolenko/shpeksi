@@ -1,5 +1,5 @@
 {
-  "brand": "Pickup",
+  "brand": "Forkly",
   "nav": {
     "howItWorks": "Comment ça marche",
     "features": "Plateforme",
@@ -13,7 +13,7 @@
   "hero": {
     "eyebrow": "Pour restaurants & cafés",
     "title": "Lancez votre propre application de commande à emporter",
-    "subtitle": "Pickup est une plateforme de commande en marque blanche qui offre à votre restaurant une application à votre marque pour le retrait en magasin — sans flotte, sans surprise de commission.",
+    "subtitle": "Forkly est une plateforme de commande en marque blanche qui offre à votre restaurant une application à votre marque pour le retrait en magasin — sans flotte, sans surprise de commission.",
     "primaryCta": "Demander une démo",
     "secondaryCta": "Comment ça marche"
   },
@@ -52,8 +52,8 @@
   },
   "about": {
     "eyebrow": "À propos",
-    "title": "Pickup en bref",
-    "text": "Pickup est une plateforme de commande en marque blanche pour restaurants et cafés. Nous vous offrons une application à votre marque pour le retrait en magasin — pour servir plus de monde, plus vite, sans la charge d'une flotte.",
+    "title": "Forkly en bref",
+    "text": "Forkly est une plateforme de commande en marque blanche pour restaurants et cafés. Nous vous offrons une application à votre marque pour le retrait en magasin — pour servir plus de monde, plus vite, sans la charge d'une flotte.",
     "points": [
       { "title": "Lancement rapide", "text": "Mettez votre application en ligne en quelques jours, pas en plusieurs mois." },
       { "title": "Retrait uniquement", "text": "Le retrait en magasin signifie aucune flotte à gérer et aucune commission par commande que vous n'avez pas acceptée." },
@@ -65,8 +65,8 @@
     "title": "Questions fréquentes",
     "subtitle": "Réponses pour les restaurateurs.",
     "items": [
-      { "question": "Qu'est-ce que Pickup ?", "answer": "Pickup est une plateforme de commande en marque blanche qui offre à votre restaurant une application à votre marque pour les commandes à emporter." },
-      { "question": "Pickup est-il uniquement en retrait ?", "answer": "Oui. C'est uniquement du retrait en magasin — les clients commandent à l'avance et récupèrent en magasin." },
+      { "question": "Qu'est-ce que Forkly ?", "answer": "Forkly est une plateforme de commande en marque blanche qui offre à votre restaurant une application à votre marque pour les commandes à emporter." },
+      { "question": "Forkly est-il uniquement en retrait ?", "answer": "Oui. C'est uniquement du retrait en magasin — les clients commandent à l'avance et récupèrent en magasin." },
       { "question": "Ai-je besoin de compétences techniques ?", "answer": "Non. Vous gérez votre menu et vos commandes depuis un tableau de bord simple." },
       { "question": "Puis-je utiliser ma propre marque ?", "answer": "Oui. L'application utilise votre logo, vos couleurs et votre nom." },
       { "question": "Quels paiements sont pris en charge ?", "answer": "Espèces, carte et PayPal." },
@@ -78,7 +78,7 @@
     "title": "Contactez-nous",
     "subtitle": "Des questions ou prêt à vous lancer ? Nous serions ravis de vous lire.",
     "emailLabel": "E-mail",
-    "email": "hello@pickup.example",
+    "email": "hello@forkly.example",
     "phoneLabel": "Téléphone",
     "phone": "+1 (555) 010-0100",
     "addressLabel": "Adresse",
@@ -87,7 +87,7 @@
   "getStarted": {
     "eyebrow": "Commencer",
     "title": "Prêt à lancer votre application de commande ?",
-    "subtitle": "Demandez une démo et découvrez comment Pickup peut faire grandir votre restaurant.",
+    "subtitle": "Demandez une démo et découvrez comment Forkly peut faire grandir votre restaurant.",
     "primaryCta": "Demander une démo",
     "secondaryCta": "Ouvrir le panneau marchand",
     "note": "Déjà marchand ? Gérez votre menu et vos commandes depuis le panneau."

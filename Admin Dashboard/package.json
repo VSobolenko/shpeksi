@@ -1,7 +1,7 @@
 {
-  "name": "pickup-dashboard",
+  "name": "forkly-dashboard",
   "version": "3.0.0",
-  "description": "Pickup dashboard",
+  "description": "Forkly dashboard",
   "private": true,
   "scripts": {
     "dev": "vite",

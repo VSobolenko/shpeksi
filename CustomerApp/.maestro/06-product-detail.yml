@@ -1,4 +1,4 @@
-appId: com.pickup.vendor
+appId: com.forkly.app
 name: Product detail and add to cart
 tags: [product, cart, e2e]
 ---

@@ -38,7 +38,7 @@ async function authenticate (page, request) {
   const token = await getAdminToken(request)
   await page.addInitScript(tokenValue => {
     localStorage.setItem(
-      'user-pickup',
+      'user-forkly',
       JSON.stringify({ token: tokenValue })
     )
   }, token)

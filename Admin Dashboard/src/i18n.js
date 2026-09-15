@@ -14,7 +14,7 @@ i18n.use(initReactI18next).init({
     km,
     zh
   },
-  lng: localStorage.getItem('pickup-language') || 'en',
+  lng: localStorage.getItem('forkly-language') || 'en',
   fallbackLng: 'en',
   debug: true,
   interpolation: {

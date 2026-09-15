@@ -22,7 +22,7 @@ jobs:
       - uses: docker/metadata-action@v5
         id: meta
         with:
-          images: ghcr.io/${{ github.repository }}/pickup-backend
+          images: ghcr.io/${{ github.repository }}/forkly-backend
           tags: |
             type=ref,event=tag
             type=sha

@@ -26,13 +26,13 @@ const LOGIN = gql`
 `
 
 const Login = props => {
-  const [email, setEmail] = useState('admin@example.com')
-  const [password, setPassword] = useState('change-me')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [emailError, setEmailError] = useState(null)
   const [passwordError, setPasswordError] = useState(null)
   const [error, setError] = useState(null)
   const [redirectToReferrer, setRedirectToReferrer] = useState(
-    !!localStorage.getItem('user-pickup')
+    !!localStorage.getItem('user-forkly')
   )
 
   const onBlur = (event, field) => {
@@ -126,7 +126,7 @@ const Login = props => {
                   mutation={LOGIN}
                   onCompleted={data => {
                     localStorage.setItem(
-                      'user-pickup',
+                      'user-forkly',
                       JSON.stringify(data.adminLogin)
                     )
                     setRedirectToReferrer(true)

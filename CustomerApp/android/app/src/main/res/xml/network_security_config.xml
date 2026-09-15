@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  Demo / local-development configuration.
+
+  The Forkly backend runs over plain HTTP on the developer machine.
+  `10.0.2.2` is the host machine as seen from the Android emulator; the
+  other entries cover a real device on the same LAN.
+
+  Android 9 (API 28) and newer block cleartext (non-TLS) traffic by default,
+  which makes every GraphQL call fail with `UnknownServiceException:
+  CLEARTEXT communication not permitted`. Cleartext is therefore permitted
+  ONLY for the hosts listed below - all other traffic still requires HTTPS.
+
+  Production replaces this with a real HTTPS backend (see backend/Caddyfile).
+-->
 <network-security-config>
-    <base-config cleartextTrafficPermitted="false" />
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="false">10.0.2.2</domain>
-        <domain includeSubdomains="false">localhost</domain>
-        <domain includeSubdomains="false">127.0.0.1</domain>
+        <domain includeSubdomains="true">10.0.2.2</domain>
+        <domain includeSubdomains="true">192.168.43.236</domain>
+        <domain includeSubdomains="true">localhost</domain>
+        <domain includeSubdomains="true">127.0.0.1</domain>
     </domain-config>
 </network-security-config>

@@ -5,8 +5,8 @@ import pytest
 from app.config import Settings
 
 
-def test_default_db_name_is_pickup():
-    assert Settings().mongodb_db_name == "pickup"
+def test_default_db_name_is_forkly():
+    assert Settings().mongodb_db_name == "forkly"
 
 
 def test_development_allows_placeholder_secrets():
@@ -36,16 +36,16 @@ def test_production_accepts_real_secrets(monkeypatch):
     monkeypatch.setenv("JWT_SECRET", "a-real-secret-value")
     monkeypatch.setenv("ADMIN_PASSWORD", "a-real-password-value")
     monkeypatch.setenv(
-        "MONGODB_URL", "mongodb://pickup:secret@mongo:27017"
+        "MONGODB_URL", "mongodb://forkly:secret@mongo:27017"
     )
     monkeypatch.setenv("REDIS_URL", "redis://:secret@redis:6379/0")
     Settings().validate_production_secrets()
 
 
 def test_url_has_real_password():
-    assert Settings._url_has_real_password("mongodb://pickup:secret@host:27017")
+    assert Settings._url_has_real_password("mongodb://forkly:secret@host:27017")
     assert Settings._url_has_real_password("redis://:secret@host:6379/0")
-    assert not Settings._url_has_real_password("mongodb://pickup:change-me@host:27017")
+    assert not Settings._url_has_real_password("mongodb://forkly:change-me@host:27017")
     assert not Settings._url_has_real_password("mongodb://localhost:27017")
     assert not Settings._url_has_real_password("redis://:change-me@host:6379/0")
     assert not Settings._url_has_real_password("")

@@ -102,7 +102,7 @@ The CustomerApp SHALL reference `googleServicesFile` only when the file exists o
 - **THEN** `googleServicesFile` is omitted, and no Google services key is committed
 
 ### Requirement: No delivery or vendor remnants
-The CustomerApp SHALL remove the "delivery address" `NSLocationWhenInUseUsageDescription` and any Enatega/rider/courier remnants, EXCEPT the fixed snake_case field names of the GraphQL contract.
+The CustomerApp SHALL remove the "delivery address" `NSLocationWhenInUseUsageDescription` and any legacy-brand/rider/courier remnants, EXCEPT the fixed snake_case field names of the GraphQL contract.
 
 #### Scenario: No delivery usage string
 - **WHEN** the iOS configuration is inspected
@@ -110,7 +110,7 @@ The CustomerApp SHALL remove the "delivery address" `NSLocationWhenInUseUsageDes
 
 #### Scenario: No vendor branding remnants
 - **WHEN** the source is searched
-- **THEN** no Enatega/rider/courier string remains outside the fixed GraphQL contract fields
+- **THEN** no legacy-brand/rider/courier string remains outside the fixed GraphQL contract fields
 
 ### Requirement: Stale patch removal
 The CustomerApp SHALL delete the outdated `patches/@expo+cli+0.17.13.patch`.

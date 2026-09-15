@@ -1,110 +1,140 @@
 # AGENTS.md — Project context for AI agents
 
 > Single source of truth for how this repository is structured, built, and the
-> conventions it follows. Read this before making changes. The full refactor
-> roadmap lives in `AGENT_PROMPT.md`.
+> conventions it follows. Read this before making changes. The main English doc
+> is `README.md`; the Russian onboarding guide is `README_RU.md`.
 
 ## Overview
 
-**Enatega Single Vendor** — a white-label food-ordering / food-delivery solution.
-The repo contains the **frontends only**; the backend/API is proprietary and is
-**not** in this repo (a replacement is planned, see Roadmap).
+**Forkly** — a white-label food-ordering platform with **self-pickup**. Customers
+browse the menu, place an order, and collect it at the store; there is no delivery
+and no rider functionality.
 
-Three frontend modules (a monorepo):
+The repo is a monorepo containing all four modules:
 
-- `Admin Dashboard/` — restaurant/merchant web panel (React).
-- `CustomerApp/` — customer mobile app (React Native + Expo).
-- `RiderApp/` — courier mobile app (React Native + Expo). **Slated for removal.**
+- `backend/` — Python GraphQL API (FastAPI + Strawberry + Beanie/MongoDB + Redis).
+- `Admin Dashboard/` — React merchant web panel.
+- `CustomerApp/` — React Native + Expo customer app.
+- `Website/` — static business-to-business marketing/landing site.
 
-All modules talk to a GraphQL server over **HTTP + WebSocket** (subscriptions).
+All clients talk to the GraphQL server over **HTTP + WebSocket** (subscriptions).
+The `RiderApp/` module and every delivery/rider feature have been removed — the
+product is self-pickup only.
 
 ## Repository layout
 
 ```
-Admin Dashboard/     React admin panel (react-scripts / CRA)
-CustomerApp/         React Native customer app (Expo SDK 47)
-RiderApp/            React Native courier app (Expo SDK 47)
+backend/             Python GraphQL API (app/{graphql,models,services,integrations}, tests, scripts)
+Admin Dashboard/     React admin panel (Vite) — src/, e2e/
+CustomerApp/         React Native customer app (Expo) — src/, translations/, .maestro/
+Website/             Static marketing/landing site (Vite + React 18) — src/i18n/locales/
 assets/              README screenshots and logos
 contributingGuides/  contributor guide
-backend/             (does NOT exist yet — planned Python backend)
-AGENT_PROMPT.md      roadmap/spec: write backend, remove delivery, modernize
+openspec/            OpenSpec change proposals and synced specs
+.cursor/             rules, skills, commands, hooks, mcp.json
+README.md            main English doc
+README_RU.md         Russian onboarding doc
 ```
 
 ## Tech stack
 
-| Module          | Stack |
-|-----------------|-------|
-| Admin Dashboard | React 16.8 (legacy), react-scripts 2.1.8 (CRA), reactstrap, Apollo Client v2 (`apollo-client` + `apollo-link` + `react-apollo`), `subscriptions-transport-ws`, Firebase 7, chart.js 2, i18next |
-| CustomerApp     | React Native 0.70.5, Expo SDK 47, React Navigation 6, Apollo Client v2, `subscriptions-transport-ws` 0.11, i18n-js, react-native-maps |
-| RiderApp        | React Native 0.70.8, Expo SDK 47, React Navigation 5, Apollo Client v2, i18next |
+| Module             | Stack |
+|--------------------|-------|
+| `backend/`         | Python 3.11+ — FastAPI, Strawberry GraphQL, Beanie/MongoDB, Redis, JWT |
+| `Admin Dashboard/` | React 18, Vite 5, `@apollo/client` 3.8, reactstrap/MUI 4, Chart.js 4, React Router 6, i18next |
+| `CustomerApp/`     | React Native 0.86, Expo SDK 57, React 19, `@apollo/client` 3.8, React Navigation 7, i18n-js |
+| `Website/`         | Vite + React 18, i18next, 7 locales (`en`, `ar`, `de`, `fr`, `km`, `ru`, `zh`) |
 
-Frontends are plain JavaScript (ES modules) — **no TypeScript**.
+The frontends are plain JavaScript (ES modules) — **no TypeScript**; the backend
+is Python.
 
 ## How to run
 
-Prereqs: Node.js. The repo currently documents Node 14–16 (legacy); the
-modernization target is Node 18/20 LTS.
+Prereqs: **Node.js 18/20 LTS** and **Python 3.11+** (plus MongoDB, and optionally
+Redis).
 
 ```bash
-# Admin Dashboard
-cd "Admin Dashboard" && npm install && npm start      # CRA dev server
+# Backend
+cd backend && pip install -r requirements.txt
+cp .env.example .env          # fill in MongoDB/Redis/secret values
+uvicorn app.main:app --reload --port 8000
+
+# Admin Dashboard (Vite dev server)
+cd "Admin Dashboard" && npm install && npm run dev
 
 # CustomerApp
 cd CustomerApp && npm install && npm start            # expo start
 
-# RiderApp (deprecated)
-cd RiderApp && npm install && npm start
+# Website
+cd Website && npm install && npm run dev              # Vite dev server
 ```
 
-Env: Admin reads `REACT_APP_*` from `.env.*` (see `.env.example`); CustomerApp
-reads `environment.js`. The apps currently point at the hosted demo GraphQL
-(`https://enatega-singlevendor.up.railway.app/graphql`).
+Env: the backend reads `backend/.env` (see `.env.example`); Admin reads `VITE_*`
+from `.env.*` (see `.env.example`); CustomerApp reads `.env`; Website reads
+`VITE_*`. The frontends point at the self-hosted backend
+(`http://localhost:8000/graphql`) by default.
 
 ## Code conventions
 
 - **Style**: StandardJS (no semicolons, single quotes, 2-space indent) +
   `plugin:react/recommended`, with `space-before-function-paren: never` and
   `react/prop-types: 0`. Prettier uses `prettier-config-standard`.
-- Legacy files are inconsistent (some double quotes / semicolons). Match the
-  *intended* StandardJS style, not the accidental inconsistencies.
 - Screens live in `src/screens/<Screen>/`, reusable UI in
-  `src/components/<Group>/<Component>/`. Colocate a `styles.js` (`StyleSheet.create`)
-  in RN, or SCSS under `src/assets/scss/` in Admin.
-- i18n: CustomerApp uses `i18n-js` with keys in `src/translations/*.js`
-  (en, ar, de, fr, km, zh). Every user-facing string must be added to **all** files.
+  `src/components/<Group>/<Component>/`. Colocate a `styles.js`
+  (`StyleSheet.create`) in RN, or CSS/SCSS in Admin/Website.
+- i18n: CustomerApp uses `i18n-js` with keys in
+  `CustomerApp/translations/*.js` (en, ar, de, fr, km, zh). Every user-facing
+  string must be added to **all** files. Website uses `i18next` with locale JSON
+  in `Website/src/i18n/locales/` (7 locales; `ar` is RTL).
 
 ## GraphQL contract (important)
 
-- Operations are template-literal strings exported from `src/apollo/server.js`
-  (Admin) and `src/apollo/*.js` (Customer/Rider).
-- Field/operation names are **fixed by the frontend** — a backend must implement
-  them 1:1. Do not invent or rename fields.
+- Operations are template-literal strings exported from
+  `Admin Dashboard/src/apollo/server.js` and `CustomerApp/src/apollo/*.js`.
+- Field/operation names are **fixed by the frontends** — the backend must
+  implement them 1:1. Do not invent or rename fields. Fields are snake_case
+  (`order_amount`, `payment_status`); ids are `_id`.
 - Auth: JWT via `Authorization: Bearer <token>` header.
-- Subscriptions use the **legacy `subscriptions-transport-ws`** protocol
-  (`apollo-link-ws`), NOT `graphql-transport-ws`. Critical compatibility point.
+- The endpoint is `/graphql` for both HTTP and WebSocket. The client subscriptions
+  use the **legacy `subscriptions-transport-ws`** protocol
+  (`apollo-link-ws`/`WebSocketLink`); the backend also supports the newer
+  `graphql-transport-ws` protocol on the same endpoint.
 
-## Security (critical)
+## Security
 
-Secrets are currently hardcoded in several places. Do NOT commit new secrets:
+No secrets are committed. Put credentials in `.env` / `.env.example`:
 
-- `CustomerApp/environment.js` — Stripe / Google OAuth / Amplitude keys.
-- `Admin Dashboard/src/index.js` — Firebase config + VAPID key.
-- `CustomerApp/app.json`, `RiderApp/app.json` — Google Maps API key.
+- `backend/.env.example` — MongoDB/Redis credentials, JWT secret, admin bootstrap
+  login, CORS origins, `SITE_ADDRESS`, Firebase service account (optional; push
+  only), Google/Facebook OAuth ids. There is **no** SMTP or payment-provider
+  secret here: the Stripe **secret key** is saved at runtime through the admin
+  `saveStripeConfiguration` mutation and stored in the DB configuration.
+- `Admin Dashboard/.env.example` — `VITE_SERVER_URL`, `VITE_WS_SERVER_URL`,
+  Cloudinary upload folders (menu images), Firebase (optional; browser push).
+- `CustomerApp/.env.example` — `GRAPHQL_URL`, `WS_GRAPHQL_URL`, Stripe
+  **publishable** key, Google OAuth, Amplitude. (No maps/location keys — the app
+  has no maps dependency.)
 
-Put credentials in `.env` / `.env.example`. `.env`, `google-services*.json`, and
-`google-service-account.json` must stay git-ignored.
+`.env`, `google-services*.json`, and `google-service-account.json` must stay
+git-ignored. Never put the Stripe secret key (`sk_*`) in env or in a client app —
+only the publishable key (`pk_*`) belongs in `CustomerApp`.
 
-## Current state & roadmap
+## Current state
 
-Legacy codebase mid-refactor. The full plan is in `AGENT_PROMPT.md`:
+The product is branded **Forkly** end-to-end and is production-oriented:
 
-1. Write a Python backend (`backend/`): FastAPI + Strawberry GraphQL + Beanie
-   (MongoDB) + Redis, serving `/graphql` (HTTP + WS) matching the frontend contract.
-2. Remove delivery: delete `RiderApp/`, strip rider/delivery UI and fields from
-   `CustomerApp` and `Admin Dashboard`.
-3. Cleanup: remove secrets, dead code, unused dependencies.
-4. Modernize: React 18 + Vite (Admin), `@apollo/client` 3.x, Expo SDK 50+
-   (CustomerApp), update README.
+1. **Backend** (`backend/`) — implemented: FastAPI + Strawberry GraphQL +
+   Beanie/MongoDB + Redis, serving `/graphql` (HTTP + dual-protocol WebSocket)
+   matching the frontend contract.
+2. **Admin Dashboard** — React 18 + Vite 5 + `@apollo/client` 3.8 with Playwright
+   E2E tests.
+3. **CustomerApp** — Expo SDK 57 / React Native 0.86 / React 19 with Maestro E2E flows.
+4. **Website** — Vite + React 18 B2B marketing site with 7 locales.
+5. **Delivery removed** — `RiderApp/` and all rider/delivery code are gone; the
+   model is self-pickup only.
+
+Remaining work is tracked in OpenSpec (`openspec/changes/`) and summarized at the
+end of `README_RU.md`.
 
 ## AI tooling (skills, MCP, rules, hooks)
 
@@ -122,7 +152,7 @@ Installed into `.agents/skills/` (Cursor reads this directory), locked by
   expo-upgrade, expo-ui, expo-dev-client.
 
 Project-specific skills live in `.cursor/skills/` (graphql-contract,
-enatega-i18n, run-the-project).
+forkly-i18n, run-the-project).
 
 Reinstall/update with:
 ```bash
@@ -164,7 +194,7 @@ Framework rules were taken from the
 (`react-native-expo`, `graphql-apollo-client`, `python-fastapi`,
 `javascript-code-quality`, `security-devsecops`). Two project-specific rules are
 authored here: `project-conventions.mdc` (facts that override generic guidance)
-and `security-secrets.mdc` (exact locations of hardcoded secrets).
+and `security-secrets.mdc` (secret-handling rules).
 
 ### Hooks (`.cursor/hooks.json`)
 
@@ -202,7 +232,7 @@ Role mapping (do not reimplement — invoke):
 
 ## Working rules for agents
 
-- Preserve the GraphQL contract unless the roadmap says otherwise (and keep both
+- Preserve the GraphQL contract unless the specs say otherwise (and keep both
   sides in sync if you change it).
 - Never commit secrets; use `.env` / `.env.example`.
 - Keep commands/scripts cross-platform (the environment is Windows/PowerShell).

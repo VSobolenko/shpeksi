@@ -1,5 +1,5 @@
 {
-  "brand": "Pickup",
+  "brand": "Forkly",
   "nav": {
     "howItWorks": "如何使用",
     "features": "平台",
@@ -13,7 +13,7 @@
   "hero": {
     "eyebrow": "面向餐厅与咖啡馆",
     "title": "推出您自己的到店自取下单应用",
-    "subtitle": "Pickup 是一个白标下单平台，为您的餐厅提供一个专属品牌的自取应用——无需自建车队，也没有意外的佣金。",
+    "subtitle": "Forkly 是一个白标下单平台，为您的餐厅提供一个专属品牌的自取应用——无需自建车队，也没有意外的佣金。",
     "primaryCta": "预约演示",
     "secondaryCta": "了解如何使用"
   },
@@ -52,8 +52,8 @@
   },
   "about": {
     "eyebrow": "关于我们",
-    "title": "Pickup 简介",
-    "text": "Pickup 是一个面向餐厅和咖啡馆的白标下单平台。我们为您提供专属品牌的自取下单应用——让您服务更多人、更快，且无需管理自建车队的负担。",
+    "title": "Forkly 简介",
+    "text": "Forkly 是一个面向餐厅和咖啡馆的白标下单平台。我们为您提供专属品牌的自取下单应用——让您服务更多人、更快，且无需管理自建车队的负担。",
     "points": [
       { "title": "快速上线", "text": "在几天内上线您的品牌应用，而不是几个月。" },
       { "title": "仅限自取", "text": "到店自取意味着无需管理车队，也没有您未同意的按单佣金。" },
@@ -65,8 +65,8 @@
     "title": "常见问题",
     "subtitle": "为餐厅经营者准备的解答。",
     "items": [
-      { "question": "什么是 Pickup？", "answer": "Pickup 是一个白标下单平台，为您的餐厅提供专属品牌的自取下单应用。" },
-      { "question": "Pickup 是否仅支持自取？", "answer": "是的。它仅支持到店自取——顾客提前下单并在店内取餐。" },
+      { "question": "什么是 Forkly？", "answer": "Forkly 是一个白标下单平台，为您的餐厅提供专属品牌的自取下单应用。" },
+      { "question": "Forkly 是否仅支持自取？", "answer": "是的。它仅支持到店自取——顾客提前下单并在店内取餐。" },
       { "question": "我需要技术技能吗？", "answer": "不需要。您可以通过简单的后台管理菜单和订单。" },
       { "question": "我可以使用自己的品牌吗？", "answer": "可以。应用使用您的标志、配色和名称。" },
       { "question": "支持哪些支付方式？", "answer": "现金、银行卡和 PayPal。" },
@@ -78,7 +78,7 @@
     "title": "联系我们",
     "subtitle": "有问题或准备上线？我们很乐意倾听。",
     "emailLabel": "邮箱",
-    "email": "hello@pickup.example",
+    "email": "hello@forkly.example",
     "phoneLabel": "电话",
     "phone": "+1 (555) 010-0100",
     "addressLabel": "地址",
@@ -87,7 +87,7 @@
   "getStarted": {
     "eyebrow": "开始使用",
     "title": "准备好推出您的下单应用了吗？",
-    "subtitle": "预约演示，看看 Pickup 如何助力您的餐厅发展。",
+    "subtitle": "预约演示，看看 Forkly 如何助力您的餐厅发展。",
     "primaryCta": "预约演示",
     "secondaryCta": "打开商家后台",
     "note": "已经是商家？在后台管理您的菜单和订单。"

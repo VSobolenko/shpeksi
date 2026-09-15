@@ -18,7 +18,7 @@ export const fr = {
     "L'âge ne diminue en rien l'extrême déception d'avoir une boule de glace tombée du cône.",
   getStarted: 'Commencer!',
   welcome:
-    "Bienvenue dans Pickup, parfois tout ce dont vous avez besoin est de l'amour. Mais un peu de nourriture maintenant et ensuite ne fait pas mal.",
+    "Bienvenue dans Forkly, parfois tout ce dont vous avez besoin est de l'amour. Mais un peu de nourriture maintenant et ensuite ne fait pas mal.",
   loginBtn: "S'identifier",
   registerBtn: 'registre',
   name: 'prénom',
@@ -150,7 +150,7 @@ export const fr = {
   userInfoUpdated: "Informations de l'utilisateur mises à jour",
   nameReq: 'Nom requis',
   minWords: 'Minimum 11 et maximum 15 caractères autorisés',
-  rightsReserved: 'Tous les droits sont réservés par Pickup',
+  rightsReserved: 'Tous les droits sont réservés par Forkly',
   changePass: 'Changer le mot de passe',
   currentPass: 'Mot de passe actuel',
   passReq: 'Mot de passe requis',

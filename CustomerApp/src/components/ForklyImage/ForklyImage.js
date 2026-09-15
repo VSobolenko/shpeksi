@@ -8,7 +8,7 @@ import useStyle from './styles'
 const iosPlacholder = require('../../assets/images/food_placeholder.png')
 const PLACEHOLDER = require('../../assets/images/imagePlaceholder.png')
 
-function PickupImage({
+function ForklyImage({
   imgSource,
   imgStyle = null,
   resizeMode = 'cover',
@@ -56,4 +56,4 @@ function PickupImage({
   )
 }
 
-export default React.memo(PickupImage)
+export default React.memo(ForklyImage)

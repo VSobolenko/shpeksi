@@ -15,7 +15,7 @@ import { Modalize } from 'react-native-modalize'
 import { foods } from '../../apollo/server'
 import EmptyFood from '../../assets/images/SVG/imageComponents/EmptyFood'
 import {
-  PickupImage,
+  ForklyImage,
   FilterModal,
   FlashMessage,
   RightButton,
@@ -99,7 +99,7 @@ function MenuItems() {
         style={styles.cardContainer}
       >
         <View style={styles.cardImageContainer}>
-          <PickupImage
+          <ForklyImage
             imgStyle={styles.imgResponsive}
             imgSource={
               item.img_url

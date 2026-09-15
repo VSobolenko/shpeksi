@@ -1,4 +1,4 @@
-appId: com.pickup.vendor
+appId: com.forkly.app
 name: My Orders, order detail and rate & review
 tags: [orders, review, e2e]
 ---

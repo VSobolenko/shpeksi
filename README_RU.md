@@ -1,12 +1,12 @@
-# Pickup — описание проекта (для новых разработчиков)
+# Forkly — описание проекта (для новых разработчиков)
 
 > Русскоязычный онбординг по проекту. Актуальное состояние кода, а не
 > историческая документация. Полный гайд для ИИ-агентов — в `AGENTS.md`,
-> дорожная карта — в `AGENT_PROMPT.md`.
+> основной документ проекта — в `README.md`.
 
 ## Что это за проект
 
-**Pickup** — платформа заказа еды с **самовывозом** (self-pickup). Клиент
+**Forkly** — платформа заказа еды с **самовывозом** (self-pickup). Клиент
 выбирает блюда в мобильном приложении, оформляет заказ и забирает его в
 ресторане. **Доставки и курьеров нет** — модель только «самовывоз».
 
@@ -17,7 +17,7 @@
 | `backend/` | Самодостаточный GraphQL API (HTTP + WebSocket) | Python: FastAPI + Strawberry + Beanie/MongoDB + Redis |
 | `Admin Dashboard/` | Веб-панель мерчанта: меню, заказы, настройки | React 18 + Vite + Apollo Client 3 |
 | `CustomerApp/` | Мобильное приложение клиента: заказ и самовывоз | React Native + Expo + Apollo Client 3 |
-| `Website/` | Публичный маркетинговый лендинг (в разработке) | Vite + React 18 |
+| `Website/` | Публичный маркетинговый лендинг | Vite + React 18 |
 
 > Модуль доставки `RiderApp/` **удалён**. Платформа работает только в режиме
 > самовывоза.
@@ -54,11 +54,12 @@
 - **i18n-js** (локализация), **Amplitude** (аналитика), **Reanimated 4**
 - Тесты на **Jest** (`jest-expo`)
 
-### Website — `Website/` (планируется)
+### Website — `Website/`
 
 - **Vite + React 18**, plain JS, **i18next** + **react-i18next**
 - **CSS Modules** + CSS-переменные (дизайн-токены)
-- 6 языков, RTL для арабского. Статический билд в `dist/`.
+- 7 языков (`en`, `ar`, `de`, `fr`, `km`, `ru`, `zh`), RTL для арабского.
+  Статический билд в `dist/`.
 - Не обращается к GraphQL API — чисто статический маркетинговый сайт.
 
 ## Структура репозитория
@@ -67,7 +68,7 @@
 backend/            Python GraphQL backend (app/{graphql,models,services,integrations}, tests, scripts)
 Admin Dashboard/    React admin panel (Vite) — src/, e2e/, playwright.config.js
 CustomerApp/        React Native customer app (Expo) — src/, translations/
-Website/            маркетинговый лендинг (будет создан)
+Website/            маркетинговый лендинг (Vite + React 18)
 openspec/           OpenSpec: изменения (changes/) и основные спеки (specs/)
 .superpowers/       SDD-журнал (планы и отчёты по задачам)
 .agents/skills/     навыки superpowers + expo
@@ -118,7 +119,7 @@ npm start                   # expo start
 
 Отсканировать QR-код в Expo Go или нажать `a`/`i` для Android/iOS симулятора.
 
-### 4. Website (маркетинговый сайт, после реализации)
+### 4. Website (маркетинговый сайт)
 
 ```bash
 cd Website
@@ -134,7 +135,7 @@ npm run build               # статический билд в dist/
 
 - `backend/.env.example` — MongoDB URI, JWT secret, SMTP, Stripe/PayPal, Firebase, OAuth.
 - `Admin Dashboard/.env.example` — `VITE_SERVER_URL`, `VITE_WS_SERVER_URL`, Firebase.
-- `CustomerApp/.env.example` — `GRAPHQL_URL`, `WS_GRAPHQL_URL`, Stripe, Google OAuth, Amplitude, Google Maps.
+- `CustomerApp/.env.example` — `GRAPHQL_URL`, `WS_GRAPHQL_URL`, Stripe, Google OAuth, Amplitude.
 - `Website/.env.example` — `VITE_CUSTOMER_APP_URL`, `VITE_ADMIN_URL`.
 
 По умолчанию фронтенды указывают на локальный бэкенд
@@ -154,13 +155,14 @@ npm run build               # статический билд в dist/
 
 ## Локализация
 
-Поддерживаются **6 языков**: `en`, `ar`, `de`, `fr`, `km`, `zh`.
-
-- **CustomerApp** использует `i18n-js`, строки в `CustomerApp/translations/*.js`.
+- **CustomerApp** использует `i18n-js`, 6 языков: `en`, `ar`, `de`, `fr`, `km`,
+  `zh`, строки в `CustomerApp/translations/*.js`.
 - **Admin Dashboard** использует `i18next`.
-- **Website** будет использовать `i18next` с locale-JSON (`ar` — RTL).
+- **Website** использует `i18next` с locale-JSON — 7 языков (`en`, `ar`, `de`,
+  `fr`, `km`, `ru`, `zh`; `ar` — RTL).
 
-Каждая пользовательская строка должна быть добавлена во **все** 6 файлов.
+Каждая пользовательская строка должна быть добавлена во **все** языковые файлы
+соответствующего модуля.
 
 ## Безопасность
 
@@ -196,7 +198,7 @@ delta-specs), после завершения переносятся в `openspe
   verification-before-completion, subagent-driven-development,
   dispatching-parallel-agents, requesting/receiving-code-review и др.
 - **expo/skills** (9 навыков) — Expo-специфичные.
-- Проектные навыки в `.cursor/skills/`: `graphql-contract`, `enatega-i18n`,
+- Проектные навыки в `.cursor/skills/`: `graphql-contract`, `forkly-i18n`,
   `run-the-project`.
 
 ### Команды и роли
@@ -234,10 +236,10 @@ delta-specs), после завершения переносятся в `openspe
 4. 🔄 **Финальный предрелизный прогон** — `final-preprod-sweep`: полная
    верификация бэкенда, Admin-маршрутов (Playwright) и клиентского пути
    (Maestro).
-5. 🔄 **Маркетинговый сайт** — `add-marketing-site`: новый модуль `Website/`
-   (Vite + React 18, 6 языков, RTL). Ветка `feature/marketing-site`.
+5. ✅ **Маркетинговый сайт** — `add-marketing-site`: модуль `Website/`
+   (Vite + React 18, 7 языков, RTL).
 6. ⏭️ **Дальше по плану** — cleanup секретов/мёртвого кода, финализация
-   документации (см. `AGENT_PROMPT.md`).
+   документации (см. `README.md`).
 
 ## Стиль кода
 
@@ -248,13 +250,11 @@ delta-specs), после завершения переносятся в `openspe
   `src/components/<Group>/<Component>/`; стили — co-located (`styles.js` в RN,
   SCSS/CSS в Admin/Website).
 
-## Примечание о расхождениях в документации
+## Примечание о синхронизации документации
 
-Часть внутренней документации (`AGENTS.md`, правило
-`.cursor/rules/project-conventions.mdc`, навык `run-the-project`) всё ещё
-описывает **дорефакторинговое** состояние (React 16.8 / CRA, Apollo Client v2,
-`RiderApp`, Expo SDK 47, Node 14–16). Этот документ отражает **актуальное**
-состояние кода; при расхождении доверяйте коду и `README.md`.
+Документация проекта (`README.md`, `README_RU.md`, `AGENTS.md`, правила в
+`.cursor/rules/` и навык `run-the-project`) приведена в соответствие с
+**актуальным** состоянием кода. При расхождении доверяйте коду.
 
 ## Лицензия
 

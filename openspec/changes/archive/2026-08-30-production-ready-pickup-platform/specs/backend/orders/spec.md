@@ -26,7 +26,7 @@ The backend SHALL implement `orders(offset)` and `order(id)` for customers and `
 - **WHEN** an admin queries `allOrders` with a search string
 - **THEN** the backend returns matching orders with pagination metadata
 
-### Requirement: Pickup order status lifecycle
+### Requirement: Self-pickup order status lifecycle
 The backend SHALL advance orders through the statuses `PENDING → ACCEPTED → READY → COMPLETED`, and SHALL allow `CANCELLED`.
 
 #### Scenario: Store prepares a pickup order

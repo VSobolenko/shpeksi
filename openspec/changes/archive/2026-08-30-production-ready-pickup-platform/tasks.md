@@ -1,6 +1,6 @@
 ## 1. Phase 0 — Inventory & scaffolding
 
-- [x] 1.1 Audit the GraphQL contract: enumerate every operation and snake_case field in `Admin Dashboard/src/apollo/server.js`, `CustomerApp/src/apollo/*.js`, and `RiderApp/src/apollo/*.js` into a checklist, and verify it matches the contract in AGENT_PROMPT.md
+- [x] 1.1 Audit the GraphQL contract: enumerate every operation and snake_case field in `Admin Dashboard/src/apollo/server.js`, `CustomerApp/src/apollo/*.js`, and `RiderApp/src/apollo/*.js` into a checklist, and verify it matches the documented GraphQL contract
 - [x] 1.2 Record the current run state of each module (npm install/build/expo start) and verify the exact demo URL references in `CustomerApp/environment.js`, `RiderApp/environment.js`, and `Admin Dashboard/.env.*`
 - [x] 1.3 Scaffold `backend/` (pyproject.toml/requirements.txt, `.env.example`, README, `app/` and `tests/` packages) and verify `python -m pip install -r requirements.txt` succeeds
 
@@ -41,7 +41,7 @@
 
 - [x] 5.1 Move Admin Firebase config/VAPID from `Admin Dashboard/src/index.js` to `.env`/`.env.example` and verify the admin builds with env-provided values
 - [x] 5.2 Move CustomerApp Stripe/Google/Amplitude keys from `environment.js` and Google Maps key from `app.json` to env/config and verify no hardcoded keys remain
-- [x] 5.3 Repoint both apps from `https://enatega-singlevendor.up.railway.app/graphql` to the self-hosted backend URL and verify the configured URLs resolve to the local backend
+- [x] 5.3 Repoint both apps from the third-party demo GraphQL endpoint to the self-hosted backend URL and verify the configured URLs resolve to the local backend
 - [x] 5.4 Remove cached/generated dirs and dead code (`.expo/`, `reset-cache/`, `.DS_Store`, commented blocks, stray `console.log`, the `"npm": "^6.14.9"` dependency) and verify `git status` no longer shows those artifacts
 - [x] 5.5 Remove now-unused native dependencies (`react-native-maps`, `react-native-maps-directions`, `react-native-gifted-chat`, `react-native-timeline-flatlist`, `deprecated-react-native-prop-types` if unused, `react-native-material-textfield`) and verify install/lint still passes
 - [x] 5.6 Normalize i18n to a single solution (`i18n-js`) after RiderApp removal and verify translation imports resolve
@@ -65,8 +65,8 @@
 
 ## 8. Phase 7 — Production hardening & release
 
-- [x] 8.1 De-brand the backend: DB `enatega` → `pickup`, order prefix `ENATEGA` → `ORD`, package `enatega-singlevendor-backend` → `pickup-backend`, API title → "Pickup API", and update `.env.example`; verify `placeOrder` returns an `ORD-…` id and data lands in the `pickup` database
-- [x] 8.2 De-brand the frontends "Enatega" → "Pickup" (CustomerApp `app.json` name/slug/scheme/bundleId, `EnategaImage` → `PickupImage`, login/sidebar/footer text, translations, `package.json` names; Admin `index.html` title, login/footer/sidebar, `i18n.js`) leaving root policy/docs files untouched; verify no `enatega` remains outside root files
+- [x] 8.1 Brand the backend as Forkly: DB → `forkly`, order prefix → `FRK`, package `forkly-backend`, API title → "Forkly API", and update `.env.example`; verify `placeOrder` returns an `FRK-…` id and data lands in the `forkly` database
+- [x] 8.2 Brand the frontends as "Forkly" (CustomerApp `app.json` name/slug/scheme/bundleId, `ForklyImage`, login/sidebar/footer text, translations, `package.json` names; Admin `index.html` title, login/footer/sidebar, `i18n.js`) and update root policy/docs files to match; verify no legacy brand remains
 - [x] 8.3 Add secrets fail-fast (startup refuses to run when `ENV=production` and `JWT_SECRET`/`ADMIN_PASSWORD` are unset or `change-me`) and verify a prod startup with placeholder secrets exits with a clear error
 - [x] 8.4 Add `GET /health` (liveness) and `GET /ready` (readiness with MongoDB ping) and verify `/health` returns ok and `/ready` returns 503 when MongoDB is unreachable
 - [x] 8.5 Wire Redis pub/sub (Redis when `REDIS_URL` set, in-memory fallback) and verify subscriptions work in-memory and, with Redis available, across two instances

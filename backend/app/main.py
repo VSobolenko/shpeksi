@@ -35,7 +35,7 @@ graphql_router = GraphQLRouter(
     subscription_protocols=[GRAPHQL_TRANSPORT_WS_PROTOCOL, GRAPHQL_WS_PROTOCOL],
 )
 
-app = FastAPI(title="Pickup API", lifespan=lifespan)
+app = FastAPI(title="Forkly API", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,

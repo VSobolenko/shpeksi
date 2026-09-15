@@ -13,13 +13,23 @@ Usage:
 """
 
 import argparse
+import os
 import sys
+from pathlib import Path
 
 import httpx
 
+try:
+    from dotenv import load_dotenv
+except ImportError:  # pragma: no cover - optional convenience
+    load_dotenv = None
+
+if load_dotenv:
+    load_dotenv(Path(__file__).resolve().parent.parent / ".env")
+
 GRAPHQL_URL = "http://localhost:8000/graphql"
-ADMIN_EMAIL = "admin@example.com"
-ADMIN_PASSWORD = "change-me"
+ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "admin@example.com")
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "change-me")
 
 CUSTOMER = {
     "name": "Test Customer",

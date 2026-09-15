@@ -26,7 +26,7 @@ import Spinner from './Spinner/Spinner'
 import { TextDefault, TextError, TextLine } from './Text'
 import TextField from './TextField/TextField'
 import Triangle from './Triangle/Triangle'
-import PickupImage from './PickupImage/PickupImage'
+import ForklyImage from './ForklyImage/ForklyImage'
 import WrapperView from './WrapperView/WrapperView'
 import { CustomIcon } from './CustomIcon'
 
@@ -34,7 +34,7 @@ export {
   WrapperView,
   CustomIcon,
   CartItem,
-  PickupImage,
+  ForklyImage,
   CartComponent,
   CheckComponent,
   HeadingComponent,

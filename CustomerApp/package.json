@@ -1,5 +1,5 @@
 {
-  "name": "pickup-app",
+  "name": "forkly-app",
   "version": "5.0.0",
   "scripts": {
     "start": "expo start",

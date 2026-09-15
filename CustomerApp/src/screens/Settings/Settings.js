@@ -139,7 +139,7 @@ function Settings() {
   }
 
   async function selectLanguage() {
-    const lang = await AsyncStorage.getItem('pickup-language')
+    const lang = await AsyncStorage.getItem('forkly-language')
     if (lang) {
       const defLang = languageTypes.findIndex((el) => el.code === lang)
       const langName = languageTypes[defLang].value
@@ -154,11 +154,11 @@ function Settings() {
       const localization = await Localization.getLocalizationAsync()
       localization.locale = languageTypes[languageInd].code
       await AsyncStorage.setItem(
-        'pickup-language',
+        'forkly-language',
         languageTypes[languageInd].code
       )
       i18n.locale = languageTypes[languageInd].code
-      const lang = await AsyncStorage.getItem('pickup-language')
+      const lang = await AsyncStorage.getItem('forkly-language')
       const defLang = languageTypes.findIndex((el) => el.code === lang)
       const langName = languageTypes[defLang].value
       activeRadioSetter(defLang)

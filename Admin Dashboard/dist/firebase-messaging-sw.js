@@ -11,7 +11,7 @@ firebase.initializeApp({
 const messaging = firebase.messaging()
 
 messaging.onBackgroundMessage(function (payload) {
-  var notificationTitle = 'New Order on Pickup'
+  var notificationTitle = 'New Order on Forkly'
   var notificationOptions = {
     body: payload.data.orderid,
     icon: '/favicon.png'

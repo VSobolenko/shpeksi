@@ -109,7 +109,7 @@ async def place_order(
     coupon_code: str | None = None,
 ) -> Order:
     config = await Configuration.find_one({})
-    prefix = (config.order_id_prefix or "ORD") if config else "ORD"
+    prefix = (config.order_id_prefix or "FRK") if config else "FRK"
 
     items = await build_order_items(order_input)
     subtotal = compute_subtotal(items)

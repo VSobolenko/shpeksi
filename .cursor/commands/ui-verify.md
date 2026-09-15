@@ -127,7 +127,7 @@ reinvent it. Flows live **outside** the app (no native deps, no build changes).
    shape:
 
    ```yaml
-   appId: com.pickup.app        # your app id
+   appId: com.forkly.app        # your app id
    ---
    - launchApp:
        clearState: true

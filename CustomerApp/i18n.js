@@ -14,7 +14,7 @@ i18n.initAsync = async() => {
   i18n.translations = { fr, en, km, zh, de, ar }
   // i18n.locale = 'km'
   if (Platform.OS === 'android') {
-    const lang = await AsyncStorage.getItem('pickup-language')
+    const lang = await AsyncStorage.getItem('forkly-language')
     i18n.locale = lang || 'en'
   } else {
     i18n.locale = Localization.locale

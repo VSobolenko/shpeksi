@@ -1,6 +1,6 @@
-# Pickup — Backend
+# Forkly — Backend
 
-Self-hosted backend for the **self-collect (pickup)** food-ordering platform.
+Self-hosted backend for the **self-pickup** food-ordering platform.
 
 Serves the GraphQL contract used by the `Admin Dashboard` and `CustomerApp`
 frontends over **HTTP + WebSocket** at `/graphql`, matching the operation/field

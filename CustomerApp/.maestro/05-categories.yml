@@ -1,4 +1,4 @@
-appId: com.pickup.vendor
+appId: com.forkly.app
 name: Category opens product list
 tags: [categories, e2e]
 ---

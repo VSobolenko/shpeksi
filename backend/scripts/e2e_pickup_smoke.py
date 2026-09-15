@@ -1,4 +1,4 @@
-"""End-to-end pickup-flow smoke test for the Pickup backend.
+"""End-to-end pickup-flow smoke test for the Forkly backend.
 
 Runs the full self-pickup order lifecycle against a live backend + MongoDB:
 
@@ -26,16 +26,26 @@ Usage:
 import argparse
 import asyncio
 import json
+import os
 import sys
 import time
+from pathlib import Path
 
 import httpx
 from websockets.asyncio.client import connect
 
+try:
+    from dotenv import load_dotenv
+except ImportError:  # pragma: no cover - optional convenience
+    load_dotenv = None
+
+if load_dotenv:
+    load_dotenv(Path(__file__).resolve().parent.parent / ".env")
+
 GRAPHQL_URL = "http://localhost:8000/graphql"
 WS_URL = "ws://localhost:8000/graphql"
-ADMIN_EMAIL = "admin@example.com"
-ADMIN_PASSWORD = "change-me"
+ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "admin@example.com")
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "change-me")
 # Legacy subscriptions-transport-ws subprotocol (used by apollo-link-ws).
 LEGACY_SUBPROTOCOL = "graphql-ws"
 
@@ -284,7 +294,7 @@ async def run(url: str, ws_url: str) -> None:
         )
         log(data["order"]["order_status"] == "COMPLETED", "customer order(id) reflects COMPLETED")
 
-        # 9. Pickup-only status set
+        # 9. Self-pickup-only status set
         data = await gql(client, "query { getOrderStatuses }", token=admin_token)
         log(
             data["getOrderStatuses"] == PICKUP_STATUSES,
@@ -296,7 +306,7 @@ async def run(url: str, ws_url: str) -> None:
 
 def main() -> int:
     global ADMIN_EMAIL, ADMIN_PASSWORD, GRAPHQL_URL
-    parser = argparse.ArgumentParser(description="Pickup-flow E2E smoke test")
+    parser = argparse.ArgumentParser(description="Self-pickup flow E2E smoke test")
     parser.add_argument("--url", default=GRAPHQL_URL)
     parser.add_argument("--ws", default=WS_URL)
     parser.add_argument("--admin-email", default=ADMIN_EMAIL)

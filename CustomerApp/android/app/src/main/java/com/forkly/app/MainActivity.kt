@@ -1,4 +1,4 @@
-package com.pickup.vendor
+package com.forkly.app
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build

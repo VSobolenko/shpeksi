@@ -12,7 +12,7 @@ import { TouchableOpacity, View } from 'react-native'
 import getEnvVars from '../../../environment'
 import { login } from '../../apollo/server'
 import {
-  PickupImage,
+  ForklyImage,
   FdEmailBtn,
   FdGoogleBtn,
   FlashMessage,
@@ -240,7 +240,7 @@ const CreateAccount = () => {
         <RegistrationHeader title={i18n.t('getStarted')} />
         <View style={styles.subContainer}>
           <View style={[styles.flex, styles.upperContainer]}>
-            <PickupImage
+            <ForklyImage
               imgStyle={styles.imgResponsive}
               imgSource={Logo}
               spinnerProps={{ style: styles.loadingView }}

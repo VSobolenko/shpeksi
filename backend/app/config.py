@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
 
     mongodb_url: str = "mongodb://localhost:27017"
-    mongodb_db_name: str = "pickup"
+    mongodb_db_name: str = "forkly"
 
     # Empty => in-memory pub/sub (fine for local dev and single-instance deploys).
     redis_url: str = ""

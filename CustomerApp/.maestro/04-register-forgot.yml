@@ -1,4 +1,4 @@
-appId: com.pickup.vendor
+appId: com.forkly.app
 name: Register form renders and forgot password works
 tags: [register, forgot, e2e]
 ---

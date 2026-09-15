@@ -1,7 +1,7 @@
 {
-  "name": "pickup-website",
+  "name": "forkly-website",
   "version": "1.0.0",
-  "description": "Pickup marketing and landing website",
+  "description": "Forkly marketing and landing website",
   "private": true,
   "type": "module",
   "scripts": {

@@ -1,5 +1,5 @@
 [project]
-name = "pickup-backend"
+name = "forkly-backend"
 version = "0.1.0"
 description = "Self-collect food ordering backend (FastAPI + Strawberry GraphQL + Beanie/MongoDB)"
 requires-python = ">=3.11"

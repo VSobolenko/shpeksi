@@ -1,4 +1,4 @@
-appId: com.pickup.vendor
+appId: com.forkly.app
 name: Full self-pickup order (login -> add to cart -> place order)
 tags: [checkout, e2e]
 ---

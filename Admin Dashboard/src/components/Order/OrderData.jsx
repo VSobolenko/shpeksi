@@ -19,11 +19,16 @@ const ORDER_PLACED = gql`
 const OrdersData = props => {
   const { t, selected, updateSelected } = props
   const [search, setSearch] = useState('')
+  // The GraphQL contract marks `food` and `variation` as optional (a food can be
+  // deleted after an order was placed), so neither may be dereferenced blindly:
+  // a null here used to throw and unmount the whole React tree (white screen).
   const getItems = items => {
-    return items
-      .map(
-        item => `${item.quantity}x${item.food.title}(${item.variation.title})`
-      )
+    return (items || [])
+      .map(item => {
+        const foodTitle = item.food ? item.food.title : 'Unknown item'
+        const variationTitle = item.variation ? `(${item.variation.title})` : ''
+        return `${item.quantity}x${foodTitle}${variationTitle}`
+      })
       .join('\n')
   }
 
@@ -99,7 +104,7 @@ const OrdersData = props => {
       sortable: true,
       selector: 'user.name',
       cell: row => (
-        <>{`${row.user.name}\n${row.user.email}\n${row.user.phone}`}</>
+        <>{`${row.user ? row.user.name : ''}\n${row.user ? row.user.email : ''}\n${row.user ? row.user.phone : ''}`}</>
       )
     },
     {

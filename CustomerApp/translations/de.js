@@ -18,7 +18,7 @@ export const de = {
     'Das Alter mindert nicht die extreme Enttäuschung darüber, dass eine Kugel Eis vom Kegel fällt',
   getStarted: 'Loslegen!',
   welcome:
-    'Willkommen bei Pickup, manchmal brauchen Sie nur Liebe. Aber ein bisschen Essen tut ab und zu nicht weh.',
+    'Willkommen bei Forkly, manchmal brauchen Sie nur Liebe. Aber ein bisschen Essen tut ab und zu nicht weh.',
   loginBtn: 'Anmeldung',
   registerBtn: 'Registrieren',
   name: 'Name',
@@ -149,7 +149,7 @@ export const de = {
   userInfoUpdated: 'Benutzerinformationen aktualisiert',
   nameReq: 'Name ist erforderlich',
   minWords: 'Mindestens 11 und maximal 15 Zeichen erlaubt',
-  rightsReserved: 'Alle Rechte vorbehalten von Pickup',
+  rightsReserved: 'Alle Rechte vorbehalten von Forkly',
   changePass: 'Passwort ändern',
   currentPass: 'Aktuelles Passwort',
   passReq: 'Passwort ist erforderlich',

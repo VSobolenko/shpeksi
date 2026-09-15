@@ -17,8 +17,11 @@ import { NAVIGATION_SCREEN } from '../../utils/constant'
 import { scale } from '../../utils/scaling'
 import useStyle from './styles'
 
+// `food` and `variation` are optional in the GraphQL contract: a food can be
+// deleted from the menu after the order was placed, in which case the server
+// returns null. Reading `.price` off null crashes the screen, so guard both.
 function calculatePrice(food) {
-  let foodPrice = food.variation.price
+  let foodPrice = food.variation ? food.variation.price : 0
   food.addons.forEach((addons) => {
     addons.options.forEach((addon) => {
       foodPrice += addon.price
@@ -114,7 +117,7 @@ function OrderDetail() {
                 textColor={colors.fontMainColor}
                 style={{ width: '65%' }}
               >
-                {item.food.title}
+                {item.food ? item.food.title : i18n.t('noItems')}
               </TextDefault>
               <TextDefault
                 textColor={colors.fontMainColor}

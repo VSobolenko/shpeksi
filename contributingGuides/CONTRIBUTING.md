@@ -1,6 +1,6 @@
-### Contributing to Enatega Restaurant Solution
+### Contributing to Forkly
 
-Welcome to Enatega Restaurant Solution! We're excited you're here and want to contribute.
+Welcome to Forkly! We're excited you're here and want to contribute.
 
 ### Getting Started
 
@@ -8,7 +8,7 @@ If you would like to become an active contributor please read this document in i
 
 ### How can I help?
 
-There are many ways you can help contribute to Enatega Restaurant Solution. Here are a few ideas:
+There are many ways you can help contribute to Forkly. Here are a few ideas:
 
 - Developers can make contribution to the code
 - Designers can make contribution to the design

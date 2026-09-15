@@ -1,3 +1,14 @@
 .expo
 .DS_Store
 .superpowers/
+
+# --- Secrets: never commit (see .cursor/rules/security-secrets.mdc) ---
+.env
+.env.local
+.env.*.local
+google-services*.json
+google-service-account.json
+
+# --- Build artifacts ---
+dist/
+.kotlin/

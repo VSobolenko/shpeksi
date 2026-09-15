@@ -18,7 +18,7 @@ export const en = {
     'Age does not diminish the extreme disappointment of having a scoop of ice cream fall from the cone',
   getStarted: 'Get Started!',
   welcome:
-    "Welcome to Pickup, sometimes all you need is love. But a little food now and then doesn't hurt.",
+    "Welcome to Forkly, sometimes all you need is love. But a little food now and then doesn't hurt.",
   loginBtn: 'Login',
   registerBtn: 'Register',
   name: 'Name',
@@ -148,7 +148,7 @@ export const en = {
   userInfoUpdated: "User's Info Updated",
   nameReq: 'Name is required',
   minWords: 'Minimum 11 and maximum 15 characters allowed',
-  rightsReserved: 'All rights are reserved by Pickup',
+  rightsReserved: 'All rights are reserved by Forkly',
   changePass: 'Change Password',
   currentPass: 'Current Password',
   passReq: 'Password is required',

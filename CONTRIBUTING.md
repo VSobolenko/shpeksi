@@ -1,4 +1,4 @@
-# Contributing to Enatega Multi Vendor Food Delivery System
+# Contributing to Forkly
 
 First off, thank you for considering contributing to our project! Your help is greatly appreciated.
 
@@ -27,8 +27,8 @@ If you would like to contribute code, follow these steps:
 1. **Fork the repository**: Create a fork of the repository on GitHub.
 2. **Clone your fork**: Clone your fork to your local machine.
     ```bash
-    git clone https://github.com/<your-username>/food-delivery-multivendor.git
-    cd food-delivery-multivendor
+    git clone https://github.com/<your-username>/food-delivery-singlevendor.git
+    cd food-delivery-singlevendor
     ```
 3. **Create a new branch**: Create a new branch for your feature or bugfix.
     ```bash
@@ -65,15 +65,15 @@ By participating in this project, you agree to abide by our [Code of Conduct](CO
 
 Ensure you have the following installed:
 
-- Node.js (version 14.0 to 16.0)
+- Node.js (18 or 20 LTS)
 - npm or yarn
 
 ### Setting Up
 
 1. **Clone the repository**:
     ```bash
-    git clone https://github.com/enatega/food-delivery-multivendor.git
-    cd food-delivery-multivendor
+    git clone https://github.com/<your-username>/food-delivery-singlevendor.git
+    cd food-delivery-singlevendor
     ```
 
 2. **Install dependencies**:
