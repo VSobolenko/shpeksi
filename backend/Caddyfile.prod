@@ -1,0 +1,40 @@
+# Production site config for the Forkly demo stand.
+#
+# One Caddy instance serves three sites: the GraphQL API (reverse-proxied to the
+# `app` container) and the two Vite frontends (built statically and mounted into
+# this container under /srv).
+#
+# All addresses come from the environment so that the very same file works with
+# a real domain (api.forkly.example.com) and, while the brand name is still
+# being chosen, with a wildcard-DNS name that resolves to the server IP
+# (api.203-0-113-10.sslip.io). Caddy requests a Let's Encrypt certificate for
+# every address listed here, which means DNS must already resolve to this server
+# before the stack is started - otherwise ACME fails and Caddy retries against
+# the rate limit.
+#
+#   API_ADDRESS    e.g. api.203-0-113-10.sslip.io
+#   ADMIN_ADDRESS  e.g. admin.203-0-113-10.sslip.io
+#   SITE_ADDRESS   one or more addresses, comma-separated (apex + www),
+#                  e.g. "203-0-113-10.sslip.io, www.203-0-113-10.sslip.io"
+#
+# Select this file with CADDYFILE=Caddyfile.prod (see .env.example). It replaces
+# the development Caddyfile, which only proxies the API over plain HTTP.
+
+{$API_ADDRESS} {
+	encode gzip
+	reverse_proxy app:8000
+}
+
+{$ADMIN_ADDRESS} {
+	encode gzip
+	root * /srv/admin
+	try_files {path} /index.html
+	file_server
+}
+
+{$SITE_ADDRESS} {
+	encode gzip
+	root * /srv/www
+	try_files {path} /index.html
+	file_server
+}

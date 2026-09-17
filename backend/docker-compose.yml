@@ -52,8 +52,12 @@ services:
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000,http://localhost:3006}
     expose:
       - "8000"
+    # Bound to loopback only: on a server this keeps the API off the public
+    # interface (Caddy reaches it over the internal compose network), while
+    # locally the API stays reachable on http://localhost:8000 exactly as
+    # before.
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
     healthcheck:
       test:
         [
@@ -76,10 +80,20 @@ services:
       - "443:443"
     environment:
       SITE_ADDRESS: ${SITE_ADDRESS:-:80}
+      # Only consumed by Caddyfile.prod; empty in development, where the
+      # plain-HTTP Caddyfile above is used instead.
+      API_ADDRESS: ${API_ADDRESS:-}
+      ADMIN_ADDRESS: ${ADMIN_ADDRESS:-}
     volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      # CADDYFILE selects the site config: the development one (API only, plain
+      # HTTP) by default, or Caddyfile.prod (API + both frontends, HTTPS).
+      - ./${CADDYFILE:-Caddyfile}:/etc/caddy/Caddyfile:ro
       - caddy_data:/data
       - caddy_config:/config
+      # Static frontend builds, mounted read-only as /srv in the container.
+      # Caddyfile.prod serves /srv/admin and /srv/www from here. The directory
+      # is empty (and git-ignored) in development, where it is unused.
+      - ./static:/srv:ro
 
   backup:
     image: mongo:7
