@@ -136,7 +136,7 @@ function ForgotPassword() {
                     <Spinner spinnerColor={colors.buttonText} />
                       )
                     : (
-                    <TextDefault bold>CONTINUE</TextDefault>
+                    <TextDefault bold>{i18n.t('continueBtn')}</TextDefault>
                       )}
                 </TouchableOpacity>
               </View>

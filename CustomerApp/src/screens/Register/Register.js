@@ -152,17 +152,20 @@ function Register() {
             mutateLogin(user)
           }
         }}>
-        <TextDefault bold>Signup</TextDefault>
+        <TextDefault bold>{i18n.t('signup')}</TextDefault>
       </TouchableOpacity>
     )
   }
 
   function updateCountryCode() {
+    // `Localization.timezone` was removed from expo-localization (the time zone
+    // now lives on `getCalendars()`), so this dereferenced `undefined` and threw
+    // as soon as the phone field gained focus - registration was unreachable.
+    const deviceTimeZone = Localization.getCalendars()[0]?.timeZone?.toLowerCase()
     const timezone = countryCodes.find(
-      value =>
-        value.timezone.toLowerCase() === Localization.timezone.toLowerCase()
+      value => value.timezone.toLowerCase() === deviceTimeZone
     )
-    if (!phone) {
+    if (!phone && timezone) {
       setPhone(timezone.country_code)
     }
   }
@@ -189,7 +192,7 @@ function Register() {
                 />
               </TouchableOpacity>
               <TextDefault center H4 bold>
-                Signup
+                {i18n.t('signup')}
               </TextDefault>
               <View style={styles.backBtnWidth} />
             </View>

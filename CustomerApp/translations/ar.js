@@ -55,6 +55,7 @@ export const ar = {
   upload: 'حمل',
   saveBtn: 'حفظ التغييرات',
   saveContBtn: 'حفظ واستمر',
+  continueBtn: 'متابعة',
   emailUs: 'أرسل لنا بريدًا إلكترونيًا على',
   question1: 'أين نجد الطعام؟',
   question2: 'كيف نتصل؟',

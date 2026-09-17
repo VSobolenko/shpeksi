@@ -66,7 +66,7 @@ function CartComponent(props) {
                 }
           }>
           <TextDefault textColor={colors.buttonText} H5 bold center>
-            Add To Cart
+            {i18n.t('addToCart')}
           </TextDefault>
         </TouchableOpacity>
       </View>

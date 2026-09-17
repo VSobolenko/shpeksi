@@ -55,6 +55,7 @@ export const en = {
   upload: 'Upload',
   saveBtn: 'Save Changes',
   saveContBtn: 'SAVE AND CONTINUE',
+  continueBtn: 'CONTINUE',
   emailUs: 'Email us at',
   question1: 'Where do we find the food?',
   question2: 'How do we contact?',

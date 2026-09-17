@@ -2,7 +2,6 @@ import { useMutation, gql } from '@apollo/client'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useNavigation, useTheme } from '@react-navigation/native'
 import * as Device from 'expo-device'
-import * as Localization from 'expo-localization'
 import * as Notifications from 'expo-notifications'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import {
@@ -44,7 +43,8 @@ const languageTypes = [
   { value: 'ភាសាខ្មែរ', code: 'km', index: 2 },
   { value: '中文', code: 'zh', index: 3 },
   { value: 'Deutsche', code: 'de', index: 4 },
-  { value: 'Arabic', code: 'ar', index: 5 }
+  { value: 'Arabic', code: 'ar', index: 5 },
+  { value: 'Русский', code: 'ru', index: 6 }
 ]
 
 const PUSH_TOKEN = gql`
@@ -138,32 +138,26 @@ function Settings() {
     return status
   }
 
+  // `i18n.locale` is already resolved by `i18n.initAsync()` in App.js before any
+  // screen renders, so it is the single source of truth here. Reading it also
+  // makes the first launch show the right name when the language came from the
+  // device rather than from an explicit choice.
   async function selectLanguage() {
-    const lang = await AsyncStorage.getItem('forkly-language')
-    if (lang) {
-      const defLang = languageTypes.findIndex((el) => el.code === lang)
-      const langName = languageTypes[defLang].value
-      activeRadioSetter(defLang)
-      languageNameSetter(langName)
-    }
+    const defLang = languageTypes.findIndex((el) => el.code === i18n.locale)
+    if (defLang === -1) return
+    activeRadioSetter(defLang)
+    languageNameSetter(languageTypes[defLang].value)
   }
 
   const onSelectedLanguage = async(active) => {
-    const languageInd = active
-    if (Platform.OS === 'android') {
-      const localization = await Localization.getLocalizationAsync()
-      localization.locale = languageTypes[languageInd].code
-      await AsyncStorage.setItem(
-        'forkly-language',
-        languageTypes[languageInd].code
-      )
-      i18n.locale = languageTypes[languageInd].code
-      const lang = await AsyncStorage.getItem('forkly-language')
-      const defLang = languageTypes.findIndex((el) => el.code === lang)
-      const langName = languageTypes[defLang].value
-      activeRadioSetter(defLang)
-      languageNameSetter(langName)
-    }
+    const { code, value } = languageTypes[active]
+    // This used to call `Localization.getLocalizationAsync()`, which no longer
+    // exists in expo-localization 57 - tapping "Done" threw a TypeError before
+    // the locale was ever applied, so the language could not be changed at all.
+    await AsyncStorage.setItem('forkly-language', code)
+    i18n.locale = code
+    activeRadioSetter(active)
+    languageNameSetter(value)
   }
 
   const onClose = () => {
@@ -188,7 +182,7 @@ function Settings() {
     let orderNotify, offerNotify
     if (!Device.isDevice) {
       FlashMessage({
-        message: 'Notification do not work on simulator'
+        message: i18n.t('notificationsNotWorking')
       })
       return
     }
@@ -391,7 +385,7 @@ function Settings() {
               })
             }}
           >
-            <TextDefault center>Delete Account</TextDefault>
+            <TextDefault center>{i18n.t('delAcc')}</TextDefault>
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.7}
