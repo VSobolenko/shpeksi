@@ -33,7 +33,7 @@ The repo's own rules (from `.eslintrc.json`, `.prettierrc` equivalents, `package
 
 ## Localization
 
-- CustomerApp uses `i18n-js`; every user-facing string must be added to ALL of `CustomerApp/translations/*.js` (en, ar, de, fr, km, zh).
+- CustomerApp uses `i18n-js`; every user-facing string must be added to ALL of `CustomerApp/translations/*.js` (en, ar, de, fr, km, ru, zh).
 - Website uses `i18next` with locale JSON in `Website/src/i18n/locales/` (en, ar, de, fr, km, ru, zh; `ar` is RTL).
 
 ## Env / config

@@ -7,7 +7,7 @@ disable-model-invocation: true
 # Forkly localization
 
 - CustomerApp uses `i18n-js`; translations live in `CustomerApp/translations/*.js`.
-- CustomerApp languages: `en`, `ar`, `de`, `fr`, `km`, `zh`.
+- CustomerApp languages: `en`, `ar`, `de`, `fr`, `km`, `ru`, `zh` (`ru` added for the RU/BY market).
 - Website uses `i18next` with locale JSON in `Website/src/i18n/locales/*.json`
   (7 locales: `en`, `ar`, `de`, `fr`, `km`, `ru`, `zh`; `ar` is RTL).
 - Every new user-facing string MUST be added to ALL language files for the module,

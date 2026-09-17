@@ -83,7 +83,7 @@ from `.env.*` (see `.env.example`); CustomerApp reads `.env`; Website reads
   `src/components/<Group>/<Component>/`. Colocate a `styles.js`
   (`StyleSheet.create`) in RN, or CSS/SCSS in Admin/Website.
 - i18n: CustomerApp uses `i18n-js` with keys in
-  `CustomerApp/translations/*.js` (en, ar, de, fr, km, zh). Every user-facing
+  `CustomerApp/translations/*.js` (en, ar, de, fr, km, ru, zh). Every user-facing
   string must be added to **all** files. Website uses `i18next` with locale JSON
   in `Website/src/i18n/locales/` (7 locales; `ar` is RTL).
 

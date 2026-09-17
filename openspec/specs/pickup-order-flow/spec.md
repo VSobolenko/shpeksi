@@ -59,7 +59,7 @@ The CustomerApp SHALL have no rider tracking map component and no courier chat t
 - **THEN** there is no rider-tracking map and no courier chat
 
 ### Requirement: Clean localization
-The CustomerApp translations (`en`, `ar`, `de`, `fr`, `km`, `zh`) SHALL contain no strings about delivery, couriers, or tracking.
+The CustomerApp translations (`en`, `ar`, `de`, `fr`, `km`, `ru`, `zh`) SHALL contain no strings about delivery, couriers, or tracking.
 
 #### Scenario: Translation audit
 - **WHEN** the change is complete
