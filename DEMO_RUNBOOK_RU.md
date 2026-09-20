@@ -1,4 +1,4 @@
-# Forkly — ранбук демо-стенда (вариант Б1: VPS + Caddy + HTTPS)
+# Pikupo — ранбук демо-стенда (вариант Б1: VPS + Caddy + HTTPS)
 
 Пошаговая инструкция, как поднять демо для заказчика на собственном сервере:
 бэкенд с HTTPS, админ-панель, сайт и Android-APK, который на всё это смотрит.
@@ -6,9 +6,189 @@
 Время: ~1.5–2 часа. Стоимость: ~$25–40/мес (VPS), домен — по желанию (см. §1.1).
 
 > Плейсхолдеры: `203.0.113.10` — IP сервера, `example.com` — ваш домен.
-> `Forkly` — рабочее имя: продукт ребрендится, поэтому домен под него пока **не
+> `Pikupo` — рабочее имя: продукт ребрендится, поэтому домен под него пока **не
 > покупается**. Вместо домена примеры используют `sslip.io` (§1.1) — он даёт
 > настоящий HTTPS-сертификат без покупки домена.
+
+---
+
+## Стенд уже поднят: фактические адреса
+
+Всё, что ниже, — инструкция «с нуля» на случай переезда. Актуальное состояние
+развёрнутого стенда:
+
+| Что | Значение |
+|-----|----------|
+| API (HTTP + WebSocket) | `https://api.78-111-89-46.sslip.io/graphql` |
+| Админ-панель | `https://admin.78-111-89-46.sslip.io` |
+| Сайт | `https://78-111-89-46.sslip.io` (+ `www.`) |
+| APK для скачивания | `https://78-111-89-46.sslip.io/downloads/pikupo-demo-v1.0.23.apk` |
+| Вход в админку | `admin@pikupo.com`, пароль — в `/opt/pikupo/backend/.env` (`ADMIN_PASSWORD`) |
+| Клиент в приложении | `customer@example.com` / `password123` (сид-фикстура) |
+| Сервер | Serverspace, Нью-Джерси; 2 vCPU / 3.3 ГБ / 49 ГБ; Ubuntu 26.04 |
+| Код на сервере | `/opt/pikupo` (клон из `git bundle`, см. ниже) |
+| Секреты | `/opt/pikupo/backend/.env`, права `600`, сгенерированы на сервере |
+
+> Пароль админа намеренно **не** вписан в этот файл: ранбук лежит в git. Смотрите
+> его на сервере: `grep ADMIN_PASSWORD /opt/pikupo/backend/.env`.
+
+### Что с APK прямо сейчас
+
+Опубликован `pikupo-demo-v1.0.23.apk` (Pikupo, API на `sslip.io`). Старый
+`forkly-demo-v1.0.22.apk` может ещё лежать рядом — для демо используйте новую
+ссылку. После покупки домена APK нужно будет пересобрать один раз под
+`api.pikupo.com`.
+
+### Что уже проверено
+
+- `mongo` и `redis` — healthy; `app` — healthy, `/health` и `/ready` отвечают
+  `{"status":"ok"}` / `{"status":"ready"}`.
+- Caddy выпустил 4 сертификата Let's Encrypt (apex, `www`, `api`, `admin`).
+- Все адреса отдают `200` снаружи, TLS валиден.
+- `scripts/e2e_pickup_smoke.py` против **публичных** HTTPS/WSS-адресов —
+  `ALL E2E CHECKS PASSED` (включая WebSocket-подписки на обоих протоколах).
+- Сид: 4 категории, 8 блюд, купон `SAVE10`, 6 заказов в разных статусах,
+  1 покупатель `customer@example.com` (состояние после сброса от 17.09.2026).
+- После переименования в `Pikupo` стенд перепроверен целиком: вход в админку по
+  HTTPS, дашборд (заказы, продажи, графики), страница `Orders` со списком
+  заказов и сайт с брендом `Pikupo` — в консоли браузера ноль ошибок.
+- Заказы нумеруются с префиксом `PKP-` (поле `Order ID Prefix` в Configuration).
+- APK раздаётся по HTTPS с корректным типом
+  `application/vnd.android.package-archive`, `Accept-Ranges: bytes` (докачка
+  поддерживается, `206` на частичный запрос), md5 сходится с локальной сборкой.
+
+### Как опубликован APK
+
+Файл лежит в `backend/static/downloads/` и монтируется в Caddy как `/srv`
+(тот же том, что и `static`), а отдаётся через отдельный маршрут в
+`Caddyfile.prod`:
+
+```caddyfile
+	# Внутри блока {$SITE_ADDRESS}
+	handle_path /downloads/* {
+		root * /srv/downloads
+		file_server
+	}
+```
+
+Каталог намеренно **вне** `/srv/www`: пересборка сайта заменяет `/srv/www`
+целиком, и APK, положенный туда, был бы удалён. `/srv/downloads` пересборка не
+затрагивает. Маршрут изолирован — несуществующий файл отдаёт `404`, а не
+подменяется `index.html` SPA-фолбэком.
+
+Залить новую сборку и проверить:
+
+```bash
+# локально (PowerShell)
+scp -i %USERPROFILE%\.ssh\id_ed25519 ^
+  "CustomerApp\android\app\build\outputs\apk\release\app-release.apk" ^
+  root@78.111.89.46:/opt/pikupo/backend/static/downloads/pikupo-demo-v1.0.23.apk
+
+# сверить, что долетело без повреждений
+Get-FileHash -Algorithm MD5 "CustomerApp\android\app\build\outputs\apk\release\app-release.apk"
+ssh -i %USERPROFILE%\.ssh\id_ed25519 root@78.111.89.46 "md5sum /opt/pikupo/backend/static/downloads/pikupo-demo-v1.0.23.apk"
+```
+
+> В каталоге сейчас лежит `forkly-demo-v1.0.22.apk` (см. «Что с APK прямо
+> сейчас» выше). Новую сборку кладите рядом со своим именем и удаляйте старую,
+> только когда ссылка на новую уже проверена снаружи.
+
+> При замене APK имя файла меняйте вместе с версией (`app.json` → `version`) —
+> иначе у заказчика в кэше останется старая сборка под тем же URL.
+
+После правки `Caddyfile.prod` перезагружать Caddy нужно **только** для конфига
+(статика читается с диска):
+
+```bash
+cd /opt/pikupo/backend
+docker compose exec -T caddy caddy reload --config /etc/caddy/Caddyfile --adapter caddyfile </dev/null
+```
+
+> `</dev/null` обязателен, если команда запускается по `ssh host "bash -s"` со
+> скриптом на stdin: без него `docker compose exec` вычитывает остаток скрипта.
+
+### Обновление кода на сервере
+
+Репозиторий приватный, IPv4-адрес сервера блокуется GitHub для SSH. Поэтому код
+заливается архивом, а не клоном с GitHub:
+
+```bash
+# на локальной машине
+git bundle create %TEMP%\pikupo.bundle main
+scp -i %USERPROFILE%\.ssh\id_ed25519 %TEMP%\pikupo.bundle root@78.111.89.46:/opt/pikupo.bundle
+
+# на сервере
+cd /opt/pikupo && git pull /opt/pikupo.bundle main
+```
+
+После обновления бэкенда — `docker compose up -d --build app`. После изменения
+фронтендов — повторить §5 и перезапустить Caddy не нужно (статика отдаётся с
+диска), достаточно пересобрать в `backend/static/`.
+
+### Пересоздать демо-данные с нуля
+
+```bash
+cd /opt/pikupo/backend
+docker compose exec -T app python /tmp/scripts/seed_demo.py          --url http://localhost:8000/graphql
+docker compose exec -T app python /tmp/scripts/seed_demo_orders.py   --url http://localhost:8000/graphql
+docker compose exec -T app python /tmp/scripts/seed_completed_order.py --url http://localhost:8000/graphql
+```
+
+Скрипты берут `ADMIN_EMAIL`/`ADMIN_PASSWORD` из окружения контейнера `app`, то
+есть из `backend/.env` — дописывать ничего не нужно. Скриптов нет внутри образа
+(в `Dockerfile` копируется только `app/`), поэтому их сначала копируют в
+контейнер: `docker compose cp scripts/. app:/tmp/scripts/`.
+
+`e2e_pickup_smoke.py` создаёт свою категорию, блюдо, пользователя и заказ, то
+есть после прогона демо-каталог стоит пересобрать по шагам выше.
+
+### Известные особенности `.env` на сервере
+
+`SITE_ADDRESS` содержит запятую с пробелом (apex + `www`), поэтому значение
+записано в кавычках — так файл можно подключать через `source` (именно это
+делает `pikupo-reset-demo.sh`), иначе шелл падает на строке
+`www...: command not found`. Docker Compose кавычки снимает и передаёт в Caddy
+значение `78-111-89-46.sslip.io, www.78-111-89-46.sslip.io` как есть.
+
+### Переименование в Pikupo: что именно менялось 17.09.2026
+
+Код переехал в `/opt/pikupo`, база — в `pikupo`, префикс заказов — `PKP`,
+админ — `admin@pikupo.com`. Хост-каталог переименован вместе с
+`/opt/pikupo-ops`; имена контейнеров и томов не изменились (compose-проект
+называется `backend`, он берётся из имени каталога `backend/`), поэтому
+сертификаты и данные пережили переезд без вмешательства.
+
+Урок, который стоил одной пересборки базы: **`backend/.env` нельзя возить в
+архиве с кодом**. Архив, собранный из рабочей копии, тащит за собой локальный
+дев-`.env`, и при распаковке поверх сервера он затирает продовый — вместе с
+паролем Mongo, `SITE_ADDRESS`, `CADDYFILE=Caddyfile.prod` и `JWT_SECRET`.
+Пароль Mongo восстановить нельзя (в томе лежит только хеш), поэтому том Mongo
+был пересоздан, а демо-данные пересеяны. Штатный путь обновления кода —
+`git bundle` (§«Обновление кода на сервере»), он `.env` не переносит. Если всё
+же нужен архив, исключайте `backend/.env`, `*/.env`, `backend/backups` и
+`backend/static`:
+
+```bash
+tar --exclude='.git' --exclude='*/.env' --exclude='backend/.env' \
+    --exclude='node_modules' --exclude='dist' --exclude='build' \
+    --exclude='backend/backups' --exclude='backend/static' \
+    -czf pikupo-src.tgz .
+```
+
+Старые данные перед пересозданием тома сняты дампом
+`backend/backups/pre-pikupo-rescue.archive` (mongodump, все БД) — поднять
+обратно при необходимости:
+
+```bash
+docker compose exec -T backup mongorestore \
+  --host mongo --username "$MONGO_INITDB_ROOT_USERNAME" \
+  --password "$MONGO_INITDB_ROOT_PASSWORD" --authenticationDatabase admin \
+  --drop --gzip --archive=/backups/pre-pikupo-rescue.archive </dev/null
+```
+
+Продовый `.env` после инцидента собран заново: секреты (`MONGO_INITDB_ROOT_PASSWORD`,
+`REDIS_PASSWORD`, `JWT_SECRET`) сгенерированы на сервере заново, поэтому все
+выданные ранее токены недействительны — приложение потребует войти снова.
 
 ---
 
@@ -206,8 +386,8 @@ systemctl restart ssh
 
 ```bash
 cd /opt
-git clone <URL-вашего-репозитория> forkly
-cd forkly/backend
+git clone <URL-вашего-репозитория> pikupo
+cd pikupo/backend
 cp .env.example .env
 nano .env
 ```
@@ -221,7 +401,7 @@ nano .env
 | `JWT_SECRET` | `openssl rand -hex 32` | **обязательно**, иначе деплой не стартует |
 | `ADMIN_EMAIL` | рабочий e-mail | логин владельца |
 | `ADMIN_PASSWORD` | сильный пароль | **не** `change-me` |
-| `MONGO_INITDB_ROOT_USERNAME` | `forkly` | |
+| `MONGO_INITDB_ROOT_USERNAME` | `pikupo` | |
 | `MONGO_INITDB_ROOT_PASSWORD` | `openssl rand -hex 24` | уникальный |
 | `REDIS_PASSWORD` | `openssl rand -hex 24` | уникальный |
 | `CORS_ORIGINS` | `https://admin.203-0-113-10.sslip.io,https://203-0-113-10.sslip.io,https://www.203-0-113-10.sslip.io` | иначе браузер заблокирует запросы |
@@ -284,13 +464,20 @@ node --version   # v20.x
 
 ### 5.2. Admin Dashboard
 
+> **Важно:** production-сборка **обязана** смотреть на публичный API
+> (`https://api.<ip>.sslip.io/`), а не на `localhost:8000`. Vite вшивает
+> `VITE_*` в бандл на этапе `build` — если собрать с `.env.example`
+> (localhost), опубликованная админка будет бить в несуществующий локальный
+> бэкенд. Используйте `.env.production.example` → `.env.production`.
+
 ```bash
-cd /opt/forkly/"Admin Dashboard"
-cp .env.example .env.production
+cd /opt/pikupo/"Admin Dashboard"
+cp .env.production.example .env.production
 nano .env.production
 ```
 
-Заполните (обратите внимание — обязателен trailing slash и `wss://` для WS):
+Заполните (обратите внимание — обязателен trailing slash и `wss://` для WS).
+Для текущего демо-стенда значения уже в `.env.production.example`:
 
 ```dotenv
 VITE_SERVER_URL=https://api.203-0-113-10.sslip.io/
@@ -320,7 +507,7 @@ cp -r dist/* /srv/admin/
 ### 5.3. Website
 
 ```bash
-cd /opt/forkly/Website
+cd /opt/pikupo/Website
 cat .env.example > .env.production
 nano .env.production
 ```
@@ -376,11 +563,11 @@ Caddy как `/srv`. Разложите собранные фронтенды (�
 ждёт конфиг:
 
 ```bash
-cd /opt/forkly/backend
+cd /opt/pikupo/backend
 mkdir -p static/admin static/www
 
-cp -r "/opt/forkly/Admin Dashboard/dist/." static/admin/
-cp -r /opt/forkly/Website/dist/. static/www/
+cp -r "/opt/pikupo/Admin Dashboard/dist/." static/admin/
+cp -r /opt/pikupo/Website/dist/. static/www/
 ```
 
 Перезапуск и проверка:
@@ -405,7 +592,7 @@ Caddy сам получит и будет продлевать сертифик�
 нужно именно в этом порядке.
 
 ```bash
-cd /opt/forkly/backend
+cd /opt/pikupo/backend
 pip install httpx python-dotenv   # если не установлены
 ```
 
@@ -436,7 +623,7 @@ python scripts/seed_completed_order.py --url https://api.203-0-113-10.sslip.io/g
 ### 8.1. Указать продовые адреса
 
 ```bash
-cd /opt/forkly/CustomerApp
+cd /opt/pikupo/CustomerApp
 cp .env.example .env
 nano .env
 ```
@@ -463,6 +650,18 @@ APK: `CustomerApp/android/app/build/outputs/apk/release/app-release.apk`.
 
 Для демо APK подписывается debug-ключом (Gradle подставит его автоматически).
 Этого достаточно, чтобы поставить приложение на телефон заказчика вручную.
+
+> **Не запускайте `clean` вместе с `assembleRelease`.** Задача
+> `:app:externalNativeBuildCleanRelease` удаляет сгенерированные codegen-каталоги
+> нативных модулей, а CMake в этот же момент пытается переконфигурироваться и
+> падает с `add_subdirectory given source ... which is not an existing directory`
+> и `Cannot specify link libraries for target "react_codegen_AmplitudeReactNative"`.
+> Сборка при этом не страдает — падает только очистка. Если нужен чистый билд:
+> сначала `./gradlew clean` отдельно (он может упасть, это ожидаемо), затем
+> `./gradlew assembleRelease`. Ещё надёжнее — `npx expo prebuild --platform android --clean`.
+
+> **Значения из `.env` вшиваются в APK при сборке** (`app.config.js` копирует их в
+> `Constants.expoConfig.extra`). Меняете адрес бэкенда — обязателен пересбор.
 
 > Долгие сборки на слабом VPS могут упасть по памяти. Если Gradle падает с
 > `OutOfMemoryError`, поднимите лимиты в `android/gradle.properties`
@@ -494,7 +693,7 @@ HTTPS, поэтому это ограничение не мешает — и н�
 
 ```dotenv
 STRIPE_PUBLIC_KEY=pk_test_...
-STRIPE_STORE_NAME=Forkly
+STRIPE_STORE_NAME=Pikupo
 STRIPE_IMAGE_URL=https://203-0-113-10.sslip.io/og-image.png
 ```
 
@@ -534,7 +733,7 @@ curl -fsS https://api.203-0-113-10.sslip.io/health
 curl -fsS https://api.203-0-113-10.sslip.io/ready
 
 # Сквозной сценарий на бэкенде: заказ → принят → готов → выдан + WebSocket
-cd /opt/forkly/backend
+cd /opt/pikupo/backend
 python scripts/e2e_pickup_smoke.py \
   --url https://api.203-0-113-10.sslip.io/graphql \
   --ws wss://api.203-0-113-10.sslip.io/graphql
@@ -563,22 +762,22 @@ python scripts/e2e_pickup_smoke.py \
 ## 11. Обслуживание
 
 ```bash
-cd /opt/forkly/backend
+cd /opt/pikupo/backend
 
 # Обновление кода
 git pull
 docker compose up -d --build --remove-orphans
 
 # Обновление статики после правок фронтенда
-cd "/opt/forkly/Admin Dashboard" && npm ci && npm run build:prod && cp -r dist/* /srv/admin/
-cd /opt/forkly/Website && npm ci && npm run build && cp -r dist/* /srv/www/
+cd "/opt/pikupo/Admin Dashboard" && npm ci && npm run build:prod && cp -r dist/* /srv/admin/
+cd /opt/pikupo/Website && npm ci && npm run build && cp -r dist/* /srv/www/
 
 # Логи
 docker compose logs -f app
 ```
 
 Бэкапы: сервис `backup` раз в сутки складывает дамп в
-`backend/backups/forkly_<timestamp>.archive.gz` и хранит 14 последних. Настройте
+`backend/backups/pikupo_<timestamp>.archive.gz` и хранит 14 последних. Настройте
 выгрузку этой папки за пределы сервера (rsync/S3) — подробности в
 `backend/DEPLOY.md`.
 
