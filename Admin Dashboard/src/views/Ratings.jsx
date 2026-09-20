@@ -20,20 +20,20 @@ const Ratings = props => {
       name: 'Name',
       sortable: true,
       selector: 'order.user.name',
-      cell: row => <>{row.order.user.name}</>
+      cell: row => <>{row.order?.user?.name || '—'}</>
     },
     {
       name: 'Email',
       sortable: true,
       selector: 'order.user.email',
-      cell: row => <>{row.order.user.email}</>
+      cell: row => <>{row.order?.user?.email || '—'}</>
     },
     {
       name: 'Items',
       cell: row => (
         <>
-          {row.order.items.map(({ food }) => {
-            return food.title + '\t'
+          {(row.order?.items ?? []).map(({ food }) => {
+            return (food?.title || '') + '\t'
           })}
         </>
       )
