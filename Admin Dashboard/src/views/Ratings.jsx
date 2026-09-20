@@ -32,8 +32,8 @@ const Ratings = props => {
       name: 'Items',
       cell: row => (
         <>
-          {(row.order?.items ?? []).map(({ food }) => {
-            return (food?.title || '') + '\t'
+          {(row.order?.items ?? []).map(item => {
+            return (item?.food?.title || '') + '\t'
           })}
         </>
       )
