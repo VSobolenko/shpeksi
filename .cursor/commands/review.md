@@ -39,6 +39,12 @@ work is done.
 3. **Run lightweight verification as evidence (do not claim without output)**
 
    Run the relevant checks and capture real output:
+   - **Any code change → `node scripts/verify-changes.mjs`** first. It is fast
+     (seconds) and lints only the changed files, so it isolates this diff from
+     pre-existing repo debt. It fails on violations *and* on checks that could not
+     run. Note its coverage: `CustomerApp` and `Admin Dashboard` are style-checked;
+     `backend` and `Website` have no linter and are reported UNVERIFIED — those
+     diffs need reading, not just a green exit code.
    - Backend changed → `python -m pytest -q` and `python -m compileall -q app tests`
      (from `backend/`).
    - Admin changed → `npm run build` (from `Admin Dashboard/`).
@@ -57,7 +63,7 @@ work is done.
      Diff: <uncommitted changes | branch changes>
      Change Description: <one line on what this work does>
      Custom Instructions: Verify the diff conforms to the OpenSpec specs in
-     openspec/specs/ (GraphQL contract, self-pickup-only model, "Forkly" naming). Flag any spec drift, broken contract, or missing evidence, not
+     openspec/specs/ (GraphQL contract, self-pickup-only model, "Pikupo" naming). Flag any spec drift, broken contract, or missing evidence, not
      just style. Include file paths and line numbers for each finding.
      ```
    - **security-review** — description exactly `Security Review`, prompt:
@@ -70,6 +76,35 @@ work is done.
      ```
 
    Launch both in a single message so they run in parallel.
+
+4b. **Dispatch the independent reviewer (Codex)**
+
+   Also run **Codex** as a third reviewer. `bugbot` and `security-review` inherit
+   this session's model; Codex runs a different model family, so its blind spots
+   are uncorrelated with theirs. That independence is the whole value — do not
+   skip it, and do not replace the other two with it.
+
+   Call the `codex` MCP tool (see the `codex-second-agent` skill) with
+   `sandbox: "read-only"` so it cannot modify the repo, and `cwd` set to the repo
+   root. It does not know this repo's rules, so name them in the prompt:
+
+   ```
+   codex({
+     sandbox: "read-only",
+     cwd: "<repo root>",
+     prompt: `You are an independent code reviewer. Read AGENTS.md,
+     .cursor/rules/project-conventions.mdc, and openspec/specs/** first.
+     Review the <uncommitted changes | branch changes> using git diff and git status.
+     Report ONLY blocking findings as file:line — what is wrong and why it matters.
+     Check for: GraphQL contract drift (operation/field names, snake_case, _id),
+     violations of the self-pickup-only model (no rider/delivery code), leftover
+     "Forkly" branding, hardcoded secrets, and spec drift.
+     Do not modify any files. If nothing is blocking, say so plainly.`
+   })
+   ```
+
+   Record its `threadId`: if a finding is unclear, push back with `codex-reply`
+   instead of accepting it blindly.
 
 5. **Triage and verify (technical rigor, not performative agreement)**
 
@@ -117,5 +152,8 @@ PASS / CHANGES REQUIRED
 - Never rewrite code in this workflow; report only.
 - Always capture real command output before asserting a check passed.
 - Always launch both reviewers; do not skip one unless the user explicitly says so.
+- Always run the Codex reviewer too — its value is model diversity, so an
+  all-same-model review is a weaker gate.
+- Never give the Codex reviewer write access: `sandbox: "read-only"` only.
 - Do not treat a reviewer's claim as true without checking it against the spec.
 - Keep the diff scope explicit — reviewers must know what is in and out of scope.

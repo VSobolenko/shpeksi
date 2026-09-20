@@ -6,7 +6,7 @@ from beanie import Document
 
 
 class Configuration(Document):
-    order_id_prefix: str = "FRK"
+    order_id_prefix: str = "PKP"
     email: str = ""
     password: str = ""
     enable_email: bool = False

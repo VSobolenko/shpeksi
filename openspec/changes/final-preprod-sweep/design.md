@@ -1,6 +1,6 @@
 ## Context
 
-The backend is already running via docker-compose (`mongo`, `redis`, `app`, `caddy`, `backup` all healthy) and serving `/graphql` on `:8000`. The Admin Dashboard is Vite + React 18 + `@apollo/client` 3. The CustomerApp is Expo SDK 57 / React Native 0.86.3 with package `com.forkly.app`. An AVD `Medium_Phone` exists, and Maestro 2.9.0 and Playwright are installed. Existing specs (`pickup-order-flow`, `customer-app-runtime-verification`, `backend/*`) define the target behavior. See `proposal.md` for motivation.
+The backend is already running via docker-compose (`mongo`, `redis`, `app`, `caddy`, `backup` all healthy) and serving `/graphql` on `:8000`. The Admin Dashboard is Vite + React 18 + `@apollo/client` 3. The CustomerApp is Expo SDK 57 / React Native 0.86.3 with package `com.pikupo.app`. An AVD `Medium_Phone` exists, and Maestro 2.9.0 and Playwright are installed. Existing specs (`pickup-order-flow`, `customer-app-runtime-verification`, `backend/*`) define the target behavior. See `proposal.md` for motivation.
 
 ## Goals / Non-Goals
 

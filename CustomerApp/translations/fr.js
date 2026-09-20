@@ -18,7 +18,7 @@ export const fr = {
     "L'âge ne diminue en rien l'extrême déception d'avoir une boule de glace tombée du cône.",
   getStarted: 'Commencer!',
   welcome:
-    "Bienvenue dans Forkly, parfois tout ce dont vous avez besoin est de l'amour. Mais un peu de nourriture maintenant et ensuite ne fait pas mal.",
+    "Bienvenue dans Pikupo, parfois tout ce dont vous avez besoin est de l'amour. Mais un peu de nourriture maintenant et ensuite ne fait pas mal.",
   loginBtn: "S'identifier",
   registerBtn: 'registre',
   name: 'prénom',
@@ -152,7 +152,7 @@ export const fr = {
   userInfoUpdated: "Informations de l'utilisateur mises à jour",
   nameReq: 'Nom requis',
   minWords: 'Minimum 11 et maximum 15 caractères autorisés',
-  rightsReserved: 'Tous les droits sont réservés par Forkly',
+  rightsReserved: 'Tous les droits sont réservés par Pikupo',
   changePass: 'Changer le mot de passe',
   currentPass: 'Mot de passe actuel',
   passReq: 'Mot de passe requis',
@@ -231,5 +231,11 @@ export const fr = {
   AddNewAddress: 'Ajouter une nouvelle adresse',
   'About Us': 'À propos de nous',
   'Product Page': 'Page de produit',
-  'Change Payment Method': 'Changer la méthode de paiement'
+  'Change Payment Method': 'Changer la méthode de paiement',
+  invalidEmail: 'Indiquez une adresse e-mail valide',
+  invalidPhone: 'Indiquez un numero valide (9-15 chiffres)',
+  firstNameReq: 'Le prenom est obligatoire',
+  lastNameReq: 'Le nom est obligatoire',
+  googleSignInUnavailable: 'Connexion Google non configuree',
+  googleSignInFailed: 'Echec de la connexion Google. Essayez l\'e-mail.'
 }

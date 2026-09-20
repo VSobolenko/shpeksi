@@ -8,7 +8,7 @@ import EmptyOrder from '../../assets/images/SVG/imageComponents/EmptyOrder'
 import {
   ActiveOrders,
   CustomIcon,
-  ForklyImage,
+  PikupoImage,
   Spinner,
   TextDefault,
   TextError,
@@ -145,9 +145,13 @@ function MyOrders() {
           >
             <View style={styles.subContainer}>
               <View style={styles.imgContainer}>
-                <ForklyImage
+                <PikupoImage
                   imgStyle={styles.imgResponsive}
-                  source={{ uri: item.items[0].food.img_url }}
+                  imgSource={
+                    item.items?.[0]?.food?.img_url
+                      ? { uri: item.items[0].food.img_url }
+                      : undefined
+                  }
                   spinnerProps={{ style: styles.loadingView }}
                 />
               </View>

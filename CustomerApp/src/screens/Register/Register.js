@@ -14,7 +14,7 @@ import {
 import {
   FilledTextField,
   CustomIcon,
-  ForklyImage,
+  PikupoImage,
   FlashMessage,
   Spinner,
   TextDefault,
@@ -68,27 +68,26 @@ function Register() {
     setFirstnameError(null)
     setLastnameError(null)
 
-    const emailRegex = /^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/
+    const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/
     if (!emailRegex.test(email.trim())) {
-      setEmailError('Provide a valid email address')
+      setEmailError(i18n.t('invalidEmail'))
       result = false
     }
     if (!password) {
-      setPasswordError('Password is required')
+      setPasswordError(i18n.t('passReq'))
       result = false
     }
-    const phoneRegex = /^\d{11,15}$/
-    if (!phoneRegex.test(phone)) {
-      setPhoneError('Provide a valid phone number')
+    const phoneDigits = phone.replace(/\D/g, '')
+    if (!/^\d{9,15}$/.test(phoneDigits)) {
+      setPhoneError(i18n.t('invalidPhone'))
       result = false
     }
-    const nameRegex = /^[A-Za-z]{1,15}$/
-    if (!nameRegex.test(firstname)) {
-      setFirstnameError('First name is required')
+    if (!firstname.trim() || firstname.trim().length > 30) {
+      setFirstnameError(i18n.t('firstNameReq'))
       result = false
     }
-    if (!nameRegex.test(lastname)) {
-      setLastnameError('Last name is required')
+    if (!lastname.trim() || lastname.trim().length > 30) {
+      setLastnameError(i18n.t('lastNameReq'))
       result = false
     }
     return result
@@ -143,10 +142,10 @@ function Register() {
         onPress={async() => {
           if (validateCredentials()) {
             const user = {
-              phone: phone.trim(),
+              phone: `+${phone.replace(/\D/g, '')}`,
               email: email.toLowerCase().trim(),
               password,
-              name: firstname + ' ' + lastname,
+              name: `${firstname.trim()} ${lastname.trim()}`,
               picture: ''
             }
             mutateLogin(user)
@@ -166,7 +165,7 @@ function Register() {
       value => value.timezone.toLowerCase() === deviceTimeZone
     )
     if (!phone && timezone) {
-      setPhone(timezone.country_code)
+      setPhone(String(timezone.country_code).replace(/\D/g, ''))
     }
   }
 
@@ -198,7 +197,7 @@ function Register() {
             </View>
             <View style={styles.subContainer}>
               <View style={[styles.flex, styles.upperContainer]}>
-                <ForklyImage
+                <PikupoImage
                   imgStyle={[
                     styles.imgResponsive,
                     { backgroundColor: 'transparent' }
@@ -224,9 +223,9 @@ function Register() {
                   labelTextStyle={styles.labelStyle}
                   inputContainerStyle={styles.textContainer}
                   onChangeText={text => {
-                    setFirstname(text.trim())
+                    setFirstname(text)
                   }}
-                  maxLength={15}
+                  maxLength={30}
                 />
                 <FilledTextField
                   testID="register-lastname"
@@ -244,9 +243,9 @@ function Register() {
                   labelTextStyle={styles.labelStyle}
                   inputContainerStyle={styles.textContainer}
                   onChangeText={text => {
-                    setLastname(text.trim())
+                    setLastname(text)
                   }}
-                  maxLength={15}
+                  maxLength={30}
                 />
                 <FilledTextField
                   testID="register-email"
@@ -288,8 +287,9 @@ function Register() {
                   labelTextStyle={styles.labelStyle}
                   inputContainerStyle={styles.textContainer}
                   onChangeText={text => {
-                    setPhone(text.trim())
+                    setPhone(text.replace(/\D/g, ''))
                   }}
+                  maxLength={15}
                 />
                 <FilledTextField
                   testID="register-password"

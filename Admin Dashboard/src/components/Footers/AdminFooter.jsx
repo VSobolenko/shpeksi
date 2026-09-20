@@ -17,7 +17,7 @@ function Footer(props) {
               href="/"
               rel="noopener noreferrer"
               target="_blank">
-              Forkly
+              Pikupo
             </a>
           </div>
         </Col>
@@ -29,7 +29,7 @@ function Footer(props) {
                 href="/"
                 rel="noopener noreferrer"
                 target="_blank">
-                Forkly
+                Pikupo
               </NavLink>
             </NavItem>
           </Nav>

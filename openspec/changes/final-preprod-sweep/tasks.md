@@ -45,7 +45,7 @@
 
 ## 6. Branding, localization, and secrets audit
 
-- [ ] 6.1 Search for legacy-brand/rider/delivery/courier artifacts; verify the `FRK` order prefix and the `forkly` database; fix any leftovers
+- [ ] 6.1 Search for legacy-brand/rider/delivery/courier artifacts; verify the `PKP` order prefix and the `pikupo` database; fix any leftovers
 - [ ] 6.2 Verify all six translations (`en`/`ar`/`de`/`fr`/`km`/`zh`) have complete keys; fix gaps
 - [ ] 6.3 Run a secret scan; remove or replace any tracked secrets
 

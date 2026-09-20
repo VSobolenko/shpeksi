@@ -1,6 +1,7 @@
 const zh = {
   translation: {
     'Sign in credentials': '登录凭据',
+    'Check your email and password': '请检查邮箱和密码',
     'Sign in': '登入',
     'Add Category': '添加类别',
     Title: '标题',

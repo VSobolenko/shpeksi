@@ -717,7 +717,7 @@ class Mutation:
         require_admin(info)
         users = await User.find_all().to_list()
         tokens = [u.notificationToken for u in users if u.notificationToken]
-        send_push_many(tokens, notificationTitle or "Forkly", notificationBody or "")
+        send_push_many(tokens, notificationTitle or "Pikupo", notificationBody or "")
         return True
 
     @strawberry.mutation

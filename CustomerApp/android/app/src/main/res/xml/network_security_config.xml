@@ -2,7 +2,7 @@
 <!--
   Demo / local-development configuration.
 
-  The Forkly backend runs over plain HTTP on the developer machine.
+  The Pikupo backend runs over plain HTTP on the developer machine.
   `10.0.2.2` is the host machine as seen from the Android emulator; the
   other entries cover a real device on the same LAN.
 

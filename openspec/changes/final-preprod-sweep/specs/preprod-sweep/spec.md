@@ -1,6 +1,6 @@
 ## Purpose
 
-Defines the acceptance criteria for the final pre-release verification sweep of the entire Forkly system (backend, Admin Dashboard, and CustomerApp) and the mandatory fix-loop applied to every finding.
+Defines the acceptance criteria for the final pre-release verification sweep of the entire Pikupo system (backend, Admin Dashboard, and CustomerApp) and the mandatory fix-loop applied to every finding.
 
 ## ADDED Requirements
 
@@ -57,12 +57,12 @@ Placing an order, registering a customer, and admin catalog/coupon changes SHALL
 
 ### Requirement: Branding, localization, and secrets hygiene
 
-The system SHALL use "Forkly" branding, the `FRK` order prefix, and the `forkly` database; SHALL contain no third-party branding or delivery/rider artifacts; SHALL keep all six CustomerApp translations complete; and SHALL contain no committed secrets.
+The system SHALL use "Pikupo" branding, the `PKP` order prefix, and the `pikupo` database; SHALL contain no third-party branding or delivery/rider artifacts; SHALL keep all six CustomerApp translations complete; and SHALL contain no committed secrets.
 
 #### Scenario: Branding audit
 
 - **WHEN** the codebase and runtime UI are searched
-- **THEN** no third-party branding, rider, courier, or delivery artifacts remain; orders use the `FRK-` prefix; and the database is named `forkly`
+- **THEN** no third-party branding, rider, courier, or delivery artifacts remain; orders use the `PKP-` prefix; and the database is named `pikupo`
 
 #### Scenario: Localization completeness
 

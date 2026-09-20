@@ -12,9 +12,9 @@ from app.services.orders import (
 
 
 def test_generate_order_id_uses_given_prefix():
-    order_id = asyncio.run(generate_order_id("FRK"))
-    assert order_id.startswith("FRK-")
-    assert len(order_id) > len("FRK-")
+    order_id = asyncio.run(generate_order_id("PKP"))
+    assert order_id.startswith("PKP-")
+    assert len(order_id) > len("PKP-")
 
 
 def test_pickup_status_sets():

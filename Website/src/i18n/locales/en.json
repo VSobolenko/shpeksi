@@ -1,5 +1,5 @@
 {
-  "brand": "Forkly",
+  "brand": "Pikupo",
   "nav": {
     "howItWorks": "How it works",
     "features": "Platform",
@@ -13,7 +13,7 @@
   "hero": {
     "eyebrow": "For restaurants & cafés",
     "title": "Launch your own pickup ordering app",
-    "subtitle": "Forkly is a white-label ordering platform that gives your restaurant a branded app for self-pickup — no fleet, no commission surprises.",
+    "subtitle": "Pikupo is a white-label ordering platform that gives your restaurant a branded app for self-pickup — no fleet, no commission surprises.",
     "primaryCta": "Request a demo",
     "secondaryCta": "See how it works"
   },
@@ -52,8 +52,8 @@
   },
   "about": {
     "eyebrow": "About",
-    "title": "Forkly, in a nutshell",
-    "text": "Forkly is a white-label ordering platform for restaurants and cafés. We give you a branded app for self-pickup orders — so you serve more people, faster, with none of the overhead of managing your own fleet.",
+    "title": "Pikupo, in a nutshell",
+    "text": "Pikupo is a white-label ordering platform for restaurants and cafés. We give you a branded app for self-pickup orders — so you serve more people, faster, with none of the overhead of managing your own fleet.",
     "points": [
       { "title": "Fast to launch", "text": "Get your branded app live in days, not months." },
       { "title": "Self-pickup only", "text": "Self-pickup means no fleet to manage and no per-order commission you didn't agree to." },
@@ -65,8 +65,8 @@
     "title": "Frequently asked questions",
     "subtitle": "Answers for restaurant owners.",
     "items": [
-      { "question": "What is Forkly?", "answer": "Forkly is a white-label ordering platform that gives your restaurant a branded app for self-pickup orders." },
-      { "question": "Is Forkly pickup-only?", "answer": "Yes. It's self-pickup only — customers order ahead and collect in store." },
+      { "question": "What is Pikupo?", "answer": "Pikupo is a white-label ordering platform that gives your restaurant a branded app for self-pickup orders." },
+      { "question": "Is Pikupo pickup-only?", "answer": "Yes. It's self-pickup only — customers order ahead and collect in store." },
       { "question": "Do I need technical skills?", "answer": "No. You manage your menu and orders from a simple dashboard." },
       { "question": "Can I use my own brand?", "answer": "Yes. The app uses your logo, colors, and name." },
       { "question": "What payments are supported?", "answer": "Cash, card, and PayPal." },
@@ -78,7 +78,7 @@
     "title": "Get in touch",
     "subtitle": "Questions or ready to launch? We'd love to hear from you.",
     "emailLabel": "Email",
-    "email": "hello@forkly.example",
+    "email": "hello@pikupo.example",
     "phoneLabel": "Phone",
     "phone": "+1 (555) 010-0100",
     "addressLabel": "Address",
@@ -87,7 +87,7 @@
   "getStarted": {
     "eyebrow": "Get started",
     "title": "Ready to launch your ordering app?",
-    "subtitle": "Request a demo and see how Forkly can grow your restaurant.",
+    "subtitle": "Request a demo and see how Pikupo can grow your restaurant.",
     "primaryCta": "Request a demo",
     "secondaryCta": "Open the merchant panel",
     "note": "Already a merchant? Manage your menu and orders from the panel."

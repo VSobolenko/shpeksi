@@ -1,12 +1,12 @@
 ## Context
 
-The platform (customer app, admin dashboard, backend) already exists and is rebranded to the "Forkly" brand with a pickup-only model. There is no public web surface. The marketing site is a new, standalone static module and does not call the GraphQL API. It is a **business-to-business** site: it sells the white-label ordering platform to restaurants/merchants, not food to consumers. It must match repo conventions: plain JavaScript (ES modules, no TypeScript), StandardJS style, and the seven-language requirement.
+The platform (customer app, admin dashboard, backend) already exists and is rebranded to the "Pikupo" brand with a pickup-only model. There is no public web surface. The marketing site is a new, standalone static module and does not call the GraphQL API. It is a **business-to-business** site: it sells the white-label ordering platform to restaurants/merchants, not food to consumers. It must match repo conventions: plain JavaScript (ES modules, no TypeScript), StandardJS style, and the seven-language requirement.
 
 ## Goals / Non-Goals
 
 **Goals:**
 
-- A fast, static, deploy-anywhere B2B marketing/landing site for "Forkly" aimed at restaurants/merchants.
+- A fast, static, deploy-anywhere B2B marketing/landing site for "Pikupo" aimed at restaurants/merchants.
 - White-label positioning: sell the platform as "launch your own branded pickup ordering app" — never a consumer food menu.
 - Multilingual (en, ar, de, fr, km, ru, zh) with correct RTL for Arabic.
 - Consistent with the Admin Dashboard's Vite + React 18 stack and StandardJS conventions.

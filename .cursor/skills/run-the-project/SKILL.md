@@ -1,6 +1,6 @@
 ---
 name: run-the-project
-description: Run, build, and lint each module of the Forkly monorepo. Use when the user asks how to start or build the app, or needs the correct commands per module.
+description: Run, build, and lint each module of the Pikupo monorepo. Use when the user asks how to start or build the app, or needs the correct commands per module.
 disable-model-invocation: true
 ---
 
@@ -54,3 +54,23 @@ npm run build      # static build into dist/
 Env: the backend reads `backend/.env` (see `.env.example`); Admin reads `VITE_*`
 from `.env.*`; CustomerApp reads `.env`; Website reads `VITE_*`. The frontends
 point at the self-hosted backend (`http://localhost:8000/graphql`) by default.
+
+## Verify changed files (fast gate)
+
+```bash
+node scripts/verify-changes.mjs              # uncommitted changes
+node scripts/verify-changes.mjs --base main  # branch changes
+node scripts/verify-changes.mjs --build      # also run module builds (slow)
+```
+
+Lints **only the files that changed**, so pre-existing debt cannot produce a false
+failure. Exits non-zero on a violation, and also when a check could not run
+(BLOCKED) — a skipped check is never reported as a pass.
+
+Coverage is uneven by design: `CustomerApp` and `Admin Dashboard` are checked with
+eslint (`standard`); `backend` has no linter (only `compileall`) and `Website` has
+no eslint config at all, so both are reported **UNVERIFIED** and their diffs must
+be read by hand. `Admin Dashboard` reports BLOCKED until `npm install` has been run
+there.
+
+Use this before accepting any code an external agent produced.

@@ -65,16 +65,16 @@ The CustomerApp translations (`en`, `ar`, `de`, `fr`, `km`, `ru`, `zh`) SHALL co
 - **WHEN** the change is complete
 - **THEN** no delivery-, courier-, or tracking-related keys or strings remain in any translation file
 
-### Requirement: Forkly product naming
-The product SHALL use the "Forkly" name consistently in production artifacts and SHALL NOT reference third-party white-label project names; the database, order prefix, backend package, API title, and app branding SHALL use the name "Forkly".
+### Requirement: Pikupo product naming
+The product SHALL use the "Pikupo" name consistently in production artifacts and SHALL NOT reference third-party white-label project names; the database, order prefix, backend package, API title, and app branding SHALL use the name "Pikupo".
 
 #### Scenario: Consistent product branding
 - **WHEN** the change is complete
-- **THEN** no file under `backend/`, `Admin Dashboard/`, `CustomerApp/`, or `Website/` references a third-party project name; the database is named `forkly`, the order prefix is `FRK`, and the apps display "Forkly"
+- **THEN** no file under `backend/`, `Admin Dashboard/`, `CustomerApp/`, or `Website/` references a third-party project name; the database is named `pikupo`, the order prefix is `PKP`, and the apps display "Pikupo"
 
 #### Scenario: Order identifiers
 - **WHEN** an order is placed
-- **THEN** its `order_id` begins with `FRK-`
+- **THEN** its `order_id` begins with `PKP-`
 
 #### Scenario: Root policy files preserved
 - **WHEN** the change is complete

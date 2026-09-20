@@ -1,6 +1,7 @@
 const km = {
   translation: {
     'Sign in credentials': 'ចូលព័ត៌មានអត្តសញ្ញាណ',
+    'Check your email and password': 'សូមពិនិត្យអ៊ីមែល និងពាក្យសម្ងាត់របស់អ្នក',
     'Sign in': 'ចូល',
     'Add Category': 'បន្ថែមប្រភេទ',
     Title: 'ចំណងជើង',

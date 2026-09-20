@@ -1,4 +1,4 @@
-"""End-to-end pickup-flow smoke test for the Forkly backend.
+"""End-to-end pickup-flow smoke test for the Pikupo backend.
 
 Runs the full self-pickup order lifecycle against a live backend + MongoDB:
 

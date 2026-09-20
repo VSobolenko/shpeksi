@@ -1,4 +1,4 @@
-"""Tests for model field defaults (Forkly branding and sensible defaults)."""
+"""Tests for model field defaults (Pikupo branding and sensible defaults)."""
 
 from app.models import Addon, Configuration, Coupon, Food, Option
 
@@ -7,8 +7,8 @@ def _default(model, field):
     return model.model_fields[field].default
 
 
-def test_configuration_defaults_are_forkly():
-    assert _default(Configuration, "order_id_prefix") == "FRK"
+def test_configuration_defaults_are_pikupo():
+    assert _default(Configuration, "order_id_prefix") == "PKP"
     assert _default(Configuration, "enable_email") is False
     assert _default(Configuration, "sandbox") is True
     assert _default(Configuration, "currency") == "USD"

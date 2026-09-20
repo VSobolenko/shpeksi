@@ -65,8 +65,8 @@
 
 ## 8. Phase 7 — Production hardening & release
 
-- [x] 8.1 Brand the backend as Forkly: DB → `forkly`, order prefix → `FRK`, package `forkly-backend`, API title → "Forkly API", and update `.env.example`; verify `placeOrder` returns an `FRK-…` id and data lands in the `forkly` database
-- [x] 8.2 Brand the frontends as "Forkly" (CustomerApp `app.json` name/slug/scheme/bundleId, `ForklyImage`, login/sidebar/footer text, translations, `package.json` names; Admin `index.html` title, login/footer/sidebar, `i18n.js`) and update root policy/docs files to match; verify no legacy brand remains
+- [x] 8.1 Brand the backend as Pikupo: DB → `pikupo`, order prefix → `PKP`, package `pikupo-backend`, API title → "Pikupo API", and update `.env.example`; verify `placeOrder` returns an `PKP-…` id and data lands in the `pikupo` database
+- [x] 8.2 Brand the frontends as "Pikupo" (CustomerApp `app.json` name/slug/scheme/bundleId, `PikupoImage`, login/sidebar/footer text, translations, `package.json` names; Admin `index.html` title, login/footer/sidebar, `i18n.js`) and update root policy/docs files to match; verify no legacy brand remains
 - [x] 8.3 Add secrets fail-fast (startup refuses to run when `ENV=production` and `JWT_SECRET`/`ADMIN_PASSWORD` are unset or `change-me`) and verify a prod startup with placeholder secrets exits with a clear error
 - [x] 8.4 Add `GET /health` (liveness) and `GET /ready` (readiness with MongoDB ping) and verify `/health` returns ok and `/ready` returns 503 when MongoDB is unreachable
 - [x] 8.5 Wire Redis pub/sub (Redis when `REDIS_URL` set, in-memory fallback) and verify subscriptions work in-memory and, with Redis available, across two instances

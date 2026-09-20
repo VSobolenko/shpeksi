@@ -32,7 +32,7 @@ const Login = props => {
   const [passwordError, setPasswordError] = useState(null)
   const [error, setError] = useState(null)
   const [redirectToReferrer, setRedirectToReferrer] = useState(
-    !!localStorage.getItem('user-forkly')
+    !!localStorage.getItem('user-pikupo')
   )
 
   const onBlur = (event, field) => {
@@ -48,7 +48,11 @@ const Login = props => {
     const PasswordError = !validateFunc({ password: password }, 'password')
     setEmailError(EmailError)
     setPasswordError(PasswordError)
-    return EmailError && PasswordError
+    const isValid = EmailError && PasswordError
+    // Report *why* nothing happens. Previously an invalid field only turned the
+    // input red: the mutation was skipped and the user saw no message at all.
+    setError(isValid ? null : t('Check your email and password'))
+    return isValid
   }
 
   const location = useLocation()
@@ -84,6 +88,7 @@ const Login = props => {
                     value={email}
                     onChange={event => {
                       setEmail(event.target.value)
+                      setError(null)
                     }}
                     onBlur={event => {
                       onBlur(event, 'email')
@@ -111,6 +116,7 @@ const Login = props => {
                     value={password}
                     onChange={event => {
                       setPassword(event.target.value)
+                      setError(null)
                     }}
                     onBlur={event => {
                       onBlur(event, 'password')
@@ -126,7 +132,7 @@ const Login = props => {
                   mutation={LOGIN}
                   onCompleted={data => {
                     localStorage.setItem(
-                      'user-forkly',
+                      'user-pikupo',
                       JSON.stringify(data.adminLogin)
                     )
                     setRedirectToReferrer(true)

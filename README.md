@@ -1,4 +1,4 @@
-# Forkly — Food Ordering with Self-Pickup
+# Pikupo — Food Ordering with Self-Pickup
 
 A white-label **food ordering platform with self-pickup**. Customers browse the
 menu, place an order, and pick it up at the restaurant — no delivery, no riders.

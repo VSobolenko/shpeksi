@@ -18,7 +18,7 @@ export const km = {
     'អាយុមិនបន្ថយនូវការខកចិត្តយ៉ាងខ្លាំងនៃការធ្លាក់ចុះនៃការ៉េមពីកោណទេ',
   getStarted: 'ចាប់ផ្ដើម!',
   welcome:
-    'សូមស្វាគមន៏ទៅ Forkly ពេលខ្លះអ្វីដែលអ្នកត្រូវការគឺស្នេហា។ ប៉ុន្តែអាហារតិចតួចឥឡូវនេះហើយបន្ទាប់មកមិនឈឺទេ។',
+    'សូមស្វាគមន៏ទៅ Pikupo ពេលខ្លះអ្វីដែលអ្នកត្រូវការគឺស្នេហា។ ប៉ុន្តែអាហារតិចតួចឥឡូវនេះហើយបន្ទាប់មកមិនឈឺទេ។',
   loginBtn: 'ចូល',
   registerBtn: 'ចុះឈ្មោះ',
   name: 'ឈ្មោះ',
@@ -149,7 +149,7 @@ export const km = {
   nameReq: 'ត្រូវការឈ្មោះ',
   minWords:
     'អត្ថបទអប្បាយបន្ទាប់ពី 11 និងអតិបរិមាណអតិបរិមាណអតិបរិមាណអតិបរិមាណអតិបរិមាណអតិបរិមាណអតិបរិមាណអតិបរិមាណអតិបរិមាណអតិបរិមាណ',
-  rightsReserved: 'រក្សាសិទ្ធិទាំងអស់គ្នាដោយ Forkly',
+  rightsReserved: 'រក្សាសិទ្ធិទាំងអស់គ្នាដោយ Pikupo',
   changePass: 'ប្ដូរលេខសម្ងាត់',
   currentPass: 'លេខសម្ងាត់បច្ចុប្បន្ន',
   passReq: 'ត្រូវការលេខសម្ងាត់',
@@ -226,5 +226,11 @@ export const km = {
   AddNewAddress: 'បន្ថែមអាសយដ្ឋានថ្មី',
   'About Us': 'អំពីពួកយើង',
   'Product Page': 'ទំព័រផលិតផល',
-  'Change Payment Method': 'ផ្លាស់ប្តូរវិធីបង់ប្រាក់'
+  'Change Payment Method': 'ផ្លាស់ប្តូរវិធីបង់ប្រាក់',
+  invalidEmail: 'Provide a valid email address',
+  invalidPhone: 'Provide a valid phone number (9-15 digits)',
+  firstNameReq: 'First name is required',
+  lastNameReq: 'Last name is required',
+  googleSignInUnavailable: 'Google sign-in is not configured',
+  googleSignInFailed: 'Google sign-in failed. Try again or use email.'
 }

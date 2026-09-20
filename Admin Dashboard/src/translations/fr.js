@@ -1,6 +1,7 @@
 const fr = {
   translation: {
     'Sign in credentials': 'Identifiez-vous',
+    'Check your email and password': 'Vérifiez votre e-mail et votre mot de passe',
     'Sign in': 'se connecter',
     'Add Category': 'ajouter une catégorie',
     Title: 'Titre',

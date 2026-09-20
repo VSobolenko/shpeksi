@@ -1,15 +1,15 @@
 ## Purpose
 
-The public marketing website for the Forkly ordering platform, positioned business-to-business: it sells the white-label self-pickup ordering platform to restaurants, cafés, and merchants who want to launch their own branded ordering app, across seven languages.
+The public marketing website for the Pikupo ordering platform, positioned business-to-business: it sells the white-label self-pickup ordering platform to restaurants, cafés, and merchants who want to launch their own branded ordering app, across seven languages.
 
 ## ADDED Requirements
 
 ### Requirement: Business-to-business marketing site
-The product SHALL include a public marketing website that advertises the Forkly white-label ordering platform to restaurants and merchants, positioning it as a way to launch their own branded self-pickup ordering app.
+The product SHALL include a public marketing website that advertises the Pikupo white-label ordering platform to restaurants and merchants, positioning it as a way to launch their own branded self-pickup ordering app.
 
 #### Scenario: Merchant reaches the home page
 - **WHEN** a restaurant owner or merchant opens the site root
-- **THEN** the site renders a hero section with the Forkly platform name, a merchant-focused value proposition ("launch your own pickup ordering app"), and a call-to-action to request a demo or get started
+- **THEN** the site renders a hero section with the Pikupo platform name, a merchant-focused value proposition ("launch your own pickup ordering app"), and a call-to-action to request a demo or get started
 
 ### Requirement: Merchant-focused landing sections
 The site SHALL present a coherent merchant-focused content set: hero, "how it works" for the merchant (set up menu → receive orders → hand over at pickup), platform features, a "for your customers" section, about, FAQ for restaurant owners, contact, and a get-started/demo CTA.

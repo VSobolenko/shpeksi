@@ -1,4 +1,4 @@
-# Contributing to Forkly
+# Contributing to Pikupo
 
 First off, thank you for considering contributing to our project! Your help is greatly appreciated.
 

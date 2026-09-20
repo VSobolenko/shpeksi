@@ -20,7 +20,7 @@ export const SUPPORTED_LANGUAGES = [
   { code: 'zh', label: '中文', dir: 'ltr' }
 ]
 
-const STORAGE_KEY = 'forkly.language'
+const STORAGE_KEY = 'pikupo.language'
 const DEFAULT_LANGUAGE = 'en'
 
 const resources = {

@@ -18,7 +18,7 @@ export const ru = {
     'С возрастом разочарование от упавшего с рожка шарика мороженого ничуть не слабеет.',
   getStarted: 'Начать!',
   welcome:
-    'Добро пожаловать в Forkly! Иногда нужно только одно — любовь. Но немного еды тоже не помешает.',
+    'Добро пожаловать в Pikupo! Иногда нужно только одно — любовь. Но немного еды тоже не помешает.',
   loginBtn: 'Войти',
   registerBtn: 'Зарегистрироваться',
   name: 'Имя',
@@ -149,7 +149,7 @@ export const ru = {
   userInfoUpdated: 'Данные пользователя обновлены',
   nameReq: 'Укажите имя',
   minWords: 'Допустимо от 11 до 15 символов',
-  rightsReserved: 'Все права защищены — Forkly',
+  rightsReserved: 'Все права защищены — Pikupo',
   changePass: 'Изменить пароль',
   currentPass: 'Текущий пароль',
   passReq: 'Введите пароль',
@@ -225,5 +225,11 @@ export const ru = {
   AddNewAddress: 'Добавить новый адрес',
   'About Us': 'О нас',
   'Product Page': 'Страница продукта',
-  'Change Payment Method': 'Изменить способ оплаты'
+  'Change Payment Method': 'Изменить способ оплаты',
+  invalidEmail: 'Укажите корректный email',
+  invalidPhone: 'Укажите корректный телефон (9-15 цифр)',
+  firstNameReq: 'Укажите имя',
+  lastNameReq: 'Укажите фамилию',
+  googleSignInUnavailable: 'Вход через Google не настроен',
+  googleSignInFailed: 'Не удалось войти через Google. Попробуйте email.'
 }

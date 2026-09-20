@@ -12,7 +12,7 @@ import { TouchableOpacity, View } from 'react-native'
 import getEnvVars from '../../../environment'
 import { login } from '../../apollo/server'
 import {
-  ForklyImage,
+  PikupoImage,
   FdEmailBtn,
   FdGoogleBtn,
   FlashMessage,
@@ -170,55 +170,97 @@ const CreateAccount = () => {
     )
   }
 
-  const [googleRequest, googleResponse, googlePromptAsync] =
-    Google.useAuthRequest({
-      expoClientId: EXPO_CLIENT_ID_GOOGLE,
-      iosClientId: IOS_CLIENT_ID_GOOGLE,
-      iosStandaloneAppClientId: IOS_CLIENT_ID_GOOGLE,
-      androidClientId: ANDROID_CLIENT_ID_GOOGLE,
-      androidStandaloneAppClientId: ANDROID_CLIENT_ID_GOOGLE,
-      // redirectUrl: `${AuthSession.OAuthRedirect}:/oauth2redirect/google`,
-      scopes: ['profile', 'email'],
-      ...{ useProxy: true }
-    })
+  const googleConfigured = Boolean(
+    EXPO_CLIENT_ID_GOOGLE ||
+      ANDROID_CLIENT_ID_GOOGLE ||
+      IOS_CLIENT_ID_GOOGLE
+  )
 
-  const googleSignUp = () => {
-    if (googleResponse?.type === 'success') {
-      const { authentication } = googleResponse;
-      (async() => {
+  const [googleRequest, googleResponse, googlePromptAsync] =
+    Google.useAuthRequest(
+      googleConfigured
+        ? {
+            expoClientId: EXPO_CLIENT_ID_GOOGLE || undefined,
+            iosClientId: IOS_CLIENT_ID_GOOGLE || undefined,
+            androidClientId: ANDROID_CLIENT_ID_GOOGLE || undefined,
+            scopes: ['profile', 'email']
+          }
+        : {
+            // Expo requires a request config object; placeholder keeps the hook
+            // stable when client IDs are absent. The button stays disabled.
+            expoClientId: 'disabled.apps.googleusercontent.com',
+            scopes: ['profile', 'email']
+          }
+    )
+
+  useEffect(() => {
+    if (googleResponse?.type !== 'success') {
+      if (
+        googleResponse?.type === 'error' ||
+        googleResponse?.type === 'dismiss'
+      ) {
+        loginButtonSetter(null)
+        setLoading(false)
+        if (googleResponse?.type === 'error') {
+          FlashMessage({
+            message: i18n.t('googleSignInFailed')
+          })
+        }
+      }
+      return
+    }
+    const { authentication } = googleResponse
+    if (!authentication?.accessToken) {
+      loginButtonSetter(null)
+      setLoading(false)
+      FlashMessage({ message: i18n.t('googleSignInFailed') })
+      return
+    }
+    ;(async() => {
+      try {
+        setLoading(true)
         const userInfoResponse = await fetch(
           'https://www.googleapis.com/oauth2/v1/userinfo?alt=json',
           {
             headers: { Authorization: `Bearer ${authentication.accessToken}` }
           }
         )
+        if (!userInfoResponse.ok) {
+          throw new Error(`Google userinfo HTTP ${userInfoResponse.status}`)
+        }
         const googleUser = await userInfoResponse.json()
-        const user = {
+        if (!googleUser?.email) {
+          throw new Error('Google account email missing')
+        }
+        mutateLogin({
           phone: '',
           email: googleUser.email,
           password: '',
-          name: googleUser.name,
-          picture: googleUser.picture,
+          name: googleUser.name || googleUser.email,
+          picture: googleUser.picture || '',
           type: 'google'
-        }
-        mutateLogin(user)
-      })()
-    }
-  }
-
-  useEffect(() => {
-    googleSignUp()
+        })
+      } catch (e) {
+        console.error(e)
+        loginButtonSetter(null)
+        setLoading(false)
+        FlashMessage({ message: i18n.t('googleSignInFailed') })
+      }
+    })()
   }, [googleResponse])
 
   function renderGoogleAction() {
+    const disabled = !googleConfigured || !googleRequest
     return (
       <FdGoogleBtn
         loadingIcon={loading && loginButton === 'Google'}
+        disabled={disabled}
         onPressIn={() => {
-          loginButtonSetter('Google')
+          if (!disabled) loginButtonSetter('Google')
         }}
-        disabled={!googleRequest}
-        onPress={() => googlePromptAsync()}
+        onPress={() => {
+          if (!disabled) googlePromptAsync()
+        }}
       />
     )
   }
@@ -240,7 +282,7 @@ const CreateAccount = () => {
         <RegistrationHeader title={i18n.t('getStarted')} />
         <View style={styles.subContainer}>
           <View style={[styles.flex, styles.upperContainer]}>
-            <ForklyImage
+            <PikupoImage
               imgStyle={styles.imgResponsive}
               imgSource={Logo}
               spinnerProps={{ style: styles.loadingView }}

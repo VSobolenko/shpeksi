@@ -22,8 +22,6 @@ import {
   Col
 } from 'reactstrap'
 
-import teamPhoto from 'assets/img/theme/team-4-800x800.jpg'
-
 function Sidebar(props) {
   const navigate = useNavigate()
   const [collapseOpen, collapseOpenSetter] = useState(false)
@@ -95,8 +93,8 @@ function Sidebar(props) {
           <UncontrolledDropdown nav>
             <DropdownToggle nav>
               <Media className="align-items-center">
-                <span className="avatar avatar-sm rounded-circle">
-                  <img alt="..." src={teamPhoto} />
+                <span className="avatar avatar-sm rounded-circle bg-white text-dark d-inline-flex align-items-center justify-content-center font-weight-bold">
+                  A
                 </span>
               </Media>
             </DropdownToggle>
@@ -109,7 +107,7 @@ function Sidebar(props) {
                 href="#pablo"
                 onClick={e => {
                   e.preventDefault()
-                  localStorage.removeItem('user-forkly')
+                  localStorage.removeItem('user-pikupo')
                   navigate('/auth/login')
                 }}>
                 <i className="ni ni-user-run" />

@@ -21,7 +21,7 @@ firebase.initializeApp({
 const messaging = firebase.messaging()
 
 messaging.onBackgroundMessage(function (payload) {
-  var notificationTitle = 'New Order on Forkly'
+  var notificationTitle = 'New Order on Pikupo'
   var notificationOptions = {
     body: payload.data.orderid,
     icon: '/favicon.png'

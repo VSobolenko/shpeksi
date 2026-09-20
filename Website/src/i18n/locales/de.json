@@ -1,5 +1,5 @@
 {
-  "brand": "Forkly",
+  "brand": "Pikupo",
   "nav": {
     "howItWorks": "So funktioniert's",
     "features": "Plattform",
@@ -13,7 +13,7 @@
   "hero": {
     "eyebrow": "Für Restaurants & Cafés",
     "title": "Starten Sie Ihre eigene Abhol-Bestell-App",
-    "subtitle": "Forkly ist eine White-Label-Bestellplattform, die Ihrem Restaurant eine eigene App für die Selbstabholung bietet — ohne eigene Flotte, ohne Überraschungen bei den Provisionen.",
+    "subtitle": "Pikupo ist eine White-Label-Bestellplattform, die Ihrem Restaurant eine eigene App für die Selbstabholung bietet — ohne eigene Flotte, ohne Überraschungen bei den Provisionen.",
     "primaryCta": "Demo anfordern",
     "secondaryCta": "So funktioniert's"
   },
@@ -52,8 +52,8 @@
   },
   "about": {
     "eyebrow": "Über uns",
-    "title": "Forkly in Kürze",
-    "text": "Forkly ist eine White-Label-Bestellplattform für Restaurants und Cafés. Wir geben Ihnen eine eigene App für Selbstabholung — so bedienen Sie mehr Menschen, schneller, ohne den Aufwand einer eigenen Flotte.",
+    "title": "Pikupo in Kürze",
+    "text": "Pikupo ist eine White-Label-Bestellplattform für Restaurants und Cafés. Wir geben Ihnen eine eigene App für Selbstabholung — so bedienen Sie mehr Menschen, schneller, ohne den Aufwand einer eigenen Flotte.",
     "points": [
       { "title": "Schnell startklar", "text": "Bringen Sie Ihre eigene App in Tagen live, nicht in Monaten." },
       { "title": "Nur Abholung", "text": "Selbstabholung bedeutet keine Flotte zu verwalten und keine Provision pro Bestellung, der Sie nicht zugestimmt haben." },
@@ -65,8 +65,8 @@
     "title": "Häufig gestellte Fragen",
     "subtitle": "Antworten für Restaurantbesitzer.",
     "items": [
-      { "question": "Was ist Forkly?", "answer": "Forkly ist eine White-Label-Bestellplattform, die Ihrem Restaurant eine eigene App für Selbstabholung bietet." },
-      { "question": "Ist Forkly reine Abholung?", "answer": "Ja. Es ist reine Selbstabholung — Kunden bestellen vor und holen im Laden ab." },
+      { "question": "Was ist Pikupo?", "answer": "Pikupo ist eine White-Label-Bestellplattform, die Ihrem Restaurant eine eigene App für Selbstabholung bietet." },
+      { "question": "Ist Pikupo reine Abholung?", "answer": "Ja. Es ist reine Selbstabholung — Kunden bestellen vor und holen im Laden ab." },
       { "question": "Brauche ich technische Kenntnisse?", "answer": "Nein. Sie verwalten Menü und Bestellungen über ein einfaches Dashboard." },
       { "question": "Kann ich meine eigene Marke verwenden?", "answer": "Ja. Die App verwendet Ihr Logo, Ihre Farben und Ihren Namen." },
       { "question": "Welche Zahlungen werden unterstützt?", "answer": "Bar, Karte und PayPal." },
@@ -78,7 +78,7 @@
     "title": "Schreib uns",
     "subtitle": "Fragen oder bereit zu starten? Wir freuen uns, von Ihnen zu hören.",
     "emailLabel": "E-Mail",
-    "email": "hello@forkly.example",
+    "email": "hello@pikupo.example",
     "phoneLabel": "Telefon",
     "phone": "+1 (555) 010-0100",
     "addressLabel": "Adresse",
@@ -87,7 +87,7 @@
   "getStarted": {
     "eyebrow": "Loslegen",
     "title": "Bereit, Ihre Bestell-App zu starten?",
-    "subtitle": "Fordern Sie eine Demo an und sehen Sie, wie Forkly Ihr Restaurant wachsen lässt.",
+    "subtitle": "Fordern Sie eine Demo an und sehen Sie, wie Pikupo Ihr Restaurant wachsen lässt.",
     "primaryCta": "Demo anfordern",
     "secondaryCta": "Händler-Panel öffnen",
     "note": "Schon Händler? Verwalten Sie Menü und Bestellungen im Panel."

@@ -1,4 +1,4 @@
-appId: com.forkly.app
+appId: com.pikupo.app
 name: Full self-pickup order (login -> add to cart -> place order)
 tags: [checkout, e2e]
 ---

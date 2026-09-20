@@ -1,7 +1,7 @@
-# Caddy reverse proxy: terminates TLS in front of the Forkly backend.
+# Caddy reverse proxy: terminates TLS in front of the Pikupo backend.
 #
 #   SITE_ADDRESS:
-#     - production: "forkly.example.com"  -> automatic HTTPS via Let's Encrypt
+#     - production: "pikupo.example.com"  -> automatic HTTPS via Let's Encrypt
 #     - local test: ":80"                 -> plain HTTP, no TLS
 #
 # The backend app itself is reachable only on the internal compose network

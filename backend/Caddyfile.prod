@@ -1,11 +1,11 @@
-# Production site config for the Forkly demo stand.
+# Production site config for the Pikupo demo stand.
 #
 # One Caddy instance serves three sites: the GraphQL API (reverse-proxied to the
 # `app` container) and the two Vite frontends (built statically and mounted into
 # this container under /srv).
 #
 # All addresses come from the environment so that the very same file works with
-# a real domain (api.forkly.example.com) and, while the brand name is still
+# a real domain (api.pikupo.example.com) and, while the brand name is still
 # being chosen, with a wildcard-DNS name that resolves to the server IP
 # (api.203-0-113-10.sslip.io). Caddy requests a Let's Encrypt certificate for
 # every address listed here, which means DNS must already resolve to this server
@@ -34,7 +34,28 @@
 
 {$SITE_ADDRESS} {
 	encode gzip
-	root * /srv/www
-	try_files {path} /index.html
-	file_server
+
+	# App downloads live in /srv/downloads (mounted from
+	# backend/static/downloads), deliberately OUTSIDE /srv/www: rebuilding the
+	# website replaces /srv/www wholesale, which would delete a published APK.
+	# handle_path strips the /downloads prefix before the file server sees it.
+	handle_path /downloads/* {
+		root * /srv/downloads
+		file_server
+	}
+
+	# Demo catalog photos for seed URLs (outside /srv/www so site rebuilds
+	# do not wipe them). Seed uses https://<apex>/demo-media/<file>.png
+	handle_path /demo-media/* {
+		root * /srv/demo-media
+		file_server
+	}
+
+	# The marketing site is a single-page app, so unknown paths fall back to
+	# index.html - otherwise a hard refresh on a client-side route 404s.
+	handle {
+		root * /srv/www
+		try_files {path} /index.html
+		file_server
+	}
 }

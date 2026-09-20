@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { TouchableOpacity, View } from 'react-native'
 import { alignment } from '../../../utils/alignment'
-import ForklyImage from '../../ForklyImage/ForklyImage'
+import PikupoImage from '../../PikupoImage/PikupoImage'
 import { TextDefault } from '../../Text'
 import useStyle from './styles'
 function MenuCard(props) {
@@ -15,7 +15,7 @@ function MenuCard(props) {
       style={styles.flex}
       onPress={props.onPress}>
       <View style={styles.container}>
-        <ForklyImage
+        <PikupoImage
           imgStyle={styles.imgResponsive}
           imgSource={props.image ? { uri: props.image } : undefined}
           spinnerProps={{ style: styles.loadingView }}

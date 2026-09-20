@@ -1,4 +1,4 @@
-appId: com.forkly.app
+appId: com.pikupo.app
 name: Help is public and auth-gated sections redirect to the gate
 tags: [help, gate, e2e]
 ---

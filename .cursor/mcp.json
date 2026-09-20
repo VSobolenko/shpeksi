@@ -21,6 +21,10 @@
       "env": {
         "MDB_MCP_CONNECTION_STRING": "mongodb://localhost:27017"
       }
+    },
+    "codex": {
+      "command": "node",
+      "args": ["${workspaceFolder}/.cursor/mcp/codex-launcher.cjs", "mcp-server"]
     }
   }
 }

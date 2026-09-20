@@ -1,9 +1,9 @@
 ---
-description: Project-specific facts and conventions for Forkly that override generic framework rules (always applies)
+description: Project-specific facts and conventions for Pikupo that override generic framework rules (always applies)
 alwaysApply: true
 ---
 
-# Forkly — project context
+# Pikupo — project context
 
 Monorepo with a real backend and three frontends: `backend/` (Python: FastAPI +
 Strawberry GraphQL + Beanie/MongoDB + Redis), `Admin Dashboard/` (React 18 +

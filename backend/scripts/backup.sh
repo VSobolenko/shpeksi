@@ -1,21 +1,21 @@
 #!/bin/sh
-# MongoDB backup loop for the Forkly backend.
+# MongoDB backup loop for the Pikupo backend.
 #
 # Runs inside the compose `backup` service (official mongo image, which ships
-# mongodump/mongorestore). Dumps the `forkly` database to a gzipped archive on
+# mongodump/mongorestore). Dumps the `pikupo` database to a gzipped archive on
 # a schedule and keeps the most recent BACKUP_KEEP archives.
 #
 # Restore (from the host, or a shell in the `backup` container):
 #   mongorestore --host mongo --port 27017 --username "$MONGO_INITDB_ROOT_USERNAME" \
 #     --password "$MONGO_INITDB_ROOT_PASSWORD" --authenticationDatabase admin \
-#     --drop --gzip --archive=/backups/forkly_<timestamp>.archive
+#     --drop --gzip --archive=/backups/pikupo_<timestamp>.archive
 set -eu
 
 HOST="${MONGO_HOST:-mongo}"
 PORT="${MONGO_PORT:-27017}"
-USER="${MONGO_INITDB_ROOT_USERNAME:-forkly}"
+USER="${MONGO_INITDB_ROOT_USERNAME:-pikupo}"
 PASS="${MONGO_INITDB_ROOT_PASSWORD:-change-me}"
-DB="${MONGODB_DB_NAME:-forkly}"
+DB="${MONGODB_DB_NAME:-pikupo}"
 BACKUP_DIR="${BACKUP_DIR:-/backups}"
 INTERVAL="${BACKUP_INTERVAL_SECONDS:-86400}"
 KEEP="${BACKUP_KEEP:-14}"

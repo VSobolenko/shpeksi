@@ -31,7 +31,7 @@ i18n.initAsync = async() => {
   i18n.fallbacks = true
   i18n.translations = { fr, en, km, zh, de, ar, ru }
   // An explicit choice in Settings always wins; otherwise follow the device.
-  const saved = await AsyncStorage.getItem('forkly-language')
+  const saved = await AsyncStorage.getItem('pikupo-language')
   i18n.locale = isSupported(saved) ? saved : deviceLanguage()
 }
 

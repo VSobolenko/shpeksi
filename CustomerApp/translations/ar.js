@@ -18,7 +18,7 @@ export const ar = {
     'العمر لا يقلل من خيبة الأمل الشديدة من سقوط ملعقة من الآيس كريم من المخروط',
   getStarted: 'ابدأ!',
   welcome:
-    'مرحبًا بك في Forkly، في بعض الأحيان كل ما تحتاجه هو الحب. لكن القليل من الطعام بين الحين والآخر لا يضر.',
+    'مرحبًا بك في Pikupo، في بعض الأحيان كل ما تحتاجه هو الحب. لكن القليل من الطعام بين الحين والآخر لا يضر.',
   loginBtn: 'تسجيل الدخول',
   registerBtn: 'تسجيل',
   name: 'الاسم',
@@ -151,7 +151,7 @@ export const ar = {
   userInfoUpdated: 'تم تحديث معلومات المستخدم',
   nameReq: 'الاسم مطلوب',
   minWords: 'يسمح بأقل 11 وأقصى 15 حرفًا',
-  rightsReserved: 'جميع الحقوق محفوظة لشركة Forkly',
+  rightsReserved: 'جميع الحقوق محفوظة لشركة Pikupo',
   changePass: 'تغيير كلمة المرور',
   currentPass: 'كلمة المرور الحالية',
   passReq: 'كلمة المرور مطلوبة',
@@ -228,5 +228,11 @@ export const ar = {
   AddNewAddress: 'إضافة عنوان جديد',
   'About Us': 'من نحن',
   'Product Page': 'صفحة المنتج',
-  'Change Payment Method': 'قم بتغيير آلية الدفع'
+  'Change Payment Method': 'قم بتغيير آلية الدفع',
+  invalidEmail: 'Provide a valid email address',
+  invalidPhone: 'Provide a valid phone number (9-15 digits)',
+  firstNameReq: 'First name is required',
+  lastNameReq: 'Last name is required',
+  googleSignInUnavailable: 'Google sign-in is not configured',
+  googleSignInFailed: 'Google sign-in failed. Try again or use email.'
 }

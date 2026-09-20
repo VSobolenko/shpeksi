@@ -16,14 +16,14 @@ function AuthFooter(props) {
               <div className="copyright text-center text-xl-left text-muted">
                 © {t('2019-20')}{' '}
                 <a className="font-weight-bold ml-1" href={server_url}>
-                  Forkly
+                  Pikupo
                 </a>
               </div>
             </Col>
             <Col xl="6">
               <Nav className="nav-footer justify-content-center justify-content-xl-end">
                 <NavItem>
-                  <NavLink href={server_url}>Forkly</NavLink>
+                  <NavLink href={server_url}>Pikupo</NavLink>
                 </NavItem>
               </Nav>
             </Col>

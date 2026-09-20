@@ -30,6 +30,10 @@ if load_dotenv:
 GRAPHQL_URL = "http://localhost:8000/graphql"
 ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "admin@example.com")
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "change-me")
+# Public base for seeded food/category images (no trailing slash).
+MEDIA_BASE_URL = os.environ.get(
+    "DEMO_MEDIA_BASE_URL", "https://78-111-89-46.sslip.io/demo-media"
+).rstrip("/")
 
 CUSTOMER = {
     "name": "Test Customer",
@@ -62,13 +66,19 @@ ADDONS = [
     },
 ]
 
-CATEGORIES = ["Burgers", "Pizza", "Drinks", "Desserts"]
+CATEGORIES = [
+    {"title": "Burgers", "img": "burgers.png"},
+    {"title": "Pizza", "img": "pizza.png"},
+    {"title": "Drinks", "img": "drinks.png"},
+    {"title": "Desserts", "img": "desserts.png"},
+]
 
 FOODS = [
     {
         "title": "Classic Burger",
         "description": "Beef patty, lettuce, tomato and our signature sauce.",
         "category": "Burgers",
+        "img": "classic-burger.png",
         "variations": [
             {"title": "Regular", "price": 8.99, "addons": ["Extras"]},
             {"title": "Double", "price": 11.99, "addons": ["Extras"]},
@@ -78,12 +88,14 @@ FOODS = [
         "title": "Cheese Burger",
         "description": "Classic burger topped with melted cheddar.",
         "category": "Burgers",
+        "img": "cheese-burger.png",
         "variations": [{"title": "Regular", "price": 9.49, "addons": ["Extras"]}],
     },
     {
         "title": "Margherita Pizza",
         "description": "Tomato, mozzarella and fresh basil.",
         "category": "Pizza",
+        "img": "margherita-pizza.png",
         "variations": [
             {"title": "Medium", "price": 12.99, "addons": ["Extra Toppings"]},
             {"title": "Large", "price": 16.99, "addons": ["Extra Toppings"]},
@@ -93,6 +105,7 @@ FOODS = [
         "title": "Pepperoni Pizza",
         "description": "Double pepperoni with extra cheese.",
         "category": "Pizza",
+        "img": "pepperoni-pizza.png",
         "variations": [
             {"title": "Medium", "price": 14.99, "addons": ["Extra Toppings"]},
             {"title": "Large", "price": 18.99, "addons": ["Extra Toppings"]},
@@ -102,6 +115,7 @@ FOODS = [
         "title": "Cola",
         "description": "Chilled fizzy cola.",
         "category": "Drinks",
+        "img": "cola.png",
         "variations": [
             {"title": "330ml", "price": 2.5},
             {"title": "500ml", "price": 3.5},
@@ -111,21 +125,28 @@ FOODS = [
         "title": "Fresh Lemonade",
         "description": "Freshly squeezed lemonade.",
         "category": "Drinks",
+        "img": "lemonade.png",
         "variations": [{"title": "Regular", "price": 3.99}],
     },
     {
         "title": "Chocolate Cake",
         "description": "Rich chocolate cake slice.",
         "category": "Desserts",
+        "img": "chocolate-cake.png",
         "variations": [{"title": "Slice", "price": 4.99}],
     },
     {
         "title": "Vanilla Ice Cream",
         "description": "Creamy vanilla ice cream.",
         "category": "Desserts",
+        "img": "vanilla-ice-cream.png",
         "variations": [{"title": "Cup", "price": 3.49}],
     },
 ]
+
+
+def media_url(filename: str) -> str:
+    return f"{MEDIA_BASE_URL}/{filename}"
 
 
 class SeedError(Exception):
@@ -230,7 +251,7 @@ def run() -> None:
 
         # --- Categories --------------------------------------------------- #
         category_ids = {}
-        for title in CATEGORIES:
+        for cat in CATEGORIES:
             data = gql(
                 client,
                 """
@@ -238,10 +259,16 @@ def run() -> None:
                   createCategory(category: $category) { _id title }
                 }
                 """,
-                {"category": {"title": title, "description": ""}},
+                {
+                    "category": {
+                        "title": cat["title"],
+                        "description": "",
+                        "img_menu": media_url(cat["img"]),
+                    }
+                },
                 token=token,
             )
-            category_ids[title] = data["createCategory"]["_id"]
+            category_ids[cat["title"]] = data["createCategory"]["_id"]
         log(f"created {len(category_ids)} categories")
 
         # --- Foods -------------------------------------------------------- #
@@ -271,6 +298,7 @@ def run() -> None:
                         "category": category_ids[food["category"]],
                         "variations": variations,
                         "stock": 100,
+                        "img_url": media_url(food["img"]),
                     }
                 },
                 token=token,

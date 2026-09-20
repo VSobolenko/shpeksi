@@ -18,7 +18,7 @@ const useStyle = () => {
       color: colors.fontWhite
     },
     textView: {
-      marginHorizontal: -25,
+      flexShrink: 1,
       ...alignment.PLxSmall
     },
     headerContainer: {

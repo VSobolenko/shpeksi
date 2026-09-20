@@ -1,4 +1,4 @@
-appId: com.forkly.app
+appId: com.pikupo.app
 name: Menu screen renders categories on launch
 tags: [menu, e2e]
 ---

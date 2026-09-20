@@ -1,4 +1,4 @@
-"""Seed a realistic mix of pickup orders for the Forkly demo.
+"""Seed a realistic mix of pickup orders for the Pikupo demo.
 
 Places several customer orders and advances them through the pickup pipeline so
 the Admin Dashboard and the CustomerApp order history show a believable spread
@@ -42,9 +42,9 @@ ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "change-me")
 CUSTOMER_EMAIL = "customer@example.com"
 CUSTOMER_PASSWORD = "password123"
 
-MONGO_USER = os.environ.get("MONGO_INITDB_ROOT_USERNAME", "forkly")
+MONGO_USER = os.environ.get("MONGO_INITDB_ROOT_USERNAME", "pikupo")
 MONGO_PASSWORD = os.environ.get("MONGO_INITDB_ROOT_PASSWORD", "change-me")
-MONGO_DB = os.environ.get("MONGODB_DB_NAME", "forkly")
+MONGO_DB = os.environ.get("MONGODB_DB_NAME", "pikupo")
 
 # Each entry: food index into the catalog, variation index, quantity, addons and
 # the status/payment state the order should end up in. `None` status means the

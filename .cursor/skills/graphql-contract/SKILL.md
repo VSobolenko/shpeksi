@@ -1,6 +1,6 @@
 ---
 name: graphql-contract
-description: Work with the Forkly GraphQL contract — locate, add, and keep operations consistent across the two frontends. Use when adding or editing GraphQL queries, mutations, or subscriptions in this repo.
+description: Work with the Pikupo GraphQL contract — locate, add, and keep operations consistent across the two frontends. Use when adding or editing GraphQL queries, mutations, or subscriptions in this repo.
 disable-model-invocation: true
 ---
 

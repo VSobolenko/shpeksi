@@ -1,7 +1,7 @@
 {
-  "name": "forkly-website",
+  "name": "pikupo-website",
   "version": "1.0.0",
-  "description": "Forkly marketing and landing website",
+  "description": "Pikupo marketing and landing website",
   "private": true,
   "type": "module",
   "scripts": {

@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "Forkly",
-    "version": "1.0.22",
-    "scheme": "forkly",
-    "description": "Forkly is a self-pickup food ordering app built in React Native using Expo for iOS and Android.",
-    "slug": "forkly",
+    "name": "Pikupo",
+    "version": "1.0.23",
+    "scheme": "pikupo",
+    "description": "Pikupo is a self-pickup food ordering app built in React Native using Expo for iOS and Android.",
+    "slug": "pikupo",
     "platforms": [
       "ios",
       "android"
@@ -18,7 +18,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.forkly.app",
+      "bundleIdentifier": "com.pikupo.app",
       "usesAppleSignIn": true,
       "infoPlist": {
         "NSUserTrackingUsageDescription": "Allow this app to collect app-related data that can be used for tracking you or your device."
@@ -44,8 +44,8 @@
       }
     },
     "android": {
-      "versionCode": 26,
-      "package": "com.forkly.app",
+      "versionCode": 27,
+      "package": "com.pikupo.app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#febb2c"

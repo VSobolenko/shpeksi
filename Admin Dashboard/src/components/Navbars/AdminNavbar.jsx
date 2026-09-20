@@ -13,8 +13,6 @@ import {
   Media
 } from 'reactstrap'
 
-import teamPhoto from 'assets/img/theme/team-4-800x800.jpg'
-
 function AdminNavbar(props) {
   const navigate = useNavigate()
   const { t } = props
@@ -32,8 +30,8 @@ function AdminNavbar(props) {
             <UncontrolledDropdown nav>
               <DropdownToggle className="pr-0" nav>
                 <Media className="align-items-center">
-                  <span className="avatar avatar-sm rounded-circle">
-                    <img alt="..." src={teamPhoto} />
+                  <span className="avatar avatar-sm rounded-circle bg-white text-dark d-inline-flex align-items-center justify-content-center font-weight-bold">
+                    A
                   </span>
                   <Media className="ml-2 d-none d-lg-block">
                     <span className="mb-0 text-sm font-weight-bold">Admin</span>
@@ -49,7 +47,7 @@ function AdminNavbar(props) {
                   href="#pablo"
                   onClick={e => {
                     e.preventDefault()
-                    localStorage.removeItem('user-forkly')
+                    localStorage.removeItem('user-pikupo')
                     navigate('/auth/login')
                   }}>
                   <i className="ni ni-user-run" />

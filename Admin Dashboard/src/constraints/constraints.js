@@ -6,7 +6,7 @@ const constraints = {
     equality: 'password',
     length: {
       minimum: 1,
-      maximum: 20
+      maximum: 128
     }
   },
   prefix: {
@@ -21,8 +21,12 @@ const constraints = {
   password: {
     presence: true,
     length: {
+      // A 20-character cap silently locked admins out: the backend accepts any
+      // length, so a longer bootstrap password (ADMIN_PASSWORD) passed server
+      // validation but failed this client rule, and the sign-in button then did
+      // nothing at all. Keep a generous ceiling only to reject absurd input.
       minimum: 1,
-      maximum: 20
+      maximum: 128
     }
   },
   title: {

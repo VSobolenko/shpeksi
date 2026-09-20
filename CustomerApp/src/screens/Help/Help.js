@@ -20,7 +20,7 @@ const links = [
     title: 'Blog',
     url: '#'
   },
-  { title: 'About Us', url: 'https://ninjascode.com/about-us/' }
+  { title: 'About Us', url: '#' }
 ]
 function Help() {
   const styles = useStyle()

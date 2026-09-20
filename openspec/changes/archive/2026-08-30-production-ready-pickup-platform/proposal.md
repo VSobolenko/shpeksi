@@ -15,7 +15,7 @@ The repo ships only frontends (Admin Dashboard, CustomerApp, RiderApp) wired to 
 - **Clean up** — remove hardcoded secrets to `.env`/`.env.example`, delete cached/dead files, unused dependencies, the stray `"npm"` dependency, and normalize i18n.
 - **Modernize** — Admin Dashboard to React 18 + Vite, `@apollo/client` 3.x, chart.js 4, firebase modular, react-router v6, sass; CustomerApp to Expo SDK 50+ and `@apollo/client` 3.x.
 - **Harden for production** — secrets fail-fast (no `change-me` in prod), health/readiness endpoints, Redis-backed pub/sub for multi-instance, authenticated MongoDB/Redis, TLS termination via reverse proxy, environment-driven CORS, database backups, structured logging, non-root Dockerfile + docker-compose, automated tests + CI, and safe error handling.
-- **Brand as Forkly** — name the database (`forkly`), order prefix (`FRK`), and backend package (`forkly-backend`) for Forkly, and set the app display name to "Forkly"; update the root policy/docs files to match.
+- **Brand as Pikupo** — name the database (`pikupo`), order prefix (`PKP`), and backend package (`pikupo-backend`) for Pikupo, and set the app display name to "Pikupo"; update the root policy/docs files to match.
 
 ## Capabilities
 
@@ -40,5 +40,5 @@ None — no existing specs under `openspec/specs/`.
 - **Removed**: `RiderApp/` (whole module), rider/delivery code paths and dependencies across Admin and CustomerApp.
 - **Config**: `.env`/`.env.example` for backend and Admin; `environment.js` repointed to self-hosted backend; secrets removed from source; `CORS_ORIGINS`, MongoDB/Redis credentials, and log level driven by environment.
 - **Deployment**: non-root `Dockerfile` + `docker-compose.yml` (app + MongoDB + Redis) with healthchecks, authenticated stores, a TLS reverse proxy (Caddyfile), and a documented backup/restore and deploy runbook.
-- **Branding**: database `forkly`, order prefix `FRK`, backend package `forkly-backend`, frontend app display name "Forkly", and the root policy/docs files updated to match.
+- **Branding**: database `pikupo`, order prefix `PKP`, backend package `pikupo-backend`, frontend app display name "Pikupo", and the root policy/docs files updated to match.
 - **Dependencies**: Apollo Client v2 → v3 (`@apollo/client`), `subscriptions-transport-ws` → dual-protocol backend + `@apollo/client` client, legacy React/Expo/firebase/chart.js/react-router upgrades.

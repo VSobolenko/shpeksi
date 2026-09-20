@@ -6,7 +6,7 @@
 
 ## Overview
 
-**Forkly** — a white-label food-ordering platform with **self-pickup**. Customers
+**Pikupo** — a white-label food-ordering platform with **self-pickup**. Customers
 browse the menu, place an order, and collect it at the store; there is no delivery
 and no rider functionality.
 
@@ -87,6 +87,25 @@ from `.env.*` (see `.env.example`); CustomerApp reads `.env`; Website reads
   string must be added to **all** files. Website uses `i18next` with locale JSON
   in `Website/src/i18n/locales/` (7 locales; `ar` is RTL).
 
+## Defaults to suppress (agents get these wrong)
+
+Most agents (and most models' priors) default to a different stack. These are
+**forbidden here**, and they are the most common source of wrong output:
+
+| Do NOT use | Use instead |
+|---|---|
+| TypeScript, `.ts`/`.tsx` files, type annotations | Plain JavaScript (ES modules), `.js`/`.jsx` |
+| Expo Router (`expo-router`, file-based routing, `app/` dir) | React Navigation (`@react-navigation/*`) |
+| Apollo Client v2 (`apollo-client`, `apollo-link`, `react-apollo`) | `@apollo/client` 3.8 |
+| `graphql-transport-ws` on the **client** | Legacy `subscriptions-transport-ws` (`apollo-link-ws`/`WebSocketLink`) |
+| SQLAlchemy / asyncpg / Alembic | Beanie over MongoDB |
+| Semicolons, double quotes, 4-space/`tab` indent, `function (x)` spacing | StandardJS: no semicolons, single quotes, 2-space indent, `function(x)` |
+| Adding a user-facing string to only `en` | Add it to **all** locales of that module |
+
+The same facts live in `.cursor/rules/project-conventions.mdc` for Cursor's own
+agent. That file is **not** read by external agents (e.g. Codex), so keep this
+section authoritative and complete.
+
 ## GraphQL contract (important)
 
 - Operations are template-literal strings exported from
@@ -121,7 +140,7 @@ only the publishable key (`pk_*`) belongs in `CustomerApp`.
 
 ## Current state
 
-The product is branded **Forkly** end-to-end and is production-oriented:
+The product is branded **Pikupo** end-to-end and is production-oriented:
 
 1. **Backend** (`backend/`) — implemented: FastAPI + Strawberry GraphQL +
    Beanie/MongoDB + Redis, serving `/graphql` (HTTP + dual-protocol WebSocket)
@@ -152,7 +171,7 @@ Installed into `.agents/skills/` (Cursor reads this directory), locked by
   expo-upgrade, expo-ui, expo-dev-client.
 
 Project-specific skills live in `.cursor/skills/` (graphql-contract,
-forkly-i18n, run-the-project).
+pikupo-i18n, run-the-project).
 
 Reinstall/update with:
 ```bash
@@ -169,9 +188,19 @@ npx skills add expo/skills --skill expo-upgrade -a cursor --copy -y   # repeat -
 | expo      | remote `https://mcp.expo.dev/mcp`            | OAuth (Expo account); local sim control needs SDK 54+ |
 | firebase  | `firebase-tools mcp`                         | `firebase login` + a firebase project                 |
 | mongodb   | `mongodb-mcp-server`                         | set `MDB_MCP_CONNECTION_STRING` (or use Atlas)        |
+| codex     | Codex CLI (`codex mcp-server`)               | ChatGPT login in the Codex/ChatGPT editor extension   |
 
 GitHub MCP is intentionally omitted (needs a personal access token); add it in
 Cursor Settings → MCP if desired.
+
+**Codex (second agent):** the `codex` server exposes two tools — `codex` (start a
+session) and `codex-reply` (continue it by `threadId`). It runs a GPT-based agent
+harness in its own sandbox, giving the repo an independent reviewer from a
+*different model family* — the main reason it exists here. See the
+`codex-second-agent` skill for the tool schemas, sandbox rules, delegation
+patterns, and the concurrency hazard. The binary sits inside a versioned editor
+extension and is not on `PATH`; `.cursor/mcp/codex-launcher.cjs` resolves it at
+runtime (override with `CODEX_BIN`).
 
 **Team onboarding (MCP):** `.cursor/mcp.json` is committed — teammates get the
 same servers on clone, and `npx -y` auto-installs the packages. What is *not*
@@ -241,3 +270,11 @@ Role mapping (do not reimplement — invoke):
 - Use `/ship` for end-to-end autonomous work and `/review` as the merge/archive
   gate; the reviewer agents and policy hooks (`secret-guard`, `git-guard`) are the
   enforcement layer — do not bypass them.
+- **Never accept code produced by an external agent (e.g. Codex) on its own
+  say-so.** Run the objective gate over the changed files first:
+  `node scripts/verify-changes.mjs` (add `--base <ref>` for branch changes). It
+  lints only what changed and exits non-zero on failure *or* when a check could
+  not run. Style is mechanically verifiable in `CustomerApp` and
+  `Admin Dashboard`; `backend` and `Website` have no linter, so their diffs must
+  be read by hand — the script reports them as UNVERIFIED rather than passing
+  them silently.

@@ -154,7 +154,7 @@ function Settings() {
     // This used to call `Localization.getLocalizationAsync()`, which no longer
     // exists in expo-localization 57 - tapping "Done" threw a TypeError before
     // the locale was ever applied, so the language could not be changed at all.
-    await AsyncStorage.setItem('forkly-language', code)
+    await AsyncStorage.setItem('pikupo-language', code)
     i18n.locale = code
     activeRadioSetter(active)
     languageNameSetter(value)

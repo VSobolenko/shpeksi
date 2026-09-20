@@ -14,7 +14,7 @@ from types import SimpleNamespace
 from app.graphql.query import _daily, _filter_orders_by_date, _parse_date
 
 
-def _order(created_at, amount=10.0, payment_status="PAID", order_id="FRK-X"):
+def _order(created_at, amount=10.0, payment_status="PAID", order_id="PKP-X"):
     return SimpleNamespace(
         createdAt=created_at,
         order_amount=amount,

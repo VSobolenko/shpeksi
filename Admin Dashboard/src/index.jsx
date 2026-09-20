@@ -52,7 +52,7 @@ const wsLink = new WebSocketLink({
 })
 
 const request = async operation => {
-  const data = localStorage.getItem('user-forkly')
+  const data = localStorage.getItem('user-pikupo')
   let token = null
   if (data) {
     token = JSON.parse(data).token
@@ -124,7 +124,7 @@ if (firebaseApiKey) {
   registerPushToken()
 
   onMessage(messaging, function (payload) {
-    var notificationTitle = 'New Order on Forkly'
+    var notificationTitle = 'New Order on Pikupo'
     var notificationOptions = {
       body: payload.data.orderid,
       icon: '/favicon.png'

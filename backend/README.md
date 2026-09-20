@@ -1,4 +1,4 @@
-# Forkly — Backend
+# Pikupo — Backend
 
 Self-hosted backend for the **self-pickup** food-ordering platform.
 

@@ -26,6 +26,7 @@ roles below; invoke them.
 | Task checker | task reviewer subagent — `.agents/skills/subagent-driven-development/task-reviewer-prompt.md` |
 | Final checker (bugs) | `bugbot` subagent (see `/review`) |
 | Final checker (security) | `security-review` subagent (see `/review`) |
+| Independent checker (different model) | Codex via the `codex` MCP tool (see `/review` step 4b) — read-only |
 | Runtime UI checker | `/ui-verify` — change-impact sweep (web: Playwright, native: Maestro) |
 | Policy enforcer (secrets) | hook `secret-guard.cjs` — runs automatically on write |
 | Policy enforcer (git) | hook `git-guard.cjs` — runs automatically on shell git |
@@ -80,6 +81,9 @@ gates and capture real output (pass/fail + key line):
 - admin changed → `npm run build` (from `Admin Dashboard/`)
 - customer changed → `npx expo export` (from `CustomerApp/`)
 - spec/planning changed → `openspec validate --strict "<change>"`
+- **any code change → `node scripts/verify-changes.mjs`** — the fast per-file gate
+  (lints only changed files; fails on violations and on checks that could not run).
+  Run this first: it is seconds, where the builds above are minutes.
 
 ### 3. Runtime UI verify (change-impact sweep)
 

@@ -92,6 +92,7 @@ function SidebBar(props) {
                   <TextDefault
                     H5
                     medium
+                    numberOfLines={2}
                     textColor={props.color}
                     style={[styles.textView, styles.flex]}
                   >

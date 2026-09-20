@@ -1,6 +1,7 @@
 const de = {
   translation: {
     'Sign in credentials': 'Anmeldeinformationen',
+    'Check your email and password': 'Bitte E-Mail und Passwort prüfen',
     'Sign in': 'Einloggen',
     'Add Category': 'Kategorie hinzufügen',
     Title: 'Titel',

@@ -1,6 +1,7 @@
 const en = {
   translation: {
     'Sign in credentials': 'Sign in credentials',
+    'Check your email and password': 'Check your email and password',
     'Sign in': 'Sign in',
     'Add Category': 'Add Category',
     Title: 'Title',
