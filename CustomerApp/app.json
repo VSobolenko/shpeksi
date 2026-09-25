@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Pikupo",
-    "version": "1.0.23",
+    "version": "1.0.24",
     "scheme": "pikupo",
     "description": "Pikupo is a self-pickup food ordering app built in React Native using Expo for iOS and Android.",
     "slug": "pikupo",
@@ -44,7 +44,7 @@
       }
     },
     "android": {
-      "versionCode": 27,
+      "versionCode": 28,
       "package": "com.pikupo.app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
