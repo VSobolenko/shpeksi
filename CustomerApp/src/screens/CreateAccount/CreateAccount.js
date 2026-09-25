@@ -3,10 +3,8 @@ import { FontAwesome } from '@expo/vector-icons'
 import { useNavigation, useTheme } from '@react-navigation/native'
 
 import * as AppleAuthentication from 'expo-apple-authentication'
-import Constants from 'expo-constants'
 
 import * as Google from 'expo-auth-session/providers/google'
-import * as Notifications from 'expo-notifications'
 import React, { useContext, useEffect, useState } from 'react'
 import { TouchableOpacity, View } from 'react-native'
 import getEnvVars from '../../../environment'
@@ -25,6 +23,7 @@ import UserContext from '../../context/User'
 import { alignment } from '../../utils/alignment'
 import Analytics from '../../utils/analytics'
 import { NAVIGATION_SCREEN } from '../../utils/constant'
+import { getNotificationTokenSafe } from '../../utils/pushToken'
 import { scale } from '../../utils/scaling'
 import useStyle from './styles'
 import i18n from '../../../i18n'
@@ -98,15 +97,13 @@ const CreateAccount = () => {
 
   async function mutateLogin(user) {
     setLoading(true)
-    let notificationToken = null
-    if (Constants.isDevice) {
-      const { status: existingStatus } =
-        await Notifications.getPermissionsAsync()
-      if (existingStatus === 'granted') {
-        notificationToken = (await Notifications.getExpoPushTokenAsync()).data
-      }
+    try {
+      const notificationToken = await getNotificationTokenSafe()
+      mutate({ variables: { ...user, notificationToken } })
+    } catch (e) {
+      console.error(e)
+      setLoading(false)
     }
-    mutate({ variables: { ...user, notificationToken } })
   }
 
   function renderAppleAction() {

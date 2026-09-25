@@ -359,7 +359,32 @@ export const adminLogin = `mutation AdminLogin($email:String!,$password:String!)
     token
     name
     email
+    role
   }
+}`
+
+export const adminStaffs = `query AdminStaffs{
+  adminStaffs{
+    _id
+    email
+    name
+    role
+    is_active
+  }
+}`
+
+export const createAdminStaff = `mutation CreateAdminStaff($email:String!,$password:String!,$name:String){
+  createAdminStaff(email:$email,password:$password,name:$name){
+    _id
+    email
+    name
+    role
+    is_active
+  }
+}`
+
+export const deleteAdminStaff = `mutation DeleteAdminStaff($id:String!){
+  deleteAdminStaff(id:$id)
 }`
 
 export const updateOrderStatus = `mutation UpdateOrderStatus($id:String!,$status:String!,$reason:String){

@@ -349,6 +349,29 @@ def run() -> None:
         )
         log("currency set to USD ($)")
 
+        # --- Staff account (orders-only) -------------------------------- #
+        STAFF = {
+            "email": "staff@pikupo.com",
+            "password": "Staff-Demo!9k3Zq7",
+            "name": "Demo Staff",
+        }
+        try:
+            gql(
+                client,
+                """
+                mutation($email: String!, $password: String!, $name: String) {
+                  createAdminStaff(email: $email, password: $password, name: $name) {
+                    _id email role
+                  }
+                }
+                """,
+                STAFF,
+                token=token,
+            )
+            log(f"created staff {STAFF['email']}")
+        except SeedError as exc:
+            log(f"staff already exists or error: {exc}")
+
     print("\nSEED COMPLETE", flush=True)
 
 

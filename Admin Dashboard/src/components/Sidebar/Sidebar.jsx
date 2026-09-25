@@ -35,8 +35,14 @@ function Sidebar(props) {
   }
   // creates the links that appear in the left menu / Sidebar
   const createLinks = (routes, t) => {
+    let role = 'director'
+    try {
+      const stored = JSON.parse(localStorage.getItem('user-pikupo') || '{}')
+      role = stored.role || 'director'
+    } catch (e) {}
     return routes.map((prop, key) => {
-      return prop.appearInSidebar ? (
+      const allowed = !prop.roles || prop.roles.includes(role)
+      return prop.appearInSidebar && allowed ? (
         <NavItem key={key}>
           <NavLinkRRD
             to={prop.layout + prop.path}

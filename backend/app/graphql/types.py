@@ -204,6 +204,16 @@ class AdminAuthPayload:
     token: Optional[str] = None
     name: Optional[str] = None
     email: Optional[str] = None
+    role: Optional[str] = None
+
+
+@strawberry.type
+class AdminStaffType:
+    id: strawberry.ID = strawberry.field(name="_id")
+    email: Optional[str] = None
+    name: Optional[str] = None
+    role: Optional[str] = None
+    is_active: Optional[bool] = None
 
 
 @strawberry.type

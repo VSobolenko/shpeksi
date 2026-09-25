@@ -6,6 +6,7 @@ from beanie import init_beanie
 from app.config import settings
 from app.models import (
     Addon,
+    AdminAccount,
     Category,
     Configuration,
     Coupon,
@@ -34,6 +35,7 @@ async def init_db() -> None:
             User,
             Order,
             Configuration,
+            AdminAccount,
         ],
     )
 

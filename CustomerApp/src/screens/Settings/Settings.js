@@ -33,6 +33,7 @@ import {
 import SwitchBtn from '../../components/FdSwitch/SwitchBtn'
 import UserContext from '../../context/User'
 import { alignment } from '../../utils/alignment'
+import { getNotificationTokenSafe } from '../../utils/pushToken'
 import { ICONS_NAME } from '../../utils/constant'
 import SettingModal from './components/SettingModal'
 import useStyle from './styles'
@@ -95,12 +96,11 @@ function Settings() {
 
   const _handleAppStateChange = async(nextAppState) => {
     if (nextAppState === 'active') {
-      let token = null
       const permission = await getPermission()
       if (permission === 'granted') {
         if (!profile.notificationToken) {
-          token = (await Notifications.getExpoPushTokenAsync()).data
-          uploadToken({ variables: { token } })
+          const token = await getNotificationTokenSafe()
+          if (token) uploadToken({ variables: { token } })
         }
         offerNotificationSetter(profile.is_offer_notification)
         orderNotificationSetter(profile.is_order_notification)

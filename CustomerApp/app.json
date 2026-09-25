@@ -10,7 +10,7 @@
       "android"
     ],
     "androidStatusBar": {
-      "backgroundColor": "#000000"
+      "backgroundColor": "#febb2c"
     },
     "icon": "./assets/icon.png",
     "assetBundlePatterns": [

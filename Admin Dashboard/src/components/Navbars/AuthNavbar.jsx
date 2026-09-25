@@ -56,6 +56,7 @@ function AdminNavbar(props) {
                     onChange={handleChange}
                     onBlur={event => {}}>
                     <option value="en">English</option>
+                    <option value="ru">Русский</option>
                     <option value="de">Deutsche</option>
                     <option value="zh">中文</option>
                     <option value="km">ភាសាខ្មែរ</option>

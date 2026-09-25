@@ -38,7 +38,17 @@ def require_user(info) -> str:
 
 
 def require_admin(info) -> str:
+    """Any dashboard user (director or staff)."""
     user_id = require_user(info)
-    if info.context.role != "admin":
+    if info.context.role not in ("admin", "director", "staff"):
         raise GraphQLError("Admin access required", extensions={"code": "FORBIDDEN"})
+    return user_id
+
+
+def require_director(info) -> str:
+    """Director-only: payments, catalog config, staff accounts."""
+    user_id = require_user(info)
+    # "admin" kept for backward-compatible JWTs from the env bootstrap
+    if info.context.role not in ("admin", "director"):
+        raise GraphQLError("Director access required", extensions={"code": "FORBIDDEN"})
     return user_id

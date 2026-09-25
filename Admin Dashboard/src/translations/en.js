@@ -72,7 +72,10 @@ const en = {
     'Character limit of max length 140': 'Character limit of max length 140',
     Currency: 'Currency',
     'Currency Code': 'Currency Code',
-    'Currency Symbol': 'Currency Symbol'
+    'Currency Symbol': 'Currency Symbol',
+    Staff: 'Staff',
+    'Add Staff': 'Add Staff',
+    Role: 'Role'
   }
 }
 

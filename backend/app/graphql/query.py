@@ -7,9 +7,10 @@ import strawberry
 from beanie import PydanticObjectId
 from beanie.operators import In
 
-from app.graphql.context import require_admin, require_user
+from app.graphql.context import require_admin, require_director, require_user
 from app.graphql.types import (
     AddonType,
+    AdminStaffType,
     CategoryType,
     ConfigurationType,
     CouponType,
@@ -34,7 +35,7 @@ from app.graphql.types import (
     build_user,
     iso,
 )
-from app.models import Addon, Category, Configuration, Coupon, Food, Option, Order, User
+from app.models import Addon, AdminAccount, Category, Configuration, Coupon, Food, Option, Order, User
 from app.services.orders import ORDER_STATUSES, PAYMENT_STATUSES
 
 
@@ -324,3 +325,18 @@ class Query:
             total_sales=total_sales,
             orders=await _daily(orders, with_amount=True),
         )
+
+    @strawberry.field
+    async def adminStaffs(self, info: strawberry.Info) -> List[AdminStaffType]:
+        require_director(info)
+        rows = await AdminAccount.find_all().to_list()
+        return [
+            AdminStaffType(
+                id=strawberry.ID(str(a.id)),
+                email=a.email,
+                name=a.name,
+                role=a.role,
+                is_active=a.is_active,
+            )
+            for a in rows
+        ]

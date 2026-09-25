@@ -9,13 +9,14 @@ from beanie import PydanticObjectId
 from jose import JWTError
 
 from app.config import settings
-from app.graphql.context import require_admin, require_user
+from app.graphql.context import require_admin, require_director, require_user
 from app.graphql.pubsub import pubsub
 from app.graphql.types import (
     AddonInput,
     AddonType,
     AddressInput,
     AdminAuthPayload,
+    AdminStaffType,
     AuthPayload,
     CategoryInput,
     CategoryType,
@@ -53,6 +54,7 @@ from app.graphql.types import (
 from app.models import (
     Addon,
     Address,
+    AdminAccount,
     Category,
     Configuration,
     Coupon,
@@ -116,10 +118,71 @@ class Mutation:
 
     @strawberry.mutation
     async def adminLogin(self, email: str, password: str) -> AdminAuthPayload:
+        # Bootstrap director from env (single shared backend, one store)
         if email == settings.admin_email and password == settings.admin_password:
-            token = create_access_token(subject="admin", role="admin")
-            return AdminAuthPayload(userId="admin", token=token, name="Admin", email=email)
+            token = create_access_token(subject="admin", role="director")
+            return AdminAuthPayload(
+                userId="admin",
+                token=token,
+                name="Director",
+                email=email,
+                role="director",
+            )
+        # Staff accounts managed by the director
+        account = await AdminAccount.find_one(AdminAccount.email == email)
+        if (
+            account
+            and account.is_active
+            and verify_password(password or "", account.password)
+        ):
+            token = create_access_token(subject=str(account.id), role=account.role or "staff")
+            return AdminAuthPayload(
+                userId=str(account.id),
+                token=token,
+                name=account.name or "Staff",
+                email=account.email,
+                role=account.role or "staff",
+            )
         raise Exception("Invalid credentials")
+
+    @strawberry.mutation
+    async def createAdminStaff(
+        self,
+        info: strawberry.Info,
+        email: str,
+        password: str,
+        name: Optional[str] = None,
+    ) -> AdminStaffType:
+        require_director(info)
+        existing = await AdminAccount.find_one(AdminAccount.email == email)
+        if existing:
+            raise Exception("Staff email already exists")
+        if email == settings.admin_email:
+            raise Exception("Cannot reuse director email")
+        account = AdminAccount(
+            email=email.strip().lower(),
+            password=hash_password(password),
+            name=name or "Staff",
+            role="staff",
+            is_active=True,
+        )
+        await account.insert()
+        return AdminStaffType(
+            id=strawberry.ID(str(account.id)),
+            email=account.email,
+            name=account.name,
+            role=account.role,
+            is_active=account.is_active,
+        )
+
+    @strawberry.mutation
+    async def deleteAdminStaff(self, info: strawberry.Info, id: str) -> bool:
+        require_director(info)
+        account = await AdminAccount.get(PydanticObjectId(id))
+        if not account:
+            raise Exception("Staff not found")
+        await account.delete()
+        return True
 
     @strawberry.mutation
     async def login(
@@ -442,7 +505,7 @@ class Mutation:
 
     @strawberry.mutation
     async def updatePaymentStatus(self, info: strawberry.Info, id: str, status: str) -> OrderType:
-        require_admin(info)
+        require_director(info)
         order = await Order.get(id)
         if not order:
             raise Exception("Order not found")
@@ -457,7 +520,7 @@ class Mutation:
     async def updateStatus(
         self, info: strawberry.Info, id: str, status: bool, reason: Optional[str] = None
     ) -> UpdateStatusResult:
-        require_admin(info)
+        require_director(info)
         user = await User.get(id)
         if not user:
             raise Exception("User not found")
@@ -469,7 +532,7 @@ class Mutation:
 
     @strawberry.mutation
     async def createFood(self, info: strawberry.Info, foodInput: FoodInput) -> FoodType:
-        require_admin(info)
+        require_director(info)
         food = Food(
             title=foodInput.title or "",
             description=foodInput.description or "",
@@ -484,7 +547,7 @@ class Mutation:
 
     @strawberry.mutation
     async def editFood(self, info: strawberry.Info, foodInput: FoodInput) -> FoodType:
-        require_admin(info)
+        require_director(info)
         food = await Food.get(PydanticObjectId(str(foodInput.id))) if foodInput.id else None
         if not food:
             raise Exception("Food not found")
@@ -500,7 +563,7 @@ class Mutation:
 
     @strawberry.mutation
     async def deleteFood(self, info: strawberry.Info, id: str) -> FoodType:
-        require_admin(info)
+        require_director(info)
         food = await Food.get(id)
         if food:
             await food.delete()
@@ -509,7 +572,7 @@ class Mutation:
 
     @strawberry.mutation
     async def createCategory(self, info: strawberry.Info, category: CategoryInput) -> CategoryType:
-        require_admin(info)
+        require_director(info)
         cat = Category(
             title=category.title or "",
             description=category.description or "",
@@ -520,7 +583,7 @@ class Mutation:
 
     @strawberry.mutation
     async def editCategory(self, info: strawberry.Info, category: CategoryInput) -> CategoryType:
-        require_admin(info)
+        require_director(info)
         cat = await Category.get(PydanticObjectId(str(category.id))) if category.id else None
         if not cat:
             raise Exception("Category not found")
@@ -532,7 +595,7 @@ class Mutation:
 
     @strawberry.mutation
     async def deleteCategory(self, info: strawberry.Info, id: str) -> CategoryType:
-        require_admin(info)
+        require_director(info)
         cat = await Category.get(id)
         if cat:
             await cat.delete()
@@ -543,7 +606,7 @@ class Mutation:
     async def createOptions(
         self, info: strawberry.Info, optionInput: Optional[List[OptionInput]] = None
     ) -> List[OptionType]:
-        require_admin(info)
+        require_director(info)
         result = []
         for oi in (optionInput or []):
             option = Option(title=oi.title or "", description=oi.description or "", price=oi.price or 0.0)
@@ -553,7 +616,7 @@ class Mutation:
 
     @strawberry.mutation
     async def editOption(self, info: strawberry.Info, optionInput: OptionInput) -> OptionType:
-        require_admin(info)
+        require_director(info)
         option = await Option.get(PydanticObjectId(str(optionInput.id))) if optionInput.id else None
         if not option:
             raise Exception("Option not found")
@@ -565,7 +628,7 @@ class Mutation:
 
     @strawberry.mutation
     async def deleteOption(self, info: strawberry.Info, id: str) -> bool:
-        require_admin(info)
+        require_director(info)
         option = await Option.get(id)
         if option:
             await option.delete()
@@ -575,7 +638,7 @@ class Mutation:
     async def createAddons(
         self, info: strawberry.Info, addonInput: Optional[List[AddonInput]] = None
     ) -> List[AddonType]:
-        require_admin(info)
+        require_director(info)
         result = []
         for ai in (addonInput or []):
             addon = Addon(
@@ -592,7 +655,7 @@ class Mutation:
 
     @strawberry.mutation
     async def editAddon(self, info: strawberry.Info, addonInput: AddonInput) -> AddonType:
-        require_admin(info)
+        require_director(info)
         addon = await Addon.get(PydanticObjectId(str(addonInput.id))) if addonInput.id else None
         if not addon:
             raise Exception("Addon not found")
@@ -607,7 +670,7 @@ class Mutation:
 
     @strawberry.mutation
     async def deleteAddon(self, info: strawberry.Info, id: str) -> bool:
-        require_admin(info)
+        require_director(info)
         addon = await Addon.get(id)
         if addon:
             await addon.delete()
@@ -615,14 +678,14 @@ class Mutation:
 
     @strawberry.mutation
     async def createCoupon(self, info: strawberry.Info, couponInput: CouponInput) -> CouponType:
-        require_admin(info)
+        require_director(info)
         coupon = Coupon(code=couponInput.code or "", discount=couponInput.discount, enabled=couponInput.enabled)
         await coupon.insert()
         return CouponType(id=str(coupon.id), code=coupon.code, discount=coupon.discount, enabled=coupon.enabled)
 
     @strawberry.mutation
     async def editCoupon(self, info: strawberry.Info, couponInput: CouponInput) -> CouponType:
-        require_admin(info)
+        require_director(info)
         coupon = await Coupon.get(PydanticObjectId(str(couponInput.id))) if couponInput.id else None
         if not coupon:
             raise Exception("Coupon not found")
@@ -634,7 +697,7 @@ class Mutation:
 
     @strawberry.mutation
     async def deleteCoupon(self, info: strawberry.Info, id: str) -> bool:
-        require_admin(info)
+        require_director(info)
         coupon = await Coupon.get(id)
         if coupon:
             await coupon.delete()
@@ -656,7 +719,7 @@ class Mutation:
     async def saveOrderConfiguration(
         self, info: strawberry.Info, configurationInput: OrderConfigurationInput
     ) -> ConfigurationType:
-        require_admin(info)
+        require_director(info)
         config = await _get_or_create_config()
         config.order_id_prefix = configurationInput.order_id_prefix
         await config.save()
@@ -666,7 +729,7 @@ class Mutation:
     async def saveEmailConfiguration(
         self, info: strawberry.Info, configurationInput: EmailConfigurationInput
     ) -> ConfigurationType:
-        require_admin(info)
+        require_director(info)
         config = await _get_or_create_config()
         config.email = configurationInput.email
         config.password = configurationInput.password
@@ -678,7 +741,7 @@ class Mutation:
     async def savePaypalConfiguration(
         self, info: strawberry.Info, configurationInput: PaypalConfigurationInput
     ) -> ConfigurationType:
-        require_admin(info)
+        require_director(info)
         config = await _get_or_create_config()
         config.client_id = configurationInput.client_id
         config.client_secret = configurationInput.client_secret
@@ -690,7 +753,7 @@ class Mutation:
     async def saveStripeConfiguration(
         self, info: strawberry.Info, configurationInput: StripeConfigurationInput
     ) -> ConfigurationType:
-        require_admin(info)
+        require_director(info)
         config = await _get_or_create_config()
         config.publishable_key = configurationInput.publishable_key
         config.secret_key = configurationInput.secret_key
@@ -701,7 +764,7 @@ class Mutation:
     async def saveCurrencyConfiguration(
         self, info: strawberry.Info, configurationInput: CurrencyConfigurationInput
     ) -> ConfigurationType:
-        require_admin(info)
+        require_director(info)
         config = await _get_or_create_config()
         config.currency = configurationInput.currency
         config.currency_symbol = configurationInput.currency_symbol
@@ -714,15 +777,20 @@ class Mutation:
     async def sendNotificationUser(
         self, info: strawberry.Info, notificationTitle: Optional[str] = None, notificationBody: Optional[str] = None
     ) -> bool:
-        require_admin(info)
+        require_director(info)
         users = await User.find_all().to_list()
         tokens = [u.notificationToken for u in users if u.notificationToken]
-        send_push_many(tokens, notificationTitle or "Pikupo", notificationBody or "")
+        sent = send_push_many(tokens, notificationTitle or "Pikupo", notificationBody or "")
+        if sent == 0:
+            raise Exception(
+                "No push tokens registered. Have a customer open the app, "
+                "allow notifications, and log in once — then try again."
+            )
         return True
 
     @strawberry.mutation
     async def uploadToken(self, info: strawberry.Info, pushToken: str) -> UploadTokenResult:
-        require_admin(info)
+        require_director(info)
         config = await _get_or_create_config()
         config.push_token = pushToken
         await config.save()

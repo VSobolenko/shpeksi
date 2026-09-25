@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react'
-import { Image, Platform, View } from 'react-native'
+import { Image, View } from 'react-native'
 import { isObject } from 'validate.js'
 import Spinner from '../Spinner/Spinner'
 import useStyle from './styles'
 
-const iosPlacholder = require('../../assets/images/food_placeholder.png')
-const PLACEHOLDER = require('../../assets/images/imagePlaceholder.png')
+// Keep placeholders small — multi-MB PNGs caused endless Android loaders.
+const PLACEHOLDER = require('../../assets/images/placeholder.png')
 
 function PikupoImage({
   imgSource,
@@ -15,43 +15,41 @@ function PikupoImage({
   spinnerProps
 }) {
   const styles = useStyle()
-  const [startImgLoading, setStartImgLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [failed, setFailed] = useState(false)
 
-  const imageUrl = isObject(imgSource)
-    ? { ...imgSource, cache: 'force-cache' }
-    : imgSource || PLACEHOLDER
+  const hasRemote =
+    isObject(imgSource) &&
+    typeof imgSource.uri === 'string' &&
+    imgSource.uri.length > 0
+  const hasLocalModule = typeof imgSource === 'number'
+  const useSource =
+    !failed && (hasRemote || hasLocalModule) ? imgSource : PLACEHOLDER
   const style = imgStyle || styles.imgContainer
-
-  const androidImage = (
-    <Image
-      source={imageUrl}
-      style={[styles.imgResponsive, style]}
-      onLoadStart={() => setStartImgLoading(true)}
-      onLoadEnd={() => setStartImgLoading(false)}
-      resizeMode={imgSource ? resizeMode : 'contain'}
-    />
-  )
-
-  const iosImage = (
-    <Image
-      source={imageUrl}
-      defaultSource={iosPlacholder}
-      style={[styles.imgResponsive, style]}
-      resizeMode={imgSource ? resizeMode : 'contain'}
-    />
-  )
 
   return (
     <View style={style}>
-      {startImgLoading && (
-        <Spinner
-          animating={startImgLoading}
-          size="small"
-          style={style}
-          {...spinnerProps}
-        />
-      )}
-      {Platform.OS === 'ios' ? iosImage : androidImage}
+      {loading
+        ? (
+        <Spinner animating size="small" style={style} {...spinnerProps} />
+          )
+        : null}
+      <Image
+        source={
+          isObject(useSource)
+            ? { ...useSource, cache: 'force-cache' }
+            : useSource
+        }
+        defaultSource={PLACEHOLDER}
+        style={[styles.imgResponsive, style]}
+        onLoadStart={() => setLoading(true)}
+        onLoadEnd={() => setLoading(false)}
+        onError={() => {
+          setFailed(true)
+          setLoading(false)
+        }}
+        resizeMode={failed || !hasRemote ? 'contain' : resizeMode}
+      />
     </View>
   )
 }

@@ -1,7 +1,5 @@
 import { useMutation, gql } from '@apollo/client'
 import { useNavigation, useTheme } from '@react-navigation/native'
-import * as Notifications from 'expo-notifications'
-import Constants from 'expo-constants'
 import React, { useContext, useEffect, useState } from 'react'
 import {
   ActivityIndicator,
@@ -28,6 +26,7 @@ import { alignment } from '../../utils/alignment'
 import Analytics from '../../utils/analytics'
 import { NAVIGATION_SCREEN } from '../../utils/constant'
 import { scale, verticalScale } from '../../utils/scaling'
+import { getNotificationTokenSafe } from '../../utils/pushToken'
 import useStyle from './styles'
 
 // Constants
@@ -139,18 +138,11 @@ function Login() {
   async function mutateLogin(user) {
     try {
       setLoading(true)
-      let notificationToken = null
-      if (Constants.isDevice) {
-        const { status: existingStatus } =
-          await Notifications.getPermissionsAsync()
-        if (existingStatus === 'granted') {
-          notificationToken = (await Notifications.getExpoPushTokenAsync())
-            .data
-        }
-      }
+      const notificationToken = await getNotificationTokenSafe()
       mutate({ variables: { ...user, notificationToken } })
     } catch (e) {
       console.error(e)
+      setLoading(false)
     }
   }
 

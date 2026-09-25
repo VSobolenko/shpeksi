@@ -5,20 +5,38 @@ import de from './translations/de'
 import fr from './translations/fr'
 import km from './translations/km'
 import zh from './translations/zh'
+import ru from './translations/ru'
+
+const SUPPORTED = ['en', 'de', 'fr', 'km', 'zh', 'ru']
+
+function detectLanguage() {
+  const stored = localStorage.getItem('pikupo-language')
+  if (stored && SUPPORTED.includes(stored)) return stored
+  const nav = (navigator.language || navigator.userLanguage || 'en')
+    .slice(0, 2)
+    .toLowerCase()
+  return SUPPORTED.includes(nav) ? nav : 'en'
+}
+
+const initialLng = detectLanguage()
+if (!localStorage.getItem('pikupo-language')) {
+  localStorage.setItem('pikupo-language', initialLng)
+}
+
 i18n.use(initReactI18next).init({
-  // we init with resources
   resources: {
     en,
     de,
     fr,
     km,
-    zh
+    zh,
+    ru
   },
-  lng: localStorage.getItem('pikupo-language') || 'en',
+  lng: initialLng,
   fallbackLng: 'en',
-  debug: true,
+  debug: false,
   interpolation: {
-    escapeValue: false // not needed for react!!
+    escapeValue: false
   }
 })
 
