@@ -77,7 +77,10 @@ const fr = {
       'Limite de caractères de longueur maximale 140',
     Currency: 'Devise',
     'Currency Code': 'Code de devise',
-    'Currency Symbol': 'Symbole de la monnaie'
+    'Currency Symbol': 'Symbole de la monnaie',
+    Staff: 'Staff',
+    'Add Staff': 'Add Staff',
+    Role: 'Role'
   }
 }
 

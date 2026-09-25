@@ -1,8 +1,6 @@
 import { useMutation, gql } from '@apollo/client'
 import { useNavigation, useTheme } from '@react-navigation/native'
-import * as Device from 'expo-device'
 import * as Localization from 'expo-localization'
-import * as Notifications from 'expo-notifications'
 import React, { useContext, useState } from 'react'
 import {
   KeyboardAvoidingView,
@@ -26,6 +24,7 @@ import UserContext from '../../context/User'
 import { alignment } from '../../utils/alignment'
 import Analytics from '../../utils/analytics'
 import { ICONS_NAME, NAVIGATION_SCREEN } from '../../utils/constant'
+import { getNotificationTokenSafe } from '../../utils/pushToken'
 // eslint-disable-next-line camelcase
 import countryCodes from '../../utils/country_codes'
 import { scale, verticalScale } from '../../utils/scaling'
@@ -124,12 +123,13 @@ function Register() {
 
   async function mutateLogin(user) {
     setLoading(true)
-    let notificationToken = null
-    const { status: existingStatus } = await Notifications.getPermissionsAsync()
-    if (existingStatus === 'granted' && Device.isDevice) {
-      notificationToken = (await Notifications.getExpoPushTokenAsync()).data
+    try {
+      const notificationToken = await getNotificationTokenSafe()
+      mutate({ variables: { ...user, notificationToken } })
+    } catch (e) {
+      console.error(e)
+      setLoading(false)
     }
-    mutate({ variables: { ...user, notificationToken } })
   }
 
   function renderJoinAction() {

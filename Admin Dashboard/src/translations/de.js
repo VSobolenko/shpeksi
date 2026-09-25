@@ -77,7 +77,10 @@ const de = {
       'Zeichenbegrenzung von maximaler Länge 140',
     Currency: 'Währung',
     'Currency Code': 'Währungscode',
-    'Currency Symbol': 'Währungszeichen'
+    'Currency Symbol': 'Währungszeichen',
+    Staff: 'Staff',
+    'Add Staff': 'Add Staff',
+    Role: 'Role'
   }
 }
 

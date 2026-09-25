@@ -72,7 +72,10 @@ const km = {
     'Character limit of max length 140': 'ដែនកំណត់តួអក្សរនៃប្រវែងអតិបរមា 140',
     Currency: 'រូបិយប័ណ្ណ',
     'Currency Code': 'លេខកូដរូបិយប័ណ្ណ',
-    'Currency Symbol': 'និមិត្តសញ្ញារូបិយប័ណ្ណ'
+    'Currency Symbol': 'និមិត្តសញ្ញារូបិយប័ណ្ណ',
+    Staff: 'Staff',
+    'Add Staff': 'Add Staff',
+    Role: 'Role'
   }
 }
 

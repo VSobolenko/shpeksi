@@ -72,7 +72,10 @@ const zh = {
     'Character limit of max length 140': '最大长度的字符限制140',
     Currency: '货币',
     'Currency Code': '货币代码',
-    'Currency Symbol': '货币符号'
+    'Currency Symbol': '货币符号',
+    Staff: 'Staff',
+    'Add Staff': 'Add Staff',
+    Role: 'Role'
   }
 }
 export default zh
