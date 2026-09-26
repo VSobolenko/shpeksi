@@ -22,7 +22,7 @@
 | API (HTTP + WebSocket) | `https://api.78-111-89-46.sslip.io/graphql` |
 | Админ-панель | `https://admin.78-111-89-46.sslip.io` |
 | Сайт | `https://78-111-89-46.sslip.io` (+ `www.`) |
-| APK для скачивания | `https://78-111-89-46.sslip.io/downloads/pikupo-demo-v1.0.23.apk` |
+| APK для скачивания | `https://78-111-89-46.sslip.io/downloads/pikupo-demo-v1.0.24.apk` |
 | Вход в админку | `admin@pikupo.com`, пароль — в `/opt/pikupo/backend/.env` (`ADMIN_PASSWORD`) |
 | Клиент в приложении | `customer@example.com` / `password123` (сид-фикстура) |
 | Сервер | Serverspace, Нью-Джерси; 2 vCPU / 3.3 ГБ / 49 ГБ; Ubuntu 26.04 |
@@ -34,10 +34,24 @@
 
 ### Что с APK прямо сейчас
 
-Опубликован `pikupo-demo-v1.0.23.apk` (Pikupo, API на `sslip.io`). Старый
-`forkly-demo-v1.0.22.apk` может ещё лежать рядом — для демо используйте новую
-ссылку. После покупки домена APK нужно будет пересобрать один раз под
-`api.pikupo.com`.
+Опубликован `pikupo-demo-v1.0.24.apk` (Pikupo, API на `sslip.io`, тенант
+`pikupo-demo` вшит в сборку). Старые `pikupo-demo-v1.0.23.apk` и
+`forkly-demo-v1.0.22.apk` убраны из раздачи в
+`/opt/pikupo/downloads-archive/`.
+
+> **Сборка без `RESTAURANT_SLUG` нерабочая.** Бэкенд мультитенантный: без
+> заголовка `x-restaurant-id` каталог отдаётся с ошибкой
+> `RESTAURANT_REQUIRED`, и приложение показывает пустой список. Именно так
+> выглядела сборка `v1.0.23` — перед публикацией любого APK прогоняйте гейт:
+>
+> ```powershell
+> backend\.venv\Scripts\python.exe scripts\inspect_apk.py `
+>   "CustomerApp\android\app\build\outputs\apk\release\app-release.apk"
+> ```
+>
+> `VERDICT: OK` — можно выкладывать, `VERDICT: FAIL` — в сборке нет слага.
+
+После покупки домена APK нужно будет пересобрать один раз под `api.pikupo.com`.
 
 ### Что уже проверено
 
@@ -82,16 +96,20 @@
 # локально (PowerShell)
 scp -i %USERPROFILE%\.ssh\id_ed25519 ^
   "CustomerApp\android\app\build\outputs\apk\release\app-release.apk" ^
-  root@78.111.89.46:/opt/pikupo/backend/static/downloads/pikupo-demo-v1.0.23.apk
+  root@78.111.89.46:/opt/pikupo/backend/static/downloads/pikupo-demo-v1.0.24.apk
 
 # сверить, что долетело без повреждений
 Get-FileHash -Algorithm MD5 "CustomerApp\android\app\build\outputs\apk\release\app-release.apk"
-ssh -i %USERPROFILE%\.ssh\id_ed25519 root@78.111.89.46 "md5sum /opt/pikupo/backend/static/downloads/pikupo-demo-v1.0.23.apk"
+ssh -i %USERPROFILE%\.ssh\id_ed25519 root@78.111.89.46 "md5sum /opt/pikupo/backend/static/downloads/pikupo-demo-v1.0.24.apk"
 ```
 
-> В каталоге сейчас лежит `forkly-demo-v1.0.22.apk` (см. «Что с APK прямо
-> сейчас» выше). Новую сборку кладите рядом со своим именем и удаляйте старую,
-> только когда ссылка на новую уже проверена снаружи.
+> Перед публикацией прогоняйте `scripts\inspect_apk.py` (см. «Что с APK прямо
+> сейчас»): он подтверждает, что в сборке есть слага тенанта, — иначе APK
+> уедет заказчику рабочим только на вид.
+
+> Старые сборки в раздаче не оставляйте: `pikupo-demo-v1.0.23.apk` и
+> `forkly-demo-v1.0.22.apk` уже перенесены в `/opt/pikupo/downloads-archive/`,
+> потому что без слага тенанта они показывают пустой каталог.
 
 > При замене APK имя файла меняйте вместе с версией (`app.json` → `version`) —
 > иначе у заказчика в кэше останется старая сборка под тем же URL.
@@ -662,6 +680,21 @@ APK: `CustomerApp/android/app/build/outputs/apk/release/app-release.apk`.
 
 > **Значения из `.env` вшиваются в APK при сборке** (`app.config.js` копирует их в
 > `Constants.expoConfig.extra`). Меняете адрес бэкенда — обязателен пересбор.
+
+> **`RESTAURANT_SLUG` обязателен.** Бэкенд определяет ресторан по заголовку
+> `x-restaurant-id`, который приложение берёт из этого значения. Сборка без
+> него ставится и запускается, но каталог остаётся пустым: API отвечает
+> `RESTAURANT_REQUIRED`. В `extra` попадает только то, что было в окружении на
+> момент сборки, поэтому проверяйте результат до публикации:
+>
+> ```powershell
+> backend\.venv\Scripts\python.exe scripts\inspect_apk.py `
+>   "CustomerApp\android\app\build\outputs\apk\release\app-release.apk"
+> ```
+>
+> Ждём `VERDICT: OK`. Скрипт читает `assets/app.config` (там Expo хранит
+> переменные окружения) и `assets/index.android.bundle` — грепать сам APK
+> бесполезно, Hermes-бандл не содержит вшитых адресов.
 
 > Долгие сборки на слабом VPS могут упасть по памяти. Если Gradle падает с
 > `OutOfMemoryError`, поднимите лимиты в `android/gradle.properties`
