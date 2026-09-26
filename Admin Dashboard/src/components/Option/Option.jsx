@@ -166,7 +166,7 @@ function Option(props) {
   const { t } = props
   return (
     <Card>
-      <CardHeader>Option</CardHeader>
+      <CardHeader>{t('Options')}</CardHeader>
       <CardBody>
         <Form>
           <div>

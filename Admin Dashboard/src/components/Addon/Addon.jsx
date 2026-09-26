@@ -246,7 +246,7 @@ function Addon(props) {
   const { t } = props
   return (
     <Card>
-      <CardHeader>Addons</CardHeader>
+      <CardHeader>{t('Addons')}</CardHeader>
       <CardBody>
         <Form>
           <div>

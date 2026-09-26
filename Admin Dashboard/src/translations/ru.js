@@ -123,7 +123,31 @@ const ru = {
     Datetime: 'Дата и время',
     'Between 1 and 100': 'От 1 до 100',
     'This category still has items. Remove or move them first.': 'В этой категории ещё есть товары. Сначала удалите или перенесите их.',
-    'Could not delete. Please try again.': 'Не удалось удалить. Попробуйте снова.'
+    'Could not delete. Please try again.': 'Не удалось удалить. Попробуйте снова.',
+    'Add Coupon': 'Добавить купон',
+    'Edit Coupon': 'Изменить купон',
+    'Coupon Code': 'Код купона',
+    'Discount Percent': 'Процент скидки',
+    'Enabled/Disabled': 'Включено/Выключено',
+    Options: 'Опции',
+    'Add/Remove Addons': 'Добавить/убрать допы',
+    'Quantity Minimum': 'Мин. количество',
+    'Quantity Maximum': 'Макс. количество',
+    'Must be a less than or equal to Maximum': 'Должно быть не больше максимума',
+    'Must be a greater than or equal to Minimum': 'Должно быть не меньше минимума',
+    'Must be a number': 'Должно быть числом',
+    'Select atleast one Option': 'Выберите хотя бы одну опцию',
+    Stock: 'Наличие',
+    Discounted: 'Со скидкой',
+    'Order Details': 'Детали заказа',
+    'Order Status': 'Статус заказа',
+    'Payment Status': 'Статус оплаты',
+    'Select Status': 'Выберите статус',
+    'Current Status': 'Текущий статус',
+    Customer: 'Клиент',
+    Charges: 'Начисления',
+    Body: 'Текст',
+    Send: 'Отправить'
   }
 }
 

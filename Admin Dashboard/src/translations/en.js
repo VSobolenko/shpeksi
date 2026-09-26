@@ -120,7 +120,33 @@ const en = {
     'Between 1 and 100': 'Between 1 and 100',
     'This category still has items. Remove or move them first.': 'This category still has items. Remove or move them first.',
     'Could not delete. Please try again.':
-      'Could not delete. Please try again.'
+      'Could not delete. Please try again.',
+    'Add Coupon': 'Add Coupon',
+    'Edit Coupon': 'Edit Coupon',
+    'Coupon Code': 'Coupon Code',
+    'Discount Percent': 'Discount Percent',
+    'Enabled/Disabled': 'Enabled/Disabled',
+    Coupons: 'Coupons',
+    Addons: 'Addons',
+    Options: 'Options',
+    'Add/Remove Addons': 'Add/Remove Addons',
+    'Quantity Minimum': 'Quantity Minimum',
+    'Quantity Maximum': 'Quantity Maximum',
+    'Must be a less than or equal to Maximum': 'Must be less than or equal to Maximum',
+    'Must be a greater than or equal to Minimum': 'Must be greater than or equal to Minimum',
+    'Must be a number': 'Must be a number',
+    'Select atleast one Option': 'Select at least one option',
+    Stock: 'Stock',
+    Discounted: 'Discounted',
+    'Order Details': 'Order Details',
+    'Order Status': 'Order Status',
+    'Payment Status': 'Payment Status',
+    'Select Status': 'Select Status',
+    'Current Status': 'Current Status',
+    Customer: 'Customer',
+    Charges: 'Charges',
+    Body: 'Body',
+    Send: 'Send'
   }
 }
 
