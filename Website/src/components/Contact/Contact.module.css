@@ -5,7 +5,8 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: minmax(0, 420px);
+  justify-content: center;
   gap: var(--space-5);
   list-style: none;
   margin: 0;

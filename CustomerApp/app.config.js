@@ -31,6 +31,9 @@ module.exports = ({ config }) => {
     GRAPHQL_URL: process.env.GRAPHQL_URL,
     WS_GRAPHQL_URL: process.env.WS_GRAPHQL_URL,
     SERVER_URL: process.env.SERVER_URL,
+    // Which restaurant this build belongs to. The backend is multi-tenant and
+    // resolves the tenant from this value, so a white-label APK must set it.
+    RESTAURANT_SLUG: process.env.RESTAURANT_SLUG,
     EXPO_CLIENT_ID_GOOGLE: process.env.EXPO_CLIENT_ID_GOOGLE,
     IOS_CLIENT_ID_GOOGLE: process.env.IOS_CLIENT_ID_GOOGLE,
     ANDROID_CLIENT_ID_GOOGLE: process.env.ANDROID_CLIENT_ID_GOOGLE,

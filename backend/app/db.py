@@ -13,6 +13,7 @@ from app.models import (
     Food,
     Option,
     Order,
+    Restaurant,
     User,
 )
 
@@ -36,6 +37,7 @@ async def init_db() -> None:
             Order,
             Configuration,
             AdminAccount,
+            Restaurant,
         ],
     )
 

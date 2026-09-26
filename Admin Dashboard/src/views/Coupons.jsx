@@ -29,7 +29,12 @@ const DELETE_COUPON = gql`
 const Coupon = props => {
   const [editModal, setEditModal] = useState(false)
   const [coupon, setCoupon] = useState(null)
-  const [isOpen, setIsOpen] = useState(false)
+  const [alert, setAlert] = useState(null)
+
+  const showAlert = (message, severity) => {
+    setAlert({ message, severity })
+    setTimeout(() => setAlert(null), 2500)
+  }
 
   const toggleModal = coupon => {
     setEditModal(!editModal)
@@ -134,13 +139,14 @@ const Coupon = props => {
                 color="danger"
                 onClick={e => {
                   e.preventDefault()
-                  // deleteCoupon({ variables: { id: row._id } })
-                  setIsOpen(true)
-                  setTimeout(() => {
-                    setIsOpen(false)
-                  }, 2000)
+                  if (!window.confirm(`${t('Delete')} "${row.code}"? ${t('This cannot be undone.')}`)) {
+                    return
+                  }
+                  deleteCoupon({ variables: { id: row._id } })
+                    .then(() => showAlert(t('Deleted'), 'success'))
+                    .catch(() => showAlert(t('Could not delete. Please try again.'), 'danger'))
                 }}>
-                {'Delete'}
+                {t('Delete')}
               </Badge>
             )
           }}
@@ -160,11 +166,8 @@ const Coupon = props => {
         <Row className="mt-5">
           <div className="col">
             <Card className="shadow">
-              {isOpen && (
-                <Alert
-                  message="Delete feature will available after purchasing product"
-                  severity="warning"
-                />
+              {alert && (
+                <Alert message={alert.message} severity={alert.severity} />
               )}
               <Query query={GET_COUPONS}>
                 {({ loading, error, data }) => {

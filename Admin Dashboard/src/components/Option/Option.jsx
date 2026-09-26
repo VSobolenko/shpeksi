@@ -144,8 +144,13 @@ function Option(props) {
     try {
       if (createOptions) {
         const data = proxy.readQuery({ query: GET_OPTIONS })
-        data.options = data.options.concat(createOptions)
-        proxy.writeQuery({ query: GET_OPTIONS, data })
+        // This component's own query is only cached when it is what the screen
+        // renders; the Options view renders `allOptions` instead and refreshes
+        // through `props.refetchQuery`.
+        if (data && data.options) {
+          data.options = data.options.concat(createOptions)
+          proxy.writeQuery({ query: GET_OPTIONS, data })
+        }
         if (props.updateOptions) {
           props.updateOptions(createOptions.map(({ _id }) => _id))
         }
@@ -280,7 +285,10 @@ function Option(props) {
                   mutation={props.option ? EDIT_OPTION : CREATE_OPTIONS}
                   onCompleted={onCompleted}
                   onError={onError}
-                  refetchQueries={[{ query: GET_OPTIONS }]}
+                  refetchQueries={[
+                    { query: GET_OPTIONS },
+                    ...(props.refetchQueries || [])
+                  ]}
                   update={update}>
                   {(mutate, { loading }) => {
                     if (loading) {

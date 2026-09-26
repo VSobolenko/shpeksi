@@ -75,7 +75,11 @@ const zh = {
     'Currency Symbol': '货币符号',
     Staff: 'Staff',
     'Add Staff': 'Add Staff',
-    Role: 'Role'
+    Role: 'Role',
+    'This cannot be undone.': '此操作无法撤销。',
+    Deleted: '已删除',
+    'This category still has items. Remove or move them first.': '该分类下还有商品。请先删除或移动它们。',
+    'Could not delete. Please try again.': '删除失败，请重试。'
   }
 }
 export default zh

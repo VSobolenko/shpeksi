@@ -2,17 +2,18 @@
 
 from typing import Optional
 
-from beanie import Document
+from beanie import Document, PydanticObjectId
 
 
 class AdminAccount(Document):
-    """Director-created dashboard users. Bootstrap director stays in env."""
+    """Dashboard users created for a restaurant (staff and directors)."""
 
     email: str = ""
     password: Optional[str] = None
     name: str = ""
-    role: str = "staff"  # "staff" only for DB rows; director is env bootstrap
+    role: str = "staff"  # "staff" or "director" for DB rows
     is_active: bool = True
+    restaurant: Optional[PydanticObjectId] = None
 
     class Settings:
         name = "admin_accounts"

@@ -14,6 +14,7 @@ from app.graphql.context import get_context
 from app.graphql.schema import schema
 from app.logging_config import configure_logging
 from app.models import Configuration, Order
+from app.services.configuration import get_or_create_config
 from app.services.payments import charge_stripe_card, to_cents
 
 configure_logging()
@@ -23,8 +24,6 @@ configure_logging()
 async def lifespan(app: FastAPI):
     settings.validate_production_secrets()
     await init_db()
-    if not await Configuration.find_one({}):
-        await Configuration().insert()
     yield
     await close_db()
 
@@ -71,10 +70,14 @@ async def stripe_cancel() -> HTMLResponse:
 
 @app.post("/stripe/charge")
 async def stripe_charge(request: Request, id: str) -> JSONResponse:
-    config = await Configuration.find_one({})
-    order = await Order.find_one(Order.order_id == id)
+    order = await Order.find_one({"order_id": id})
     if not order:
         return JSONResponse({"redirect": "stripe/failed"})
+    config = (
+        await get_or_create_config(order.restaurant)
+        if order.restaurant
+        else await Configuration.find_one({})
+    )
     if not config or not config.secret_key:
         return JSONResponse({"redirect": "stripe/failed"})
 

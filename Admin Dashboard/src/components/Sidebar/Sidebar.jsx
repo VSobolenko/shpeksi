@@ -19,12 +19,20 @@ import {
   Nav,
   Container,
   Row,
-  Col
+  Col,
+  FormGroup,
+  Input
 } from 'reactstrap'
 
 function Sidebar(props) {
   const navigate = useNavigate()
+  const { t, i18n } = props
   const [collapseOpen, collapseOpenSetter] = useState(false)
+
+  const handleLanguageChange = event => {
+    localStorage.setItem('pikupo-language', event.target.value)
+    i18n.changeLanguage(event.target.value)
+  }
   // toggles collapse between opened and closed (true/false)
   const toggleCollapse = () => {
     collapseOpenSetter(prev => !prev)
@@ -57,7 +65,6 @@ function Sidebar(props) {
       ) : null
     })
   }
-  const { t } = props
   const { bgColor, routes, logo } = props
   let navbarBrandProps
   if (logo && logo.innerLink) {
@@ -154,6 +161,25 @@ function Sidebar(props) {
 
           {/* Navigation */}
           <Nav navbar>{createLinks(routes, t)}</Nav>
+          <Nav navbar className="mt-3 mb-3 px-3">
+            <NavItem className="w-100">
+              <FormGroup className="mb-0">
+                <Input
+                  type="select"
+                  name="language"
+                  value={localStorage.getItem('pikupo-language') || i18n.language}
+                  id="sidebar-language-select"
+                  onChange={handleLanguageChange}>
+                  <option value="en">English</option>
+                  <option value="ru">Русский</option>
+                  <option value="de">Deutsche</option>
+                  <option value="zh">中文</option>
+                  <option value="km">ភាសាខ្មែរ</option>
+                  <option value="fr">français</option>
+                </Input>
+              </FormGroup>
+            </NavItem>
+          </Nav>
         </Collapse>
       </Container>
     </Navbar>

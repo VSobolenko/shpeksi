@@ -173,22 +173,21 @@ const CreateAccount = () => {
       IOS_CLIENT_ID_GOOGLE
   )
 
+  // `useAuthRequest` throws when the client id for the *current* platform is
+  // missing ("Client Id property `androidClientId` must be defined to use Google
+  // auth on this platform"), and a throw inside the screen unmounts it — the
+  // whole sign-in screen went blank. Every platform field therefore needs a
+  // defined value; the button stays disabled while Google is unconfigured, so
+  // the placeholder is never used for a real flow.
+  const GOOGLE_CLIENT_ID_PLACEHOLDER = 'disabled.apps.googleusercontent.com'
+
   const [googleRequest, googleResponse, googlePromptAsync] =
-    Google.useAuthRequest(
-      googleConfigured
-        ? {
-            expoClientId: EXPO_CLIENT_ID_GOOGLE || undefined,
-            iosClientId: IOS_CLIENT_ID_GOOGLE || undefined,
-            androidClientId: ANDROID_CLIENT_ID_GOOGLE || undefined,
-            scopes: ['profile', 'email']
-          }
-        : {
-            // Expo requires a request config object; placeholder keeps the hook
-            // stable when client IDs are absent. The button stays disabled.
-            expoClientId: 'disabled.apps.googleusercontent.com',
-            scopes: ['profile', 'email']
-          }
-    )
+    Google.useAuthRequest({
+      expoClientId: EXPO_CLIENT_ID_GOOGLE || GOOGLE_CLIENT_ID_PLACEHOLDER,
+      iosClientId: IOS_CLIENT_ID_GOOGLE || GOOGLE_CLIENT_ID_PLACEHOLDER,
+      androidClientId: ANDROID_CLIENT_ID_GOOGLE || GOOGLE_CLIENT_ID_PLACEHOLDER,
+      scopes: ['profile', 'email']
+    })
 
   useEffect(() => {
     if (googleResponse?.type !== 'success') {

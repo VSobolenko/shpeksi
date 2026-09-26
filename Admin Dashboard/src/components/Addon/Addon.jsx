@@ -224,8 +224,13 @@ function Addon(props) {
     try {
       if (createAddons) {
         const data = proxy.readQuery({ query: GET_ADDONS })
-        data.addons = data.addons.concat(createAddons)
-        proxy.writeQuery({ query: GET_ADDONS, data })
+        // The Addons view renders `allAddons`, so it refreshes through
+        // `props.refetchQuery`; this branch only serves screens that render the
+        // component's own `addons` query.
+        if (data && data.addons) {
+          data.addons = data.addons.concat(createAddons)
+          proxy.writeQuery({ query: GET_ADDONS, data })
+        }
         if (props.updateAddonsList) {
           props.updateAddonsList(createAddons.map(({ _id }) => _id))
         }
@@ -468,6 +473,10 @@ function Addon(props) {
                   mutation={props.addon ? EDIT_ADDON : CREATE_ADDONS}
                   onCompleted={onCompleted}
                   onError={onError}
+                  refetchQueries={[
+                    { query: GET_ADDONS },
+                    ...(props.refetchQueries || [])
+                  ]}
                   update={update}>
                   {(mutate, { loading }) => {
                     if (loading) {

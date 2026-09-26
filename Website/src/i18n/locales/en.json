@@ -22,9 +22,18 @@
     "title": "From menu to pickup in three steps",
     "subtitle": "Get your branded ordering app live in days, not months.",
     "steps": [
-      { "title": "Set up your menu", "text": "Add your dishes, prices, and photos in a simple dashboard — no technical skills needed." },
-      { "title": "Receive orders", "text": "New orders appear instantly in your dashboard. Accept, prepare, and mark them ready." },
-      { "title": "Hand over at pickup", "text": "Customers get a notification when their order is ready and collect it at the counter." }
+      {
+        "title": "Set up your menu",
+        "text": "Add your dishes, prices, and photos in a simple dashboard — no technical skills needed."
+      },
+      {
+        "title": "Receive orders",
+        "text": "New orders appear instantly in your dashboard. Accept, prepare, and mark them ready."
+      },
+      {
+        "title": "Hand over at pickup",
+        "text": "Customers get a notification when their order is ready and collect it at the counter."
+      }
     ]
   },
   "features": {
@@ -32,12 +41,30 @@
     "title": "Everything your restaurant needs",
     "subtitle": "A complete white-label ordering platform built for self-pickup.",
     "items": [
-      { "title": "Your brand", "text": "White-label app with your logo, colors, and name — not ours." },
-      { "title": "Menu management", "text": "Manage dishes, categories, prices, and stock in real time." },
-      { "title": "Order management", "text": "Accept, track, and update every order from one dashboard." },
-      { "title": "Push notifications", "text": "Notify customers automatically when their order is ready." },
-      { "title": "Flexible payments", "text": "Cash, card, and PayPal — your customers' choice." },
-      { "title": "Analytics", "text": "See your sales, orders, and top dishes at a glance." }
+      {
+        "title": "Your brand",
+        "text": "White-label app with your logo, colors, and name — not ours."
+      },
+      {
+        "title": "Menu management",
+        "text": "Manage dishes, categories, prices, and stock in real time."
+      },
+      {
+        "title": "Order management",
+        "text": "Accept, track, and update every order from one dashboard."
+      },
+      {
+        "title": "Push notifications",
+        "text": "Notify customers automatically when their order is ready."
+      },
+      {
+        "title": "Flexible payments",
+        "text": "Cash, card, and PayPal — your customers' choice."
+      },
+      {
+        "title": "Analytics",
+        "text": "See your sales, orders, and top dishes at a glance."
+      }
     ]
   },
   "forCustomers": {
@@ -45,9 +72,18 @@
     "title": "A smoother pickup experience",
     "subtitle": "Give your customers a fast, modern ordering flow they'll love.",
     "items": [
-      { "title": "Order ahead", "text": "Customers order before they arrive and skip the queue." },
-      { "title": "Live status", "text": "They follow their order from kitchen to counter in real time." },
-      { "title": "Self-pickup reminders", "text": "They get a notification the moment it's ready to collect." }
+      {
+        "title": "Order ahead",
+        "text": "Customers order before they arrive and skip the queue."
+      },
+      {
+        "title": "Live status",
+        "text": "They follow their order from kitchen to counter in real time."
+      },
+      {
+        "title": "Self-pickup reminders",
+        "text": "They get a notification the moment it's ready to collect."
+      }
     ]
   },
   "about": {
@@ -55,9 +91,18 @@
     "title": "Pikupo, in a nutshell",
     "text": "Pikupo is a white-label ordering platform for restaurants and cafés. We give you a branded app for self-pickup orders — so you serve more people, faster, with none of the overhead of managing your own fleet.",
     "points": [
-      { "title": "Fast to launch", "text": "Get your branded app live in days, not months." },
-      { "title": "Self-pickup only", "text": "Self-pickup means no fleet to manage and no per-order commission you didn't agree to." },
-      { "title": "Yours to own", "text": "Your brand, your customers, your data." }
+      {
+        "title": "Fast to launch",
+        "text": "Get your branded app live in days, not months."
+      },
+      {
+        "title": "Self-pickup only",
+        "text": "Self-pickup means no fleet to manage and no per-order commission you didn't agree to."
+      },
+      {
+        "title": "Yours to own",
+        "text": "Your brand, your customers, your data."
+      }
     ]
   },
   "faq": {
@@ -65,12 +110,30 @@
     "title": "Frequently asked questions",
     "subtitle": "Answers for restaurant owners.",
     "items": [
-      { "question": "What is Pikupo?", "answer": "Pikupo is a white-label ordering platform that gives your restaurant a branded app for self-pickup orders." },
-      { "question": "Is Pikupo pickup-only?", "answer": "Yes. It's self-pickup only — customers order ahead and collect in store." },
-      { "question": "Do I need technical skills?", "answer": "No. You manage your menu and orders from a simple dashboard." },
-      { "question": "Can I use my own brand?", "answer": "Yes. The app uses your logo, colors, and name." },
-      { "question": "What payments are supported?", "answer": "Cash, card, and PayPal." },
-      { "question": "How long does setup take?", "answer": "Most restaurants go live within a few days." }
+      {
+        "question": "What is Pikupo?",
+        "answer": "Pikupo is a white-label ordering platform that gives your restaurant a branded app for self-pickup orders."
+      },
+      {
+        "question": "Is Pikupo pickup-only?",
+        "answer": "Yes. It's self-pickup only — customers order ahead and collect in store."
+      },
+      {
+        "question": "Do I need technical skills?",
+        "answer": "No. You manage your menu and orders from a simple dashboard."
+      },
+      {
+        "question": "Can I use my own brand?",
+        "answer": "Yes. The app uses your logo, colors, and name."
+      },
+      {
+        "question": "What payments are supported?",
+        "answer": "Cash, card, and PayPal."
+      },
+      {
+        "question": "How long does setup take?",
+        "answer": "Most restaurants go live within a few days."
+      }
     ]
   },
   "contact": {
@@ -78,24 +141,26 @@
     "title": "Get in touch",
     "subtitle": "Questions or ready to launch? We'd love to hear from you.",
     "emailLabel": "Email",
-    "email": "hello@pikupo.example",
-    "phoneLabel": "Phone",
-    "phone": "+1 (555) 010-0100",
-    "addressLabel": "Address",
-    "address": "123 Market Street, Suite 200"
+    "email": "hello@pikupo.example"
   },
   "getStarted": {
     "eyebrow": "Get started",
     "title": "Ready to launch your ordering app?",
     "subtitle": "Request a demo and see how Pikupo can grow your restaurant.",
     "primaryCta": "Request a demo",
-    "secondaryCta": "Open the merchant panel",
-    "note": "Already a merchant? Manage your menu and orders from the panel."
+    "secondaryCta": "Ask a question",
+    "note": "Send us a message and we will come back to you with a demo and pricing."
   },
   "footer": {
     "tagline": "Self-pickup ordering for restaurants.",
     "navLabel": "Navigation",
     "languageLabel": "Language",
     "rights": "All rights reserved."
+  },
+  "mail": {
+    "demoSubject": "Pikupo demo request",
+    "demoBody": "Hello Pikupo team,\n\nI would like a demo of Pikupo for my restaurant.\n\nRestaurant: \nCity: \nPhone: \n\nThank you!",
+    "contactSubject": "Question about Pikupo",
+    "contactBody": "Hello Pikupo team,\n\nI have a question about Pikupo:\n\n"
   }
 }

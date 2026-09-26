@@ -80,7 +80,34 @@ const ru = {
     Ratings: 'Оценки',
     Staff: 'Сотрудники',
     'Add Staff': 'Добавить сотрудника',
-    Role: 'Роль'
+    Role: 'Роль',
+    Restaurants: 'Рестораны',
+    'Add Restaurant': 'Добавить ресторан',
+    Slug: 'Слаг',
+    Active: 'Активен',
+    Inactive: 'Отключён',
+    Activate: 'Включить',
+    Deactivate: 'Отключить',
+    'Set director': 'Назначить директора',
+    'Save director': 'Сохранить директора',
+    Director: 'Директор',
+    'Director name': 'Имя директора',
+    'Director email': 'Email директора',
+    'Director password': 'Пароль директора',
+    'Restaurant created': 'Ресторан создан',
+    'No restaurants yet': 'Ресторанов пока нет',
+    'Fill in every field': 'Заполните все поля',
+    Create: 'Создать',
+    'Every restaurant is one mobile build. The slug below is the value baked into that build.':
+      'Каждый ресторан — это отдельная сборка приложения. Указанный слаг вшивается в эту сборку.',
+    'Build the client app with RESTAURANT_SLUG set to this value.':
+      'Соберите приложение клиента, указав RESTAURANT_SLUG с этим значением.',
+    'The director account is created together with the restaurant and can change its password afterwards.':
+      'Аккаунт директора создаётся вместе с рестораном; пароль директор может сменить сам.',
+    'This cannot be undone.': 'Это действие нельзя отменить.',
+    Deleted: 'Удалено',
+    'This category still has items. Remove or move them first.': 'В этой категории ещё есть товары. Сначала удалите или перенесите их.',
+    'Could not delete. Please try again.': 'Не удалось удалить. Попробуйте снова.'
   }
 }
 

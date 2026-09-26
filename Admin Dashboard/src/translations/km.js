@@ -75,7 +75,12 @@ const km = {
     'Currency Symbol': 'និមិត្តសញ្ញារូបិយប័ណ្ណ',
     Staff: 'Staff',
     'Add Staff': 'Add Staff',
-    Role: 'Role'
+    Role: 'Role',
+    'This cannot be undone.': 'មិនអាចត្រឡប់វិញបានទេ។',
+    Deleted: 'បានលុប',
+    'This category still has items. Remove or move them first.': 'ប្រភេទនេះនៅមានទំនិញ។ សូមលុប ឬផ្លាស់ប្តូរវាជាមុន។',
+    'Could not delete. Please try again.':
+      'មិនអាចលុបបានទេ។ សូមព្យាយាមម្តងទៀត។'
   }
 }
 

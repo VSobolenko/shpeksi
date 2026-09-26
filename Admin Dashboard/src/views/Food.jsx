@@ -26,7 +26,12 @@ const DELETE_FOOD = gql`
 const Food = props => {
   const [editModal, setEditModal] = useState(false)
   const [food, setFood] = useState(null)
-  const [isOpen, setIsOpen] = useState(false)
+  const [alert, setAlert] = useState(null)
+
+  const showAlert = (message, severity) => {
+    setAlert({ message, severity })
+    setTimeout(() => setAlert(null), 2500)
+  }
 
   const toggleModal = food => {
     setEditModal(!editModal)
@@ -77,7 +82,10 @@ const Food = props => {
       name: 'Category',
       sortable: true,
       selector: 'category.title',
-      cell: row => <>{row.category.title}</>
+      // A category can be removed while foods still pointed at it (legacy data),
+      // and `row.category` is then null — reading `.title` off it crashed the
+      // whole view into a blank screen.
+      cell: row => <>{row.category ? row.category.title : '—'}</>
     },
     {
       name: 'Image',
@@ -130,13 +138,14 @@ const Food = props => {
                 color="danger"
                 onClick={e => {
                   e.preventDefault()
-                  // deleteFood({ variables: { id: row._id } })
-                  setIsOpen(true)
-                  setTimeout(() => {
-                    setIsOpen(false)
-                  }, 2000)
+                  if (!window.confirm(`${t('Delete')} "${row.title}"? ${t('This cannot be undone.')}`)) {
+                    return
+                  }
+                  deleteFood({ variables: { id: row._id } })
+                    .then(() => showAlert(t('Deleted'), 'success'))
+                    .catch(() => showAlert(t('Could not delete. Please try again.'), 'danger'))
                 }}>
-                {'Delete'}
+                {t('Delete')}
               </Badge>
             )
           }}
@@ -156,11 +165,8 @@ const Food = props => {
         <Row className="mt-5">
           <div className="col">
             <Card className="shadow">
-              {isOpen && (
-                <Alert
-                  message="Delete feature will available after purchasing product"
-                  severity="warning"
-                />
+              {alert && (
+                <Alert message={alert.message} severity={alert.severity} />
               )}
               <Query query={GET_FOODS} variables={{ page: 0 }}>
                 {({ loading, error, data }) => {

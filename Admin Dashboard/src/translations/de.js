@@ -80,7 +80,12 @@ const de = {
     'Currency Symbol': 'Währungszeichen',
     Staff: 'Staff',
     'Add Staff': 'Add Staff',
-    Role: 'Role'
+    Role: 'Role',
+    'This cannot be undone.': 'Dies kann nicht rückgängig gemacht werden.',
+    Deleted: 'Gelöscht',
+    'This category still has items. Remove or move them first.': 'Diese Kategorie enthält noch Artikel. Bitte zuerst entfernen oder verschieben.',
+    'Could not delete. Please try again.':
+      'Löschen fehlgeschlagen. Bitte erneut versuchen.'
   }
 }
 

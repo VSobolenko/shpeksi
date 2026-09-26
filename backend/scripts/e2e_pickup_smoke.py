@@ -46,6 +46,11 @@ GRAPHQL_URL = "http://localhost:8000/graphql"
 WS_URL = "ws://localhost:8000/graphql"
 ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "admin@example.com")
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "change-me")
+# The smoke test creates (or reuses) this tenant and runs the store as its director.
+DEMO_RESTAURANT_SLUG = os.environ.get("DEMO_RESTAURANT_SLUG", "pikupo-demo")
+DEMO_RESTAURANT_NAME = os.environ.get("DEMO_RESTAURANT_NAME", "Pikupo Demo")
+DIRECTOR_EMAIL = os.environ.get("DEMO_DIRECTOR_EMAIL", "director@pikupo.com")
+DIRECTOR_PASSWORD = os.environ.get("DEMO_DIRECTOR_PASSWORD", "Director-Demo!9k3Zq7")
 # Legacy subscriptions-transport-ws subprotocol (used by apollo-link-ws).
 LEGACY_SUBPROTOCOL = "graphql-ws"
 
@@ -63,10 +68,12 @@ def log(ok: bool, msg: str) -> None:
         raise SmokeError(msg)
 
 
-async def gql(client: httpx.AsyncClient, query: str, variables=None, token=None):
+async def gql(client: httpx.AsyncClient, query: str, variables=None, token=None, restaurant=None):
     headers = {"Content-Type": "application/json"}
     if token:
         headers["Authorization"] = f"Bearer {token}"
+    if restaurant:
+        headers["x-restaurant-id"] = restaurant
     resp = await client.post(
         GRAPHQL_URL, json={"query": query, "variables": variables}, headers=headers
     )
@@ -75,6 +82,49 @@ async def gql(client: httpx.AsyncClient, query: str, variables=None, token=None)
     if "errors" in payload:
         raise SmokeError(f"GraphQL errors: {payload['errors']}")
     return payload["data"]
+
+
+async def login_admin(client: httpx.AsyncClient, email: str, password: str) -> str:
+    data = await gql(
+        client,
+        """
+        mutation($email: String!, $password: String!) {
+          adminLogin(email: $email, password: $password) { token role }
+        }
+        """,
+        {"email": email, "password": password},
+    )
+    return data["adminLogin"]["token"]
+
+
+async def ensure_restaurant(client: httpx.AsyncClient, super_token: str) -> str:
+    """Return the demo restaurant slug, creating the tenant + director if needed."""
+    data = await gql(
+        client, "query { restaurants { slug } }", token=super_token
+    )
+    if any(r["slug"] == DEMO_RESTAURANT_SLUG for r in data.get("restaurants", [])):
+        return DEMO_RESTAURANT_SLUG
+    await gql(
+        client,
+        """
+        mutation($name: String!, $slug: String!, $directorEmail: String!,
+                 $directorPassword: String!, $directorName: String) {
+          createRestaurant(
+            name: $name, slug: $slug, directorEmail: $directorEmail,
+            directorPassword: $directorPassword, directorName: $directorName
+          ) { slug }
+        }
+        """,
+        {
+            "name": DEMO_RESTAURANT_NAME,
+            "slug": DEMO_RESTAURANT_SLUG,
+            "directorEmail": DIRECTOR_EMAIL,
+            "directorPassword": DIRECTOR_PASSWORD,
+            "directorName": "Demo Director",
+        },
+        token=super_token,
+    )
+    return DEMO_RESTAURANT_SLUG
 
 
 async def recv_data(ws, msg_id: str, timeout: float = 10.0) -> dict:
@@ -97,18 +147,15 @@ async def run(url: str, ws_url: str) -> None:
         print(f"Target: {url}  (ws: {ws_url})", flush=True)
         cust_email = f"smoke-{int(time.time())}@example.com"
 
-        # 1. Admin login
-        data = await gql(
-            client,
-            """
-            mutation {
-              adminLogin(email: "%s", password: "%s") { token userId }
-            }
-            """
-            % (ADMIN_EMAIL, ADMIN_PASSWORD),
-        )
-        admin_token = data["adminLogin"]["token"]
-        log(bool(admin_token), "adminLogin returned a token")
+        # 1. Platform owner creates (or reuses) the tenant, then the director
+        #    runs the store so every admin call is scoped to that restaurant.
+        super_token = await login_admin(client, ADMIN_EMAIL, ADMIN_PASSWORD)
+        log(bool(super_token), "superadmin login returned a token")
+        restaurant_slug = await ensure_restaurant(client, super_token)
+        log(bool(restaurant_slug), f"restaurant ready ({restaurant_slug})")
+
+        admin_token = await login_admin(client, DIRECTOR_EMAIL, DIRECTOR_PASSWORD)
+        log(bool(admin_token), "director login returned a token")
 
         # 2. Catalog: category + food with a priced variation
         data = await gql(
@@ -157,10 +204,11 @@ async def run(url: str, ws_url: str) -> None:
                 email: "%s"
                 phone: "555-0100"
                 password: "secret123"
-              }) { userId token }
-            }
+                }) { userId token }
+              }
             """
             % cust_email,
+            restaurant=restaurant_slug,
         )
         customer_id = data["createUser"]["userId"]
         customer_token = data["createUser"]["token"]
@@ -169,7 +217,20 @@ async def run(url: str, ws_url: str) -> None:
         # 4. WebSocket subscriptions (legacy protocol)
         print(f"[....] opening WS subscription ({LEGACY_SUBPROTOCOL})", flush=True)
         async with connect(ws_url, subprotocols=[LEGACY_SUBPROTOCOL]) as ws:
-            await ws_send(ws, {"type": "connection_init", "payload": {}})
+            # The backend is multi-tenant and reads the tenant at resolver time,
+            # so the subscription must carry it. Mirror the real app: the customer
+            # token carries the restaurant claim, and the slug is sent alongside
+            # for builds whose token has no claim yet.
+            await ws_send(
+                ws,
+                {
+                    "type": "connection_init",
+                    "payload": {
+                        "authorization": f"Bearer {customer_token}",
+                        "x-restaurant-id": restaurant_slug,
+                    },
+                },
+            )
             ack = json.loads(await asyncio.wait_for(ws.recv(), 10))
             log(ack.get("type") == "connection_ack", "WS connection_ack received")
 

@@ -80,7 +80,12 @@ const fr = {
     'Currency Symbol': 'Symbole de la monnaie',
     Staff: 'Staff',
     'Add Staff': 'Add Staff',
-    Role: 'Role'
+    Role: 'Role',
+    'This cannot be undone.': 'Cette action est irréversible.',
+    Deleted: 'Supprimé',
+    'This category still has items. Remove or move them first.': 'Cette catégorie contient encore des articles. Supprimez-les ou déplacez-les d\'abord.',
+    'Could not delete. Please try again.':
+      'Suppression impossible. Veuillez réessayer.'
   }
 }
 

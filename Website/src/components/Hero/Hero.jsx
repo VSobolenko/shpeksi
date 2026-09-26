@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+import { mailtoContact } from '../../config.js'
 import styles from './Hero.module.css'
 
 export default function Hero() {
@@ -12,7 +13,13 @@ export default function Hero() {
           <h1 className={styles.title}>{t('hero.title')}</h1>
           <p className={styles.subtitle}>{t('hero.subtitle')}</p>
           <div className={styles.actions}>
-            <a className={styles.primary} href="#get-started">
+            <a
+              className={styles.primary}
+              href={mailtoContact({
+                subject: t('mail.demoSubject'),
+                body: t('mail.demoBody')
+              })}
+            >
               {t('hero.primaryCta')}
             </a>
             <a className={styles.secondary} href="#how-it-works">

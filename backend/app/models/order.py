@@ -77,6 +77,7 @@ class Order(Document):
     review: Optional[Review] = None
     createdAt: Optional[datetime] = None
     updatedAt: Optional[datetime] = None
+    restaurant: Optional[PydanticObjectId] = None
 
     class Settings:
         name = "orders"

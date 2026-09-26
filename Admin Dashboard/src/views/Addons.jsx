@@ -23,7 +23,12 @@ const DELETE_ADDON = gql`
 const Addon = props => {
   const [addon, setAddon] = useState(null)
   const [editModal, setEditModal] = useState(false)
-  const [isOpen, setIsOpen] = useState(false)
+  const [alert, setAlert] = useState(null)
+
+  const showAlert = (message, severity) => {
+    setAlert({ message, severity })
+    setTimeout(() => setAlert(null), 2500)
+  }
 
   const toggleModal = addon => {
     setEditModal(!editModal)
@@ -85,7 +90,9 @@ const Addon = props => {
           Edit
         </Badge>
         &nbsp;&nbsp;
-        <Mutation mutation={DELETE_ADDON} update={update}>
+        <Mutation
+          mutation={DELETE_ADDON}
+          refetchQueries={[{ query: GET_ADDONS, variables: { page: 0 } }]}>
           {(deleteAddon, { loading: deleteLoading }) => {
             if (deleteLoading) {
               return (
@@ -105,13 +112,14 @@ const Addon = props => {
                   color="danger"
                   onClick={e => {
                     e.preventDefault()
-                    // deleteAddon({ variables: { id: row._id } })
-                    setIsOpen(true)
-                    setTimeout(() => {
-                      setIsOpen(false)
-                    }, 2000)
+                    if (!window.confirm(`${t('Delete')} "${row.title}"? ${t('This cannot be undone.')}`)) {
+                      return
+                    }
+                    deleteAddon({ variables: { id: row._id } })
+                      .then(() => showAlert(t('Deleted'), 'success'))
+                      .catch(() => showAlert(t('Could not delete. Please try again.'), 'danger'))
                   }}>
-                  {'Delete'}
+                  {t('Delete')}
                 </Badge>
               </>
             )
@@ -121,33 +129,20 @@ const Addon = props => {
     )
   }
 
-  const update = (proxy, { data: { deleteAddon } }) => {
-    try {
-      if (deleteAddon) {
-        const data = proxy.readQuery({ query: GET_ADDONS })
-        data.addons = data.addons.filter(addon => addon._id !== deleteAddon)
-        proxy.writeQuery({ query: GET_ADDONS, data })
-      }
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
   const { t } = props
   return (
     <>
       <Header />
       {/* Page content */}
       <Container className="mt--7" fluid>
-        <AddonComponent />
+        <AddonComponent
+          refetchQueries={[{ query: GET_ADDONS, variables: { page: 0 } }]}
+        />
         <Row className="mt-5">
           <div className="col">
             <Card className="shadow">
-              {isOpen && (
-                <Alert
-                  message="Delete feature will available after purchasing product"
-                  severity="warning"
-                />
+              {alert && (
+                <Alert message={alert.message} severity={alert.severity} />
               )}
               <Query query={GET_ADDONS} variables={{ page: 0 }}>
                 {({ loading, error, data }) => {
@@ -185,7 +180,10 @@ const Addon = props => {
           toggle={() => {
             toggleModal()
           }}>
-          <AddonComponent addon={addon} />
+          <AddonComponent
+            addon={addon}
+            refetchQueries={[{ query: GET_ADDONS, variables: { page: 0 } }]}
+          />
         </Modal>
       </Container>
     </>

@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { ADMIN_URL, DEMO_URL } from '../../config.js'
+import { mailtoContact } from '../../config.js'
 import styles from './GetStarted.module.css'
 
 export default function GetStarted() {
@@ -14,17 +14,19 @@ export default function GetStarted() {
         <div className={styles.actions}>
           <a
             className={styles.primary}
-            href={DEMO_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+            href={mailtoContact({
+              subject: t('mail.demoSubject'),
+              body: t('mail.demoBody')
+            })}
           >
             {t('getStarted.primaryCta')}
           </a>
           <a
             className={styles.secondary}
-            href={ADMIN_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+            href={mailtoContact({
+              subject: t('mail.contactSubject'),
+              body: t('mail.contactBody')
+            })}
           >
             {t('getStarted.secondaryCta')}
           </a>

@@ -189,7 +189,7 @@ mutation CreateCategory($title:String!,$description:String!,$img_menu:String){
 }`
 
 export const editCategory = `
-      mutation EditCategory( $_id:String,$title:String!,$description:String!,$img_menu:String){
+      mutation EditCategory( $_id:ID,$title:String!,$description:String!,$img_menu:String){
         editCategory(category:{_id:$_id,title:$title,description:$description,img_menu:$img_menu}){_id}
       }`
 
@@ -322,13 +322,6 @@ export const saveEmailConfiguration = `mutation SaveEmailConfiguration($configur
     enable_email
   }
 }`
-export const saveMongoConfiguration = `mutation SaveMongoConfiguration($configurationInput:MongoConfigurationInput!){
-  saveMongoConfiguration(configurationInput:$configurationInput){
-    _id
-    mongodb_url
-  }
-}`
-
 export const savePaypalConfiguration = `mutation SavePaypalConfiguration($configurationInput:PaypalConfigurationInput!){
   savePaypalConfiguration(configurationInput:$configurationInput){
     _id
@@ -485,7 +478,7 @@ export const updatePaymentStatus = `mutation UpdatePaymentStatus($id:String!,$st
 }
 `
 
-export const createOptions = `mutation CreateOptions($optionInput:[OptionInput]){
+export const createOptions = `mutation CreateOptions($optionInput:[OptionInput!]){
   createOptions(optionInput:$optionInput){
     _id
     title
@@ -514,7 +507,7 @@ export const options = `query AllOptions($page:Int){
 }
 `
 
-export const createAddons = `mutation CreateAddons($addonInput:[AddonInput]){
+export const createAddons = `mutation CreateAddons($addonInput:[AddonInput!]){
   createAddons(addonInput:$addonInput){
     _id
     title
@@ -529,7 +522,7 @@ export const createAddons = `mutation CreateAddons($addonInput:[AddonInput]){
     quantity_maximum
   }
 }`
-export const editAddon = `mutation editAddon($addonInput:AddonInput){
+export const editAddon = `mutation editAddon($addonInput:AddonInput!){
   editAddon(addonInput:$addonInput){
     _id
     title
@@ -585,7 +578,7 @@ export const deleteOption = `
       mutation DeleteOption($id:String!){
         deleteOption(id:$id)
       }`
-export const editOption = `mutation editOption($optionInput:OptionInput){
+export const editOption = `mutation editOption($optionInput:OptionInput!){
   editOption(optionInput:$optionInput){
           _id
           title
@@ -620,5 +613,43 @@ export const getCoupons = `query Coupons{
           code
           discount
           enabled
+        }
+      }`
+
+// --- Platform owner (superadmin) -------------------------------------------- #
+// The superadmin is not bound to a restaurant, so these are the only operations
+// that work without a tenant: listing tenants and provisioning their directors.
+
+export const restaurants = `query Restaurants{
+        restaurants {
+          _id
+          name
+          slug
+          is_active
+        }
+      }`
+
+export const createRestaurant = `mutation CreateRestaurant($name:String!,$slug:String!,$directorEmail:String!,$directorPassword:String!,$directorName:String){
+        createRestaurant(name:$name,slug:$slug,directorEmail:$directorEmail,directorPassword:$directorPassword,directorName:$directorName){
+          _id
+          name
+          slug
+          is_active
+        }
+      }`
+
+export const createRestaurantDirector = `mutation CreateRestaurantDirector($restaurantId:String!,$email:String!,$password:String!,$name:String){
+        createRestaurantDirector(restaurantId:$restaurantId,email:$email,password:$password,name:$name){
+          _id
+          email
+          name
+          role
+        }
+      }`
+
+export const setRestaurantActive = `mutation SetRestaurantActive($id:String!,$isActive:Boolean!){
+        setRestaurantActive(id:$id,isActive:$isActive){
+          _id
+          is_active
         }
       }`

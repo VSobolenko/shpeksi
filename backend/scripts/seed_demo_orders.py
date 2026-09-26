@@ -39,6 +39,10 @@ if load_dotenv:
 GRAPHQL_URL = "http://localhost:8000/graphql"
 ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "admin@example.com")
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "change-me")
+# The demo tenant's director owns the catalog and its orders.
+DEMO_RESTAURANT_SLUG = os.environ.get("DEMO_RESTAURANT_SLUG", "pikupo-demo")
+DIRECTOR_EMAIL = os.environ.get("DEMO_DIRECTOR_EMAIL", "director@pikupo.com")
+DIRECTOR_PASSWORD = os.environ.get("DEMO_DIRECTOR_PASSWORD", "Director-Demo!9k3Zq7")
 CUSTOMER_EMAIL = "customer@example.com"
 CUSTOMER_PASSWORD = "password123"
 
@@ -62,10 +66,12 @@ class SeedError(Exception):
     pass
 
 
-def gql(client: httpx.Client, query: str, variables=None, token=None) -> dict:
+def gql(client: httpx.Client, query: str, variables=None, token=None, restaurant=None) -> dict:
     headers = {"Content-Type": "application/json"}
     if token:
         headers["Authorization"] = f"Bearer {token}"
+    if restaurant:
+        headers["x-restaurant-id"] = restaurant
     resp = client.post(
         GRAPHQL_URL, json={"query": query, "variables": variables}, headers=headers
     )
@@ -111,7 +117,7 @@ def clear_orders() -> None:
     log(f"cleared orders (deleted {deleted[-1] if deleted else '?'})")
 
 
-def fetch_foods(client: httpx.Client) -> list:
+def fetch_foods(client: httpx.Client, restaurant: str) -> list:
     data = gql(
         client,
         """
@@ -123,6 +129,7 @@ def fetch_foods(client: httpx.Client) -> list:
           }
         }
         """,
+        restaurant=restaurant,
     )
     foods = [f for f in data.get("foods", []) if f.get("variations")]
     if not foods:
@@ -146,6 +153,7 @@ def run(clear: bool) -> None:
             }
             """,
             {"email": CUSTOMER_EMAIL, "password": CUSTOMER_PASSWORD},
+            restaurant=DEMO_RESTAURANT_SLUG,
         )
         customer_token = data["login"]["token"]
         log("customer login ok")
@@ -157,12 +165,12 @@ def run(clear: bool) -> None:
               adminLogin(email: $email, password: $password) { token }
             }
             """,
-            {"email": ADMIN_EMAIL, "password": ADMIN_PASSWORD},
+            {"email": DIRECTOR_EMAIL, "password": DIRECTOR_PASSWORD},
         )
         admin_token = data["adminLogin"]["token"]
-        log("admin login ok")
+        log("director login ok")
 
-        foods = fetch_foods(client)
+        foods = fetch_foods(client, DEMO_RESTAURANT_SLUG)
         log(f"catalog has {len(foods)} foods with variations")
 
         placed = 0

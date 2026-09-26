@@ -12,11 +12,24 @@ import Coupons from './views/Coupons'
 import Dashboard from './views/Dashboard'
 import Notifications from './views/Notifications'
 import Staff from './views/Staff'
+import Restaurants from './views/Restaurants'
 
 const DIRECTOR = ['director', 'admin']
 const ALL = ['director', 'admin', 'staff']
+// The platform owner is not tied to a restaurant, so tenant management is the
+// only screen their role can use — and the only one that works for them.
+const SUPERADMIN = ['superadmin']
 
 var routes = [
+  {
+    path: '/restaurants',
+    name: 'Restaurants',
+    icon: 'ni ni-shop text-orange',
+    component: Restaurants,
+    layout: '/admin',
+    appearInSidebar: true,
+    roles: SUPERADMIN
+  },
   {
     path: '/dashboard',
     name: 'Dashboard',
@@ -65,7 +78,7 @@ var routes = [
   {
     path: '/staff',
     name: 'Staff',
-    icon: 'ni ni-badge-55 text-orange',
+    icon: 'ni ni-badge text-orange',
     component: Staff,
     layout: '/admin',
     appearInSidebar: true,

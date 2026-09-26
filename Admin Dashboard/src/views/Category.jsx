@@ -28,7 +28,12 @@ const GET_FOODS = gql`
 const Category = props => {
   const [editModal, setEditModal] = useState(false)
   const [category, setCategory] = useState(null)
-  const [isOpen, setIsOpen] = useState(false)
+  const [alert, setAlert] = useState(null)
+
+  const showAlert = (message, severity) => {
+    setAlert({ message, severity })
+    setTimeout(() => setAlert(null), 2500)
+  }
 
   const toggleModal = category => {
     setEditModal(!editModal)
@@ -92,7 +97,10 @@ const Category = props => {
         &nbsp;&nbsp;
         <Mutation
           mutation={DELETE_CATEGORY}
-          refetchQueries={[{ query: GET_CATEGORIES }, { query: GET_FOODS }]}>
+          refetchQueries={[
+            { query: GET_CATEGORIES, variables: { page: 0 } },
+            { query: GET_FOODS, variables: { page: 0 } }
+          ]}>
           {(deleteCategory, { loading: deleteLoading }) => {
             if (deleteLoading) {
               return (
@@ -111,13 +119,26 @@ const Category = props => {
                 color="danger"
                 onClick={e => {
                   e.preventDefault()
-                  // deleteCategory({ variables: { id: row._id } })
-                  setIsOpen(true)
-                  setTimeout(() => {
-                    setIsOpen(false)
-                  }, 2000)
+                  if (!window.confirm(`${t('Delete')} "${row.title}"? ${t('This cannot be undone.')}`)) {
+                    return
+                  }
+                  deleteCategory({ variables: { id: row._id } })
+                    .then(() => showAlert(t('Deleted'), 'success'))
+                    .catch(err => {
+                      // The API refuses to delete a category that still has
+                      // foods; show why instead of a generic failure.
+                      const code = err?.graphQLErrors?.[0]?.extensions?.code
+                      showAlert(
+                        code === 'CATEGORY_NOT_EMPTY'
+                          ? t(
+                            'This category still has items. Remove or move them first.'
+                          )
+                          : t('Could not delete. Please try again.'),
+                        'danger'
+                      )
+                    })
                 }}>
-                {'Delete'}
+                {t('Delete')}
               </Badge>
             )
           }}
@@ -136,11 +157,8 @@ const Category = props => {
         <Row className="mt-5">
           <div className="col">
             <Card className="shadow">
-              {isOpen && (
-                <Alert
-                  message="Delete feature will available after purchasing product"
-                  severity="warning"
-                />
+              {alert && (
+                <Alert message={alert.message} severity={alert.severity} />
               )}
               <Query query={GET_CATEGORIES} variables={{ page: 0 }}>
                 {({ loading, error, data }) => {

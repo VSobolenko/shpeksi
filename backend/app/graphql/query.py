@@ -5,9 +5,15 @@ from typing import List, Optional
 
 import strawberry
 from beanie import PydanticObjectId
-from beanie.operators import In
 
-from app.graphql.context import require_admin, require_director, require_user
+from app.graphql.context import (
+    ensure_tenant_access,
+    require_admin,
+    require_director,
+    require_restaurant,
+    require_superadmin,
+    require_user,
+)
 from app.graphql.types import (
     AddonType,
     AdminStaffType,
@@ -24,6 +30,7 @@ from app.graphql.types import (
     FoodType,
     OptionType,
     OrderType,
+    RestaurantType,
     ReviewType,
     UserType,
     build_addon,
@@ -32,10 +39,22 @@ from app.graphql.types import (
     build_food,
     build_option,
     build_order,
+    build_restaurant,
     build_user,
     iso,
 )
-from app.models import Addon, AdminAccount, Category, Configuration, Coupon, Food, Option, Order, User
+from app.models import (
+    Addon,
+    AdminAccount,
+    Category,
+    Coupon,
+    Food,
+    Option,
+    Order,
+    Restaurant,
+    User,
+)
+from app.services.configuration import get_or_create_config
 from app.services.orders import ORDER_STATUSES, PAYMENT_STATUSES
 
 
@@ -46,6 +65,23 @@ def _parse_date(value: Optional[str]) -> Optional[datetime]:
         return datetime.fromisoformat(value.replace("Z", "+00:00"))
     except ValueError:
         return None
+
+
+def _restaurant_oid(info) -> PydanticObjectId:
+    """Active restaurant id as an ObjectId (raises RESTAURANT_REQUIRED)."""
+    return PydanticObjectId(require_restaurant(info))
+
+
+def _admin_restaurant_oid(info) -> PydanticObjectId:
+    """Restaurant id for a dashboard caller (enforces an admin role first)."""
+    require_admin(info)
+    return _restaurant_oid(info)
+
+
+def _director_restaurant_oid(info) -> PydanticObjectId:
+    """Restaurant id for a director caller (enforces the director role first)."""
+    require_director(info)
+    return _restaurant_oid(info)
 
 
 def _food_price_range(food: Food) -> list[float]:
@@ -66,8 +102,12 @@ def _filter_orders_by_date(
     return orders
 
 
-async def _orders_in_range(starting_date: Optional[str], ending_date: Optional[str]) -> List[Order]:
-    orders = await Order.find_all().to_list()
+async def _orders_in_range(
+    restaurant_id: PydanticObjectId,
+    starting_date: Optional[str],
+    ending_date: Optional[str],
+) -> List[Order]:
+    orders = await Order.find({"restaurant": restaurant_id}).to_list()
     return _filter_orders_by_date(
         orders, _parse_date(starting_date), _parse_date(ending_date)
     )
@@ -93,23 +133,29 @@ class Query:
     # --- Catalog ---------------------------------------------------------- #
 
     @strawberry.field
-    async def categories(self) -> List[CategoryType]:
-        categories = await Category.find_all().to_list()
+    async def categories(self, info: strawberry.Info) -> List[CategoryType]:
+        restaurant = _restaurant_oid(info)
+        categories = await Category.find({"restaurant": restaurant}).to_list()
         return [await build_category(c) for c in categories]
 
     @strawberry.field
-    async def allCategories(self, page: Optional[int] = None) -> List[CategoryType]:
-        categories = await Category.find_all().to_list()
+    async def allCategories(
+        self, info: strawberry.Info, page: Optional[int] = None
+    ) -> List[CategoryType]:
+        restaurant = _restaurant_oid(info)
+        categories = await Category.find({"restaurant": restaurant}).to_list()
         return [await build_category(c) for c in categories]
 
     @strawberry.field
-    async def foods(self, page: Optional[int] = None) -> List[FoodType]:
-        foods = await Food.find_all().to_list()
+    async def foods(self, info: strawberry.Info, page: Optional[int] = None) -> List[FoodType]:
+        restaurant = _restaurant_oid(info)
+        foods = await Food.find({"restaurant": restaurant}).to_list()
         return [await build_food(f) for f in foods]
 
     @strawberry.field
     async def foodByCategory(
         self,
+        info: strawberry.Info,
         category: str,
         onSale: Optional[bool] = None,
         inStock: Optional[bool] = None,
@@ -117,7 +163,10 @@ class Query:
         max: Optional[float] = None,
         search: Optional[str] = None,
     ) -> List[FoodType]:
-        foods = await Food.find(Food.category == PydanticObjectId(category)).to_list()
+        restaurant = _restaurant_oid(info)
+        foods = await Food.find(
+            {"category": PydanticObjectId(category), "restaurant": restaurant}
+        ).to_list()
         result: list[FoodType] = []
         for food in foods:
             prices = _food_price_range(food)
@@ -135,43 +184,50 @@ class Query:
         return result
 
     @strawberry.field
-    async def foodByIds(self, ids: List[str]) -> List[FoodType]:
-        foods = await Food.find(In(Food.id, [PydanticObjectId(i) for i in ids])).to_list()
+    async def foodByIds(self, info: strawberry.Info, ids: List[str]) -> List[FoodType]:
+        restaurant = _restaurant_oid(info)
+        foods = await Food.find(
+            {"_id": {"$in": [PydanticObjectId(i) for i in ids]}, "restaurant": restaurant}
+        ).to_list()
         return [await build_food(f) for f in foods]
 
     @strawberry.field
-    async def addons(self) -> List[AddonType]:
-        addons = await Addon.find_all().to_list()
+    async def addons(self, info: strawberry.Info) -> List[AddonType]:
+        restaurant = _restaurant_oid(info)
+        addons = await Addon.find({"restaurant": restaurant}).to_list()
         return [await build_addon(a) for a in addons]
 
     @strawberry.field
-    async def allAddons(self, page: Optional[int] = None) -> List[AddonType]:
-        addons = await Addon.find_all().to_list()
+    async def allAddons(self, info: strawberry.Info, page: Optional[int] = None) -> List[AddonType]:
+        restaurant = _restaurant_oid(info)
+        addons = await Addon.find({"restaurant": restaurant}).to_list()
         return [await build_addon(a) for a in addons]
 
     @strawberry.field
-    async def options(self) -> List[OptionType]:
-        options = await Option.find_all().to_list()
+    async def options(self, info: strawberry.Info) -> List[OptionType]:
+        restaurant = _restaurant_oid(info)
+        options = await Option.find({"restaurant": restaurant}).to_list()
         return [build_option(o) for o in options]
 
     @strawberry.field
-    async def allOptions(self, page: Optional[int] = None) -> List[OptionType]:
-        options = await Option.find_all().to_list()
+    async def allOptions(self, info: strawberry.Info, page: Optional[int] = None) -> List[OptionType]:
+        restaurant = _restaurant_oid(info)
+        options = await Option.find({"restaurant": restaurant}).to_list()
         return [build_option(o) for o in options]
 
     @strawberry.field
-    async def coupons(self) -> List[CouponType]:
-        coupons = await Coupon.find_all().to_list()
+    async def coupons(self, info: strawberry.Info) -> List[CouponType]:
+        restaurant = _restaurant_oid(info)
+        coupons = await Coupon.find({"restaurant": restaurant}).to_list()
         return [
             CouponType(id=str(c.id), code=c.code, discount=c.discount, enabled=c.enabled)
             for c in coupons
         ]
 
     @strawberry.field
-    async def configuration(self) -> ConfigurationType:
-        config = await Configuration.find_one({})
-        if not config:
-            config = await Configuration().insert()
+    async def configuration(self, info: strawberry.Info) -> ConfigurationType:
+        restaurant = _restaurant_oid(info)
+        config = await get_or_create_config(restaurant)
         return build_configuration(config)
 
     # --- Auth / profile --------------------------------------------------- #
@@ -182,6 +238,7 @@ class Query:
         user = await User.get(user_id)
         if not user:
             raise Exception("User not found")
+        ensure_tenant_access(info, user)
         return build_user(user)
 
     # --- Orders ----------------------------------------------------------- #
@@ -190,15 +247,21 @@ class Query:
     async def order(self, info: strawberry.Info, id: str) -> OrderType:
         user_id = require_user(info)
         order = await Order.get(id)
-        if not order or str(order.user) != str(user_id):
+        if not order:
+            raise Exception("Order not found")
+        ensure_tenant_access(info, order)
+        if str(order.user) != str(user_id):
             raise Exception("Order not found")
         return await build_order(order)
 
     @strawberry.field
     async def orders(self, info: strawberry.Info, offset: Optional[int] = 0) -> List[OrderType]:
         user_id = require_user(info)
+        restaurant = _restaurant_oid(info)
         orders = (
-            await Order.find(Order.user == PydanticObjectId(user_id))
+            await Order.find(
+                {"user": PydanticObjectId(user_id), "restaurant": restaurant}
+            )
             .sort("-createdAt")
             .skip(offset or 0)
             .limit(10)
@@ -210,9 +273,10 @@ class Query:
     async def allOrders(
         self, info: strawberry.Info, page: Optional[int] = None, rows: Optional[int] = None, search: Optional[str] = None
     ) -> List[OrderType]:
-        require_admin(info)
-        query = Order.find_all()
-        orders = await query.sort("-createdAt").to_list()
+        restaurant = _admin_restaurant_oid(info)
+        orders = (
+            await Order.find({"restaurant": restaurant}).sort("-createdAt").to_list()
+        )
         if search:
             term = search.lower()
             filtered = []
@@ -229,19 +293,23 @@ class Query:
 
     @strawberry.field
     async def orderCount(self, info: strawberry.Info) -> int:
-        require_admin(info)
-        return await Order.find_all().count()
+        restaurant = _admin_restaurant_oid(info)
+        return await Order.find({"restaurant": restaurant}).count()
 
     @strawberry.field
     async def users(self, info: strawberry.Info, page: Optional[int] = None) -> List[UserType]:
-        require_admin(info)
-        users = await User.find_all().to_list()
+        restaurant = _admin_restaurant_oid(info)
+        users = await User.find({"restaurant": restaurant}).to_list()
         return [build_user(u) for u in users]
 
     @strawberry.field
     async def allReviews(self, info: strawberry.Info, offset: Optional[int] = 0) -> List[ReviewType]:
-        require_admin(info)
-        orders = await Order.find(Order.review != None).sort("-updatedAt").to_list()  # noqa: E711
+        restaurant = _admin_restaurant_oid(info)
+        orders = (
+            await Order.find({"restaurant": restaurant, "review": {"$ne": None}})
+            .sort("-updatedAt")
+            .to_list()
+        )
         reviews: list[ReviewType] = []
         for order in orders:
             order_obj = await build_order(order, include_review=False)
@@ -271,20 +339,28 @@ class Query:
         require_admin(info)
         return list(PAYMENT_STATUSES)
 
+    # --- Tenants (superadmin) --------------------------------------------- #
+
+    @strawberry.field
+    async def restaurants(self, info: strawberry.Info) -> List[RestaurantType]:
+        require_superadmin(info)
+        restaurants = await Restaurant.find_all().sort("name").to_list()
+        return [build_restaurant(r) for r in restaurants]
+
     # --- Dashboard -------------------------------------------------------- #
 
     @strawberry.field
     async def getDashboardTotal(
         self, info: strawberry.Info, starting_date: Optional[str] = None, ending_date: Optional[str] = None
     ) -> DashboardTotal:
-        require_admin(info)
-        orders = await _orders_in_range(starting_date, ending_date)
+        restaurant = _admin_restaurant_oid(info)
+        orders = await _orders_in_range(restaurant, starting_date, ending_date)
         total_orders = len(orders)
         total_sales = round(sum(o.order_amount for o in orders if o.payment_status == "PAID"), 2)
         ratings = [o.review.rating for o in orders if o.review]
         total_ratings = len(ratings)
         avg_ratings = round(sum(ratings) / total_ratings, 2) if total_ratings else 0.0
-        total_users = await User.find_all().count()
+        total_users = await User.find({"restaurant": restaurant}).count()
         return DashboardTotal(
             total_orders=total_orders,
             total_users=total_users,
@@ -297,8 +373,8 @@ class Query:
     async def getDashboardSales(
         self, info: strawberry.Info, starting_date: Optional[str] = None, ending_date: Optional[str] = None
     ) -> DashboardSales:
-        require_admin(info)
-        orders = await _orders_in_range(starting_date, ending_date)
+        restaurant = _admin_restaurant_oid(info)
+        orders = await _orders_in_range(restaurant, starting_date, ending_date)
         daily = await _daily(orders, with_amount=True)
         return DashboardSales(
             orders=[DailySale(day=d.day, amount=d.amount) for d in daily]
@@ -308,28 +384,28 @@ class Query:
     async def getDashboardOrders(
         self, info: strawberry.Info, starting_date: Optional[str] = None, ending_date: Optional[str] = None
     ) -> DashboardOrders:
-        require_admin(info)
-        orders = await _orders_in_range(starting_date, ending_date)
+        restaurant = _admin_restaurant_oid(info)
+        orders = await _orders_in_range(restaurant, starting_date, ending_date)
         return DashboardOrders(orders=await _daily(orders, with_amount=False))
 
     @strawberry.field
     async def getDashboardData(
         self, info: strawberry.Info, starting_date: Optional[str] = None, ending_date: Optional[str] = None
     ) -> DashboardData:
-        require_admin(info)
-        orders = await _orders_in_range(starting_date, ending_date)
+        restaurant = _admin_restaurant_oid(info)
+        orders = await _orders_in_range(restaurant, starting_date, ending_date)
         total_sales = round(sum(o.order_amount for o in orders if o.payment_status == "PAID"), 2)
         return DashboardData(
             total_orders=len(orders),
-            total_users=await User.find_all().count(),
+            total_users=await User.find({"restaurant": restaurant}).count(),
             total_sales=total_sales,
             orders=await _daily(orders, with_amount=True),
         )
 
     @strawberry.field
     async def adminStaffs(self, info: strawberry.Info) -> List[AdminStaffType]:
-        require_director(info)
-        rows = await AdminAccount.find_all().to_list()
+        restaurant = _director_restaurant_oid(info)
+        rows = await AdminAccount.find({"restaurant": restaurant}).to_list()
         return [
             AdminStaffType(
                 id=strawberry.ID(str(a.id)),

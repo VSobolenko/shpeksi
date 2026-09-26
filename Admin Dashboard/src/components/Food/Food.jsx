@@ -80,8 +80,10 @@ function Food(props) {
   const [imgMenu, imgMenuSetter] = useState(
     props.food ? props.food.img_url : ''
   )
+  // The category may have been deleted while this food still referenced it, in
+  // which case `props.food.category` is null and the edit form would crash.
   const [category, categorySetter] = useState(
-    props.food ? props.food.category._id : ''
+    props.food && props.food.category ? props.food.category._id : ''
   )
   const [mainError, errorSetter] = useState('')
   const [success, successSetter] = useState('')

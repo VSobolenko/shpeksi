@@ -459,7 +459,9 @@ function Order(props) {
                       id="input-name"
                       type="text"
                       disabled={true}
-                      defaultValue={order.user.name}
+                      // The customer account can be gone while the order stays
+                      // (deleted sign-up), and `order.user` is then null.
+                      defaultValue={order.user ? order.user.name : ''}
                     />
                   </FormGroup>
                 </Col>
@@ -473,7 +475,7 @@ function Order(props) {
                       id="input-phone"
                       type="text"
                       disabled={true}
-                      defaultValue={order.user.phone}
+                      defaultValue={order.user ? order.user.phone : ''}
                     />
                   </FormGroup>
                 </Col>
@@ -487,7 +489,7 @@ function Order(props) {
                       id="input-email"
                       type="text"
                       disabled={true}
-                      defaultValue={order.user.email}
+                      defaultValue={order.user ? order.user.email : ''}
                     />
                   </FormGroup>
                 </Col>

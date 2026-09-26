@@ -30,6 +30,7 @@ class User(Document):
     addresses: List[Address] = Field(default_factory=list)
     facebookId: Optional[str] = None
     appleId: Optional[str] = None
+    restaurant: Optional[PydanticObjectId] = None
 
     class Settings:
         name = "users"

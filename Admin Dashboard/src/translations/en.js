@@ -75,7 +75,35 @@ const en = {
     'Currency Symbol': 'Currency Symbol',
     Staff: 'Staff',
     'Add Staff': 'Add Staff',
-    Role: 'Role'
+    Role: 'Role',
+    Restaurants: 'Restaurants',
+    'Add Restaurant': 'Add Restaurant',
+    Slug: 'Slug',
+    Active: 'Active',
+    Inactive: 'Inactive',
+    Activate: 'Activate',
+    Deactivate: 'Deactivate',
+    'Set director': 'Set director',
+    'Save director': 'Save director',
+    Director: 'Director',
+    'Director name': 'Director name',
+    'Director email': 'Director email',
+    'Director password': 'Director password',
+    'Restaurant created': 'Restaurant created',
+    'No restaurants yet': 'No restaurants yet',
+    'Fill in every field': 'Fill in every field',
+    Create: 'Create',
+    'Every restaurant is one mobile build. The slug below is the value baked into that build.':
+      'Every restaurant is one mobile build. The slug below is the value baked into that build.',
+    'Build the client app with RESTAURANT_SLUG set to this value.':
+      'Build the client app with RESTAURANT_SLUG set to this value.',
+    'The director account is created together with the restaurant and can change its password afterwards.':
+      'The director account is created together with the restaurant and can change its password afterwards.',
+    'This cannot be undone.': 'This cannot be undone.',
+    Deleted: 'Deleted',
+    'This category still has items. Remove or move them first.': 'This category still has items. Remove or move them first.',
+    'Could not delete. Please try again.':
+      'Could not delete. Please try again.'
   }
 }
 

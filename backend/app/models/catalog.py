@@ -10,6 +10,7 @@ class Category(Document):
     title: str
     description: Optional[str] = ""
     img_menu: Optional[str] = None
+    restaurant: Optional[PydanticObjectId] = None
 
     class Settings:
         name = "categories"
@@ -33,6 +34,7 @@ class Food(Document):
     tag: Optional[str] = None
     variations: List[Variation] = Field(default_factory=list)
     category: Optional[PydanticObjectId] = None
+    restaurant: Optional[PydanticObjectId] = None
 
     class Settings:
         name = "foods"
@@ -42,6 +44,7 @@ class Option(Document):
     title: str
     description: Optional[str] = ""
     price: float = 0.0
+    restaurant: Optional[PydanticObjectId] = None
 
     class Settings:
         name = "options"
@@ -54,6 +57,7 @@ class Addon(Document):
     quantity_maximum: int = 1
     options: List[PydanticObjectId] = Field(default_factory=list)
     is_active: bool = True
+    restaurant: Optional[PydanticObjectId] = None
 
     class Settings:
         name = "addons"

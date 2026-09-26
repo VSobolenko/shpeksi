@@ -22,9 +22,18 @@
     "title": "Vom Menü zur Abholung in drei Schritten",
     "subtitle": "Bringen Sie Ihre eigene Bestell-App in Tagen live, nicht in Monaten.",
     "steps": [
-      { "title": "Menü einrichten", "text": "Fügen Sie Gerichte, Preise und Fotos in einem einfachen Dashboard hinzu — ganz ohne technische Kenntnisse." },
-      { "title": "Bestellungen empfangen", "text": "Neue Bestellungen erscheinen sofort in Ihrem Dashboard. Annehmen, zubereiten und als bereit markieren." },
-      { "title": "Übergabe bei der Abholung", "text": "Kunden erhalten eine Benachrichtigung, wenn ihre Bestellung bereit ist, und holen sie an der Theke ab." }
+      {
+        "title": "Menü einrichten",
+        "text": "Fügen Sie Gerichte, Preise und Fotos in einem einfachen Dashboard hinzu — ganz ohne technische Kenntnisse."
+      },
+      {
+        "title": "Bestellungen empfangen",
+        "text": "Neue Bestellungen erscheinen sofort in Ihrem Dashboard. Annehmen, zubereiten und als bereit markieren."
+      },
+      {
+        "title": "Übergabe bei der Abholung",
+        "text": "Kunden erhalten eine Benachrichtigung, wenn ihre Bestellung bereit ist, und holen sie an der Theke ab."
+      }
     ]
   },
   "features": {
@@ -32,12 +41,30 @@
     "title": "Alles, was Ihr Restaurant braucht",
     "subtitle": "Eine vollständige White-Label-Bestellplattform für die Selbstabholung.",
     "items": [
-      { "title": "Ihre Marke", "text": "White-Label-App mit Ihrem Logo, Ihren Farben und Ihrem Namen — nicht mit unseren." },
-      { "title": "Menüverwaltung", "text": "Verwalten Sie Gerichte, Kategorien, Preise und Bestände in Echtzeit." },
-      { "title": "Bestellverwaltung", "text": "Nehmen Sie jede Bestellung an, verfolgen und aktualisieren Sie sie in einem Dashboard." },
-      { "title": "Push-Benachrichtigungen", "text": "Benachrichtigen Sie Kunden automatisch, wenn ihre Bestellung bereit ist." },
-      { "title": "Flexible Zahlungen", "text": "Bar, Karte und PayPal — die Wahl Ihrer Kunden." },
-      { "title": "Analysen", "text": "Sehen Sie Umsatz, Bestellungen und Top-Gerichte auf einen Blick." }
+      {
+        "title": "Ihre Marke",
+        "text": "White-Label-App mit Ihrem Logo, Ihren Farben und Ihrem Namen — nicht mit unseren."
+      },
+      {
+        "title": "Menüverwaltung",
+        "text": "Verwalten Sie Gerichte, Kategorien, Preise und Bestände in Echtzeit."
+      },
+      {
+        "title": "Bestellverwaltung",
+        "text": "Nehmen Sie jede Bestellung an, verfolgen und aktualisieren Sie sie in einem Dashboard."
+      },
+      {
+        "title": "Push-Benachrichtigungen",
+        "text": "Benachrichtigen Sie Kunden automatisch, wenn ihre Bestellung bereit ist."
+      },
+      {
+        "title": "Flexible Zahlungen",
+        "text": "Bar, Karte und PayPal — die Wahl Ihrer Kunden."
+      },
+      {
+        "title": "Analysen",
+        "text": "Sehen Sie Umsatz, Bestellungen und Top-Gerichte auf einen Blick."
+      }
     ]
   },
   "forCustomers": {
@@ -45,9 +72,18 @@
     "title": "Ein reibungsloseres Abhol-Erlebnis",
     "subtitle": "Bieten Sie Ihren Kunden einen schnellen, modernen Bestellablauf, den sie lieben werden.",
     "items": [
-      { "title": "Vorbestellen", "text": "Kunden bestellen vor ihrer Ankunft und überspringen die Schlange." },
-      { "title": "Live-Status", "text": "Sie verfolgen ihre Bestellung von der Küche bis zur Theke in Echtzeit." },
-      { "title": "Abhol-Erinnerungen", "text": "Sie erhalten eine Benachrichtigung, sobald die Bestellung abgeholt werden kann." }
+      {
+        "title": "Vorbestellen",
+        "text": "Kunden bestellen vor ihrer Ankunft und überspringen die Schlange."
+      },
+      {
+        "title": "Live-Status",
+        "text": "Sie verfolgen ihre Bestellung von der Küche bis zur Theke in Echtzeit."
+      },
+      {
+        "title": "Abhol-Erinnerungen",
+        "text": "Sie erhalten eine Benachrichtigung, sobald die Bestellung abgeholt werden kann."
+      }
     ]
   },
   "about": {
@@ -55,9 +91,18 @@
     "title": "Pikupo in Kürze",
     "text": "Pikupo ist eine White-Label-Bestellplattform für Restaurants und Cafés. Wir geben Ihnen eine eigene App für Selbstabholung — so bedienen Sie mehr Menschen, schneller, ohne den Aufwand einer eigenen Flotte.",
     "points": [
-      { "title": "Schnell startklar", "text": "Bringen Sie Ihre eigene App in Tagen live, nicht in Monaten." },
-      { "title": "Nur Abholung", "text": "Selbstabholung bedeutet keine Flotte zu verwalten und keine Provision pro Bestellung, der Sie nicht zugestimmt haben." },
-      { "title": "Ihnen gehört es", "text": "Ihre Marke, Ihre Kunden, Ihre Daten." }
+      {
+        "title": "Schnell startklar",
+        "text": "Bringen Sie Ihre eigene App in Tagen live, nicht in Monaten."
+      },
+      {
+        "title": "Nur Abholung",
+        "text": "Selbstabholung bedeutet keine Flotte zu verwalten und keine Provision pro Bestellung, der Sie nicht zugestimmt haben."
+      },
+      {
+        "title": "Ihnen gehört es",
+        "text": "Ihre Marke, Ihre Kunden, Ihre Daten."
+      }
     ]
   },
   "faq": {
@@ -65,12 +110,30 @@
     "title": "Häufig gestellte Fragen",
     "subtitle": "Antworten für Restaurantbesitzer.",
     "items": [
-      { "question": "Was ist Pikupo?", "answer": "Pikupo ist eine White-Label-Bestellplattform, die Ihrem Restaurant eine eigene App für Selbstabholung bietet." },
-      { "question": "Ist Pikupo reine Abholung?", "answer": "Ja. Es ist reine Selbstabholung — Kunden bestellen vor und holen im Laden ab." },
-      { "question": "Brauche ich technische Kenntnisse?", "answer": "Nein. Sie verwalten Menü und Bestellungen über ein einfaches Dashboard." },
-      { "question": "Kann ich meine eigene Marke verwenden?", "answer": "Ja. Die App verwendet Ihr Logo, Ihre Farben und Ihren Namen." },
-      { "question": "Welche Zahlungen werden unterstützt?", "answer": "Bar, Karte und PayPal." },
-      { "question": "Wie lange dauert die Einrichtung?", "answer": "Die meisten Restaurants sind innerhalb weniger Tage live." }
+      {
+        "question": "Was ist Pikupo?",
+        "answer": "Pikupo ist eine White-Label-Bestellplattform, die Ihrem Restaurant eine eigene App für Selbstabholung bietet."
+      },
+      {
+        "question": "Ist Pikupo reine Abholung?",
+        "answer": "Ja. Es ist reine Selbstabholung — Kunden bestellen vor und holen im Laden ab."
+      },
+      {
+        "question": "Brauche ich technische Kenntnisse?",
+        "answer": "Nein. Sie verwalten Menü und Bestellungen über ein einfaches Dashboard."
+      },
+      {
+        "question": "Kann ich meine eigene Marke verwenden?",
+        "answer": "Ja. Die App verwendet Ihr Logo, Ihre Farben und Ihren Namen."
+      },
+      {
+        "question": "Welche Zahlungen werden unterstützt?",
+        "answer": "Bar, Karte und PayPal."
+      },
+      {
+        "question": "Wie lange dauert die Einrichtung?",
+        "answer": "Die meisten Restaurants sind innerhalb weniger Tage live."
+      }
     ]
   },
   "contact": {
@@ -78,24 +141,26 @@
     "title": "Schreib uns",
     "subtitle": "Fragen oder bereit zu starten? Wir freuen uns, von Ihnen zu hören.",
     "emailLabel": "E-Mail",
-    "email": "hello@pikupo.example",
-    "phoneLabel": "Telefon",
-    "phone": "+1 (555) 010-0100",
-    "addressLabel": "Adresse",
-    "address": "123 Market Street, Suite 200"
+    "email": "hello@pikupo.example"
   },
   "getStarted": {
     "eyebrow": "Loslegen",
     "title": "Bereit, Ihre Bestell-App zu starten?",
     "subtitle": "Fordern Sie eine Demo an und sehen Sie, wie Pikupo Ihr Restaurant wachsen lässt.",
     "primaryCta": "Demo anfordern",
-    "secondaryCta": "Händler-Panel öffnen",
-    "note": "Schon Händler? Verwalten Sie Menü und Bestellungen im Panel."
+    "secondaryCta": "Frage stellen",
+    "note": "Schreiben Sie uns — wir melden uns mit Demo und Preisen."
   },
   "footer": {
     "tagline": "Selbstabholung für Restaurants.",
     "navLabel": "Navigation",
     "languageLabel": "Sprache",
     "rights": "Alle Rechte vorbehalten."
+  },
+  "mail": {
+    "demoSubject": "Pikupo-Demo anfragen",
+    "demoBody": "Hallo Pikupo-Team,\n\nich möchte eine Demo von Pikupo für mein Restaurant sehen.\n\nRestaurant: \nStadt: \nTelefon: \n\nVielen Dank!",
+    "contactSubject": "Frage zu Pikupo",
+    "contactBody": "Hallo Pikupo-Team,\n\nich habe eine Frage zu Pikupo:\n\n"
   }
 }

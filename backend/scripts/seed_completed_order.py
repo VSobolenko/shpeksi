@@ -31,6 +31,10 @@ if load_dotenv:
 GRAPHQL_URL = "http://localhost:8000/graphql"
 ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "admin@example.com")
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "change-me")
+# The demo tenant's director owns the catalog and its orders.
+DEMO_RESTAURANT_SLUG = os.environ.get("DEMO_RESTAURANT_SLUG", "pikupo-demo")
+DIRECTOR_EMAIL = os.environ.get("DEMO_DIRECTOR_EMAIL", "director@pikupo.com")
+DIRECTOR_PASSWORD = os.environ.get("DEMO_DIRECTOR_PASSWORD", "Director-Demo!9k3Zq7")
 CUSTOMER_EMAIL = "customer@example.com"
 CUSTOMER_PASSWORD = "password123"
 
@@ -39,10 +43,12 @@ class SeedError(Exception):
     pass
 
 
-def gql(client: httpx.Client, query: str, variables=None, token=None) -> dict:
+def gql(client: httpx.Client, query: str, variables=None, token=None, restaurant=None) -> dict:
     headers = {"Content-Type": "application/json"}
     if token:
         headers["Authorization"] = f"Bearer {token}"
+    if restaurant:
+        headers["x-restaurant-id"] = restaurant
     resp = client.post(
         GRAPHQL_URL, json={"query": query, "variables": variables}, headers=headers
     )
@@ -64,12 +70,17 @@ def run() -> None:
             }
             """,
             {"email": CUSTOMER_EMAIL, "password": CUSTOMER_PASSWORD},
+            restaurant=DEMO_RESTAURANT_SLUG,
         )
         customer_token = data["login"]["token"]
         print("[seed] customer login ok", flush=True)
 
         # 2. Pick any food with a variation
-        data = gql(client, "query { foods { _id variations { _id } } }")
+        data = gql(
+            client,
+            "query { foods { _id variations { _id } } }",
+            restaurant=DEMO_RESTAURANT_SLUG,
+        )
         foods = data.get("foods", [])
         if not foods:
             raise SeedError("no foods found - run seed_demo.py first")
@@ -108,10 +119,10 @@ def run() -> None:
               adminLogin(email: $email, password: $password) { token }
             }
             """,
-            {"email": ADMIN_EMAIL, "password": ADMIN_PASSWORD},
+            {"email": DIRECTOR_EMAIL, "password": DIRECTOR_PASSWORD},
         )
         admin_token = data["adminLogin"]["token"]
-        print("[seed] admin login ok", flush=True)
+        print("[seed] director login ok", flush=True)
 
         # 5. Advance to COMPLETED
         for status in ("ACCEPTED", "READY", "COMPLETED"):

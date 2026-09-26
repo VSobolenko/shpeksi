@@ -4,7 +4,11 @@ Creates a deterministic pickup menu (categories, foods with priced variations
 and addons/options), a fixed customer account, and a coupon. Idempotent: it
 deletes existing catalog/coupon data first so re-running yields a clean slate.
 
-Prereqs: a running backend (http://localhost:8000/graphql) and the admin
+Everything is created for one demo restaurant: the platform owner (env
+bootstrap) creates the restaurant + its director account, then that director
+seeds the catalog. Re-running finds the existing restaurant and reuses it.
+
+Prereqs: a running backend (http://localhost:8000/graphql) and the platform-owner
 bootstrap credentials (admin@example.com / change-me).
 
 Usage:
@@ -30,6 +34,12 @@ if load_dotenv:
 GRAPHQL_URL = "http://localhost:8000/graphql"
 ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "admin@example.com")
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "change-me")
+# The demo tenant and its director account.
+DEMO_RESTAURANT_SLUG = os.environ.get("DEMO_RESTAURANT_SLUG", "pikupo-demo")
+DEMO_RESTAURANT_NAME = os.environ.get("DEMO_RESTAURANT_NAME", "Pikupo Demo")
+DEMO_DIRECTOR_EMAIL = os.environ.get("DEMO_DIRECTOR_EMAIL", "director@pikupo.com")
+DEMO_DIRECTOR_PASSWORD = os.environ.get("DEMO_DIRECTOR_PASSWORD", "Director-Demo!9k3Zq7")
+DEMO_DIRECTOR_NAME = os.environ.get("DEMO_DIRECTOR_NAME", "Demo Director")
 # Public base for seeded food/category images (no trailing slash).
 MEDIA_BASE_URL = os.environ.get(
     "DEMO_MEDIA_BASE_URL", "https://78-111-89-46.sslip.io/demo-media"
@@ -153,10 +163,12 @@ class SeedError(Exception):
     pass
 
 
-def gql(client: httpx.Client, query: str, variables=None, token=None) -> dict:
+def gql(client: httpx.Client, query: str, variables=None, token=None, restaurant=None) -> dict:
     headers = {"Content-Type": "application/json"}
     if token:
         headers["Authorization"] = f"Bearer {token}"
+    if restaurant:
+        headers["x-restaurant-id"] = restaurant
     resp = client.post(
         GRAPHQL_URL, json={"query": query, "variables": variables}, headers=headers
     )
@@ -171,19 +183,103 @@ def log(msg: str) -> None:
     print(f"[seed] {msg}", flush=True)
 
 
+def login_admin(client: httpx.Client, email: str, password: str) -> str:
+    data = gql(
+        client,
+        """
+        mutation($email: String!, $password: String!) {
+          adminLogin(email: $email, password: $password) { token role }
+        }
+        """,
+        {"email": email, "password": password},
+    )
+    return data["adminLogin"]["token"]
+
+
+def ensure_restaurant(client: httpx.Client, super_token: str) -> dict:
+    """Return the demo restaurant, creating it (+ its director) when absent."""
+    data = gql(client, "query { restaurants { _id name slug } }", token=super_token)
+    existing = next(
+        (r for r in data.get("restaurants", []) if r["slug"] == DEMO_RESTAURANT_SLUG),
+        None,
+    )
+    if existing:
+        log(f"restaurant {DEMO_RESTAURANT_SLUG} already exists")
+        ensure_director(client, super_token, existing["_id"])
+        return existing
+
+    data = gql(
+        client,
+        """
+        mutation($name: String!, $slug: String!, $directorEmail: String!,
+                 $directorPassword: String!, $directorName: String) {
+          createRestaurant(
+            name: $name, slug: $slug, directorEmail: $directorEmail,
+            directorPassword: $directorPassword, directorName: $directorName
+          ) { _id name slug is_active }
+        }
+        """,
+        {
+            "name": DEMO_RESTAURANT_NAME,
+            "slug": DEMO_RESTAURANT_SLUG,
+            "directorEmail": DEMO_DIRECTOR_EMAIL,
+            "directorPassword": DEMO_DIRECTOR_PASSWORD,
+            "directorName": DEMO_DIRECTOR_NAME,
+        },
+        token=super_token,
+    )
+    restaurant = data["createRestaurant"]
+    log(f"created restaurant {restaurant['slug']} ({restaurant['_id']})")
+    return restaurant
+
+
+def ensure_director(client: httpx.Client, super_token: str, restaurant_id: str) -> None:
+    """Make sure the demo director can actually log in.
+
+    A restaurant can already exist without its director (a database restored
+    from before the tenant split, or a lost account), so re-seeding must repair
+    that instead of assuming ``createRestaurant`` already did it.
+    """
+    try:
+        login_admin(client, DEMO_DIRECTOR_EMAIL, DEMO_DIRECTOR_PASSWORD)
+        log(f"director {DEMO_DIRECTOR_EMAIL} already usable")
+        return
+    except Exception:
+        pass
+    gql(
+        client,
+        """
+        mutation($restaurantId: String!, $email: String!, $password: String!,
+                 $name: String) {
+          createRestaurantDirector(
+            restaurantId: $restaurantId, email: $email, password: $password,
+            name: $name
+          ) { _id email role }
+        }
+        """,
+        {
+            "restaurantId": restaurant_id,
+            "email": DEMO_DIRECTOR_EMAIL,
+            "password": DEMO_DIRECTOR_PASSWORD,
+            "name": DEMO_DIRECTOR_NAME,
+        },
+        token=super_token,
+    )
+    log(f"created/reset director {DEMO_DIRECTOR_EMAIL}")
+
+
 def run() -> None:
     with httpx.Client(timeout=30.0) as client:
-        data = gql(
-            client,
-            """
-            mutation($email: String!, $password: String!) {
-              adminLogin(email: $email, password: $password) { token }
-            }
-            """,
-            {"email": ADMIN_EMAIL, "password": ADMIN_PASSWORD},
+        # --- Platform owner: ensure the demo restaurant exists ------------- #
+        super_token = login_admin(client, ADMIN_EMAIL, ADMIN_PASSWORD)
+        log("superadmin login ok")
+        restaurant = ensure_restaurant(client, super_token)
+
+        # --- Director: owns the catalog/uploads for that restaurant -------- #
+        token = login_admin(
+            client, DEMO_DIRECTOR_EMAIL, DEMO_DIRECTOR_PASSWORD
         )
-        token = data["adminLogin"]["token"]
-        log("adminLogin ok")
+        log(f"director login ok ({DEMO_DIRECTOR_EMAIL})")
 
         # --- Clean slate ------------------------------------------------- #
         # Delete mutations return either an object (with `_id`) or a Boolean,
@@ -329,6 +425,7 @@ def run() -> None:
                 }
                 """,
                 {"userInput": CUSTOMER},
+                restaurant=restaurant["slug"],
             )
             log(f"created customer {CUSTOMER['email']}")
         except SeedError as exc:

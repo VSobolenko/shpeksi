@@ -1,8 +1,12 @@
-"""Configuration singleton document (business settings)."""
+"""Configuration singleton document (business settings).
+
+One document per restaurant: settings are looked up and created per tenant so
+each store keeps its own currency, payment keys and email credentials.
+"""
 
 from typing import Optional
 
-from beanie import Document
+from beanie import Document, PydanticObjectId
 
 
 class Configuration(Document):
@@ -18,6 +22,7 @@ class Configuration(Document):
     currency: str = "USD"
     currency_symbol: str = "$"
     push_token: Optional[str] = None
+    restaurant: Optional[PydanticObjectId] = None
 
     class Settings:
         name = "configurations"

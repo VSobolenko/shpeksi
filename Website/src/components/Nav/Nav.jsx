@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Logo from '../Logo/Logo.jsx'
 import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher.jsx'
+import { mailtoContact } from '../../config.js'
 import styles from './Nav.module.css'
 
 const LINKS = [
@@ -38,7 +39,14 @@ export default function Nav() {
               {t(link.key)}
             </a>
           ))}
-          <a className={styles.cta} href="#get-started" onClick={close}>
+          <a
+            className={styles.cta}
+            href={mailtoContact({
+              subject: t('mail.demoSubject'),
+              body: t('mail.demoBody')
+            })}
+            onClick={close}
+          >
             {t('nav.getStarted')}
           </a>
         </nav>

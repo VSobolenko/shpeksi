@@ -14,7 +14,7 @@ import { getMainDefinition } from '@apollo/client/utilities'
 import { persistCache } from 'apollo3-cache-persist'
 import getEnvVars from '../../environment'
 
-const { GRAPHQL_URL, WS_GRAPHQL_URL } = getEnvVars()
+const { GRAPHQL_URL, WS_GRAPHQL_URL, RESTAURANT_SLUG } = getEnvVars()
 
 const cache = new InMemoryCache({
   dataIdFromObject: object => {
@@ -27,14 +27,34 @@ const cache = new InMemoryCache({
   }
 })
 
+// The backend is multi-tenant: it resolves the restaurant from this header for
+// anything not authenticated yet (catalog, login, registration). Each
+// white-label APK is built with its own RESTAURANT_SLUG, so the value is baked
+// into the bundle at build time.
+const tenantHeaders = RESTAURANT_SLUG
+  ? { 'x-restaurant-id': RESTAURANT_SLUG }
+  : {}
+
 const httpLink = new HttpLink({
-  uri: GRAPHQL_URL
+  uri: GRAPHQL_URL,
+  headers: tenantHeaders
 })
 
 const wsLink = new WebSocketLink({
   uri: WS_GRAPHQL_URL,
   options: {
-    reconnect: true
+    reconnect: true,
+    // Subscriptions open their own connection, so the tenant — and the token
+    // once the customer is signed in — travel in the `connection_init` payload
+    // instead of headers. A function is required because when this link is
+    // built the token is not known yet.
+    connectionParams: async () => {
+      const token = await AsyncStorage.getItem('token')
+      return {
+        ...tenantHeaders,
+        authorization: token ? `Bearer ${token}` : ''
+      }
+    }
   }
 })
 
@@ -44,6 +64,7 @@ const request = async operation => {
     // get the authentication token from local storage if it exists
     // return the headers to the context so httpLink can read them
     headers: {
+      ...tenantHeaders,
       authorization: token ? `Bearer ${token}` : ''
     }
   })

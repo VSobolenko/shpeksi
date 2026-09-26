@@ -9,13 +9,22 @@ import {
   DropdownToggle,
   Navbar,
   Nav,
+  NavItem,
   Container,
-  Media
+  Media,
+  FormGroup,
+  Input
 } from 'reactstrap'
 
 function AdminNavbar(props) {
   const navigate = useNavigate()
-  const { t } = props
+  const { t, i18n } = props
+
+  const handleLanguageChange = event => {
+    localStorage.setItem('pikupo-language', event.target.value)
+    i18n.changeLanguage(event.target.value)
+  }
+
   return (
     <>
       <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">
@@ -27,6 +36,24 @@ function AdminNavbar(props) {
           </Link>
 
           <Nav className="align-items-center d-none d-md-flex" navbar>
+            <NavItem className="mr-3">
+              <FormGroup className="mb-0">
+                <Input
+                  type="select"
+                  name="language"
+                  value={localStorage.getItem('pikupo-language') || i18n.language}
+                  id="admin-language-select"
+                  onChange={handleLanguageChange}
+                  style={{ minWidth: '120px', height: '36px', paddingTop: '4px' }}>
+                  <option value="en">English</option>
+                  <option value="ru">Русский</option>
+                  <option value="de">Deutsche</option>
+                  <option value="zh">中文</option>
+                  <option value="km">ភាសាខ្មែរ</option>
+                  <option value="fr">français</option>
+                </Input>
+              </FormGroup>
+            </NavItem>
             <UncontrolledDropdown nav>
               <DropdownToggle className="pr-0" nav>
                 <Media className="align-items-center">

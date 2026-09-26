@@ -22,6 +22,7 @@ from app.models import (
     OrderItem,
     OrderOption,
     OrderVariation,
+    Restaurant,
     Review,
     StatusQueue,
     User,
@@ -132,6 +133,14 @@ class ConfigurationType:
     secret_key: str = ""
     currency: str = "USD"
     currency_symbol: str = "$"
+
+
+@strawberry.type
+class RestaurantType:
+    id: strawberry.ID = strawberry.field(name="_id")
+    name: str = ""
+    slug: str = ""
+    is_active: bool = True
 
 
 @strawberry.type
@@ -528,6 +537,18 @@ async def build_food(food: Food) -> FoodType:
     )
 
 
+def build_address(address) -> AddressType:
+    return AddressType(
+        id=str(address.id),
+        label=address.label,
+        delivery_address=address.delivery_address or "",
+        details=address.details,
+        latitude=address.latitude,
+        longitude=address.longitude,
+        selected=address.selected,
+    )
+
+
 def build_user(user: User) -> UserType:
     return UserType(
         id=str(user.id),
@@ -538,18 +559,16 @@ def build_user(user: User) -> UserType:
         notificationToken=user.notificationToken,
         is_order_notification=user.is_order_notification,
         is_offer_notification=user.is_offer_notification,
-        addresses=[
-            AddressType(
-                id=str(address.id),
-                label=address.label,
-                delivery_address=address.delivery_address or "",
-                details=address.details,
-                latitude=address.latitude,
-                longitude=address.longitude,
-                selected=address.selected,
-            )
-            for address in user.addresses
-        ],
+        addresses=[build_address(address) for address in user.addresses],
+    )
+
+
+def build_restaurant(restaurant: Restaurant) -> RestaurantType:
+    return RestaurantType(
+        id=str(restaurant.id),
+        name=restaurant.name or "",
+        slug=restaurant.slug or "",
+        is_active=restaurant.is_active,
     )
 
 

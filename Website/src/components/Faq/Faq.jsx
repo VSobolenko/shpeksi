@@ -20,7 +20,10 @@ export default function Faq() {
           {items.map((item, index) => {
             const open = openIndex === index
             return (
-              <li key={index} className={styles.item}>
+              <li
+                key={index}
+                className={open ? `${styles.item} ${styles.itemOpen}` : styles.item}
+              >
                 <button
                   type="button"
                   className={styles.question}
@@ -41,11 +44,11 @@ export default function Faq() {
                     <polyline points="6 9 12 15 18 9" />
                   </svg>
                 </button>
-                {open ? (
-                  <div className={styles.answer} role="region">
+                <div className={styles.answerWrap} role="region">
+                  <div className={styles.answer}>
                     <p>{item.answer}</p>
                   </div>
-                ) : null}
+                </div>
               </li>
             )
           })}

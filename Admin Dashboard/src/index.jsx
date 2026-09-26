@@ -22,6 +22,10 @@ import 'assets/scss/argon-dashboard-react.scss'
 import { getOrders, uploadToken } from './apollo/server'
 
 import { ws_server_url, server_url } from './config/config'
+// Side-effect import: initializes i18next with the locale bundles and picks the
+// initial language from the system locale. Without this, `t()` returns the raw
+// English keys and switching language does nothing.
+import './i18n'
 import App from './app.jsx'
 const GET_ORDERS = gql`
   ${getOrders}
@@ -47,7 +51,19 @@ const httpLink = new HttpLink({
 const wsLink = new WebSocketLink({
   uri: `${ws_server_url}graphql`,
   options: {
-    reconnect: true
+    reconnect: true,
+    // The dashboard is one build serving every restaurant, so the websocket
+    // cannot rely on a build-time slug. The signed-in director's token carries
+    // the restaurant; subscriptions send it in the `connection_init` payload,
+    // which is why this is a function — the token does not exist at module load.
+    connectionParams: () => {
+      const data = localStorage.getItem('user-pikupo')
+      let token = null
+      if (data) {
+        token = JSON.parse(data).token
+      }
+      return token ? { authorization: `Bearer ${token}` } : {}
+    }
   }
 })
 
@@ -106,7 +122,7 @@ if (firebaseApiKey) {
   const firebaseApp = initializeApp(firebaseConfig)
   const messaging = getMessaging(firebaseApp)
 
-  const registerPushToken = async () => {
+  const registerPushToken = async() => {
     try {
       const currentToken = await getToken(messaging, {
         vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY
@@ -123,14 +139,14 @@ if (firebaseApiKey) {
   }
   registerPushToken()
 
-  onMessage(messaging, function (payload) {
+  onMessage(messaging, function(payload) {
     var notificationTitle = 'New Order on Pikupo'
     var notificationOptions = {
       body: payload.data.orderid,
       icon: '/favicon.png'
     }
     const nt = new Notification(notificationTitle, notificationOptions)
-    nt.onclick = function (event) {
+    nt.onclick = function(event) {
       event.preventDefault()
       window.open('/')
       nt.close()

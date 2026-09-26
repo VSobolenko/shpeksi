@@ -21,11 +21,16 @@ def verify_password(password: str, hashed: str | None) -> bool:
         return False
 
 
-def create_access_token(subject: str, role: str) -> str:
+def create_access_token(subject: str, role: str, restaurant_id: str | None = None) -> str:
     expire = datetime.now(timezone.utc) + timedelta(
         minutes=settings.access_token_expire_minutes
     )
-    payload = {"sub": subject, "role": role, "exp": expire}
+    payload = {
+        "sub": subject,
+        "role": role,
+        "restaurant": restaurant_id,
+        "exp": expire,
+    }
     return jwt.encode(payload, settings.jwt_secret, algorithm=settings.jwt_algorithm)
 
 

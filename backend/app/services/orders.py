@@ -19,6 +19,7 @@ from app.models import (
     Review,
     StatusQueue,
 )
+from app.services.configuration import get_or_create_config
 
 ORDER_STATUSES = ("PENDING", "ACCEPTED", "READY", "COMPLETED", "CANCELLED")
 PAYMENT_STATUSES = ("PENDING", "PAID")
@@ -36,13 +37,24 @@ async def generate_order_id(prefix: str) -> str:
     return f"{prefix}-{secrets.token_hex(4).upper()}"
 
 
-async def build_order_items(order_input: list[dict]) -> list[OrderItem]:
-    """Resolve the submitted items into immutable snapshots stored on the order."""
+async def build_order_items(
+    order_input: list[dict], restaurant_id=None
+) -> list[OrderItem]:
+    """Resolve the submitted items into immutable snapshots stored on the order.
+
+    When ``restaurant_id`` is given every referenced food/addon/option must
+    belong to that restaurant, so a caller cannot order another tenant's menu.
+    """
+    restaurant = PydanticObjectId(str(restaurant_id)) if restaurant_id else None
     items: list[OrderItem] = []
     for entry in order_input:
         food = None
         if entry.get("food"):
-            food = await Food.get(PydanticObjectId(entry["food"]))
+            food_id = PydanticObjectId(entry["food"])
+            if restaurant is not None:
+                food = await Food.find_one({"_id": food_id, "restaurant": restaurant})
+            else:
+                food = await Food.get(food_id)
 
         variation_snapshot = None
         if entry.get("variation") and food:
@@ -55,12 +67,22 @@ async def build_order_items(order_input: list[dict]) -> list[OrderItem]:
 
         addon_snapshots: list[OrderAddon] = []
         for raw_addon in entry.get("addons") or []:
-            addon = await Addon.get(PydanticObjectId(raw_addon["_id"]))
+            addon_id = PydanticObjectId(raw_addon["_id"])
+            if restaurant is not None:
+                addon = await Addon.find_one({"_id": addon_id, "restaurant": restaurant})
+            else:
+                addon = await Addon.get(addon_id)
             if not addon:
                 continue
             options: list[OrderOption] = []
             for option_id in raw_addon.get("options") or []:
-                option = await Option.get(PydanticObjectId(option_id))
+                option_oid = PydanticObjectId(option_id)
+                if restaurant is not None:
+                    option = await Option.find_one(
+                        {"_id": option_oid, "restaurant": restaurant}
+                    )
+                else:
+                    option = await Option.get(option_oid)
                 if option:
                     options.append(
                         OrderOption(
@@ -107,18 +129,23 @@ async def place_order(
     order_input: list[dict],
     payment_method: str,
     coupon_code: str | None = None,
+    restaurant_id=None,
 ) -> Order:
-    config = await Configuration.find_one({})
+    if restaurant_id:
+        config = await get_or_create_config(restaurant_id)
+    else:
+        config = await Configuration.find_one({})
     prefix = (config.order_id_prefix or "PKP") if config else "PKP"
 
-    items = await build_order_items(order_input)
+    items = await build_order_items(order_input, restaurant_id)
     subtotal = compute_subtotal(items)
 
     discount_percent = 0.0
     if coupon_code:
-        coupon = await Coupon.find_one(
-            Coupon.code == coupon_code, Coupon.enabled == True  # noqa: E712
-        )
+        coupon_query = {"code": coupon_code, "enabled": True}
+        if restaurant_id:
+            coupon_query["restaurant"] = PydanticObjectId(str(restaurant_id))
+        coupon = await Coupon.find_one(coupon_query)
         if coupon:
             discount_percent = coupon.discount or 0.0
 
@@ -138,6 +165,7 @@ async def place_order(
         review=Review(rating=0, createdAt=now, updatedAt=now),
         createdAt=now,
         updatedAt=now,
+        restaurant=PydanticObjectId(str(restaurant_id)) if restaurant_id else None,
     )
     await order.insert()
     return order

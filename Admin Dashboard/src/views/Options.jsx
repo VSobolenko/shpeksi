@@ -24,7 +24,12 @@ const DELETE_OPTION = gql`
 const Option = props => {
   const [editModal, setEditModal] = useState(false)
   const [option, setOption] = useState(null)
-  const [isOpen, setIsOpen] = useState(false)
+  const [alert, setAlert] = useState(null)
+
+  const showAlert = (message, severity) => {
+    setAlert({ message, severity })
+    setTimeout(() => setAlert(null), 2500)
+  }
 
   const toggleModal = option => {
     setEditModal(!editModal)
@@ -82,8 +87,7 @@ const Option = props => {
         &nbsp;&nbsp;
         <Mutation
           mutation={DELETE_OPTION}
-          refetchQueries={[{ query: GET_OPTIONS }]}
-          update={update}>
+          refetchQueries={[{ query: GET_OPTIONS, variables: { page: 0 } }]}>
           {(deleteOption, { loading: deleteLoading }) => {
             if (deleteLoading) {
               return (
@@ -102,13 +106,14 @@ const Option = props => {
                 color="danger"
                 onClick={e => {
                   e.preventDefault()
-                  // deleteOption({ variables: { id: row._id } })
-                  setIsOpen(true)
-                  setTimeout(() => {
-                    setIsOpen(false)
-                  }, 2000)
+                  if (!window.confirm(`${t('Delete')} "${row.title}"? ${t('This cannot be undone.')}`)) {
+                    return
+                  }
+                  deleteOption({ variables: { id: row._id } })
+                    .then(() => showAlert(t('Deleted'), 'success'))
+                    .catch(() => showAlert(t('Could not delete. Please try again.'), 'danger'))
                 }}>
-                {'Delete'}
+                {t('Delete')}
               </Badge>
             )
           }}
@@ -117,35 +122,20 @@ const Option = props => {
     )
   }
 
-  const update = (proxy, { data: { deleteOption } }) => {
-    try {
-      if (deleteOption) {
-        const data = proxy.readQuery({ query: GET_OPTIONS })
-        data.options = data.options.filter(
-          option => option._id !== deleteOption
-        )
-        proxy.writeQuery({ query: GET_OPTIONS, data })
-      }
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
   const { t } = props
   return (
     <>
       <Header />
       {/* Page content */}
       <Container className="mt--7" fluid>
-        <OptionComponent />
+        <OptionComponent
+          refetchQueries={[{ query: GET_OPTIONS, variables: { page: 0 } }]}
+        />
         <Row className="mt-5">
           <div className="col">
             <Card className="shadow">
-              {isOpen && (
-                <Alert
-                  message="Delete feature will available after purchasing product"
-                  severity="warning"
-                />
+              {alert && (
+                <Alert message={alert.message} severity={alert.severity} />
               )}
               <Query query={GET_OPTIONS} variables={{ page: 0 }}>
                 {({ loading, error, data }) => {
@@ -183,7 +173,10 @@ const Option = props => {
           toggle={() => {
             toggleModal()
           }}>
-          <OptionComponent option={option} />
+          <OptionComponent
+            option={option}
+            refetchQueries={[{ query: GET_OPTIONS, variables: { page: 0 } }]}
+          />
         </Modal>
       </Container>
     </>
