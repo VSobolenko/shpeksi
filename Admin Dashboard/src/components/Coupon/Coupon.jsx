@@ -143,7 +143,7 @@ function Coupan(props) {
                       {t('Discount Percent')}
                     </label>
                     <br />
-                    <small>Between 1 and 100</small>
+                    <small>{t('Between 1 and 100')}</small>
                     <FormGroup
                       className={
                         discountError === null

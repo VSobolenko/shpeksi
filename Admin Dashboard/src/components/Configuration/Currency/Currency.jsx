@@ -150,7 +150,7 @@ function Currency(props) {
                           </Button>
                         )
                       }
-                      if (error) return 'Error :('
+                      if (error) return `${t('Error')}: ${error.message}`
                       return (
                         <Button
                           className="btn-block mb-2"

@@ -90,7 +90,7 @@ const OrdersData = props => {
 
   const columns = [
     {
-      name: 'OrderID',
+      name: t('OrderID'),
       sortable: true,
       selector: 'order_id',
       cell: row => (
@@ -100,7 +100,7 @@ const OrdersData = props => {
       )
     },
     {
-      name: 'User',
+      name: t('User'),
       sortable: true,
       selector: 'user.name',
       cell: row => (
@@ -108,19 +108,19 @@ const OrdersData = props => {
       )
     },
     {
-      name: 'Items',
+      name: t('Items'),
       cell: row => <>{getItems(row.items)}</>
     },
     {
-      name: 'Payment',
+      name: t('Payment'),
       selector: 'payment_status'
     },
     {
-      name: 'Status',
+      name: t('Status'),
       selector: 'order_status'
     },
     {
-      name: 'Datetime',
+      name: t('Datetime'),
       cell: row => (
         <>{new Date(row.createdAt).toLocaleString().replace(/ /g, '\n')}</>
       )
@@ -176,7 +176,7 @@ const OrdersData = props => {
           return (
             <tr>
               <td>
-                `${t('Error')}! ${error.message}`
+                {t('Error')}! {error.message}
               </td>
             </tr>
           )

@@ -22,6 +22,7 @@ const DELETE_OPTION = gql`
 `
 
 const Option = props => {
+  const { t } = props
   const [editModal, setEditModal] = useState(false)
   const [option, setOption] = useState(null)
   const [alert, setAlert] = useState(null)
@@ -53,22 +54,22 @@ const Option = props => {
 
   const columns = [
     {
-      name: 'Title',
+      name: t('Title'),
       sortable: true,
       selector: 'title'
     },
     {
-      name: 'Description',
+      name: t('Description'),
       sortable: true,
       selector: 'description'
     },
     {
-      name: 'Price',
+      name: t('Price'),
       sortable: true,
       selector: 'price'
     },
     {
-      name: 'Action',
+      name: t('Actions'),
       cell: row => <>{actionButtons(row)}</>
     }
   ]
@@ -122,7 +123,6 @@ const Option = props => {
     )
   }
 
-  const { t } = props
   return (
     <>
       <Header />
@@ -143,7 +143,7 @@ const Option = props => {
                     return (
                       <tr>
                         <td>
-                          `${t('Error')}! ${error.message}`
+                          {t('Error')}! {error.message}
                         </td>
                       </tr>
                     )

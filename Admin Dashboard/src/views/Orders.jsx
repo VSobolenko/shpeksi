@@ -42,7 +42,7 @@ const Orders = props => {
                     return (
                       <tr>
                         <td>
-                          `${t('Error')}! ${error.message}`
+                          {t('Error')}! {error.message}
                         </td>
                       </tr>
                     )

@@ -21,7 +21,7 @@ import 'assets/vendor/@fortawesome/fontawesome-free/css/all.min.css'
 import 'assets/scss/argon-dashboard-react.scss'
 import { getOrders, uploadToken } from './apollo/server'
 
-import { ws_server_url, server_url } from './config/config'
+import { ws_server_url, server_url, restaurant_slug } from './config/config'
 // Side-effect import: initializes i18next with the locale bundles and picks the
 // initial language from the system locale. Without this, `t()` returns the raw
 // English keys and switching language does nothing.
@@ -45,8 +45,16 @@ const firebaseConfig = {
 }
 
 const cache = new InMemoryCache()
+// The tenant travels on the HTTP link too: without it every tenant-scoped
+// query fails with RESTAURANT_REQUIRED for callers whose token carries no
+// restaurant (the platform owner, or a staff token issued before the tenant
+// claim existed).
+const tenantHeaders = restaurant_slug
+  ? { 'x-restaurant-id': restaurant_slug }
+  : {}
 const httpLink = new HttpLink({
-  uri: `${server_url}graphql`
+  uri: `${server_url}graphql`,
+  headers: tenantHeaders
 })
 const wsLink = new WebSocketLink({
   uri: `${ws_server_url}graphql`,
@@ -62,7 +70,10 @@ const wsLink = new WebSocketLink({
       if (data) {
         token = JSON.parse(data).token
       }
-      return token ? { authorization: `Bearer ${token}` } : {}
+      return {
+        ...tenantHeaders,
+        ...(token ? { authorization: `Bearer ${token}` } : {})
+      }
     }
   }
 })

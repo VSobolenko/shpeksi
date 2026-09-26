@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { withTranslation } from 'react-i18next'
 // node.js library that concatenates classes (strings)
 // react plugin used to create charts
 import { Line, Bar } from 'react-chartjs-2'
@@ -13,15 +14,6 @@ import {
   Legend
 } from 'chart.js'
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
-  Tooltip,
-  Legend
-)
 // reactstrap components
 import {
   Button,
@@ -44,6 +36,16 @@ import {
   getDashboardOrders
 } from '../apollo/server'
 import { gql } from '@apollo/client'
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Tooltip,
+  Legend
+)
 
 const GET_DASHBOARD_TOTAL = gql`
   ${getDashboardTotal}
@@ -94,6 +96,7 @@ const intializeStartDate = () => {
   return d.toISOString().substr(0, 10)
 }
 const Dashboard = props => {
+  const { t } = props
   const [startingDate, setStartingDate] = useState(intializeStartDate)
   const [endingDate, setEndingDate] = useState(
     new Date().toISOString().substr(0, 10)
@@ -120,7 +123,7 @@ const Dashboard = props => {
                       <Row>
                         <div className="col">
                           <CardTitle className="text-uppercase text-muted mb-0">
-                            Total Orders
+                            {t('Total Orders')}
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
                             {loading
@@ -143,7 +146,7 @@ const Dashboard = props => {
                       <Row>
                         <div className="col">
                           <CardTitle className="text-uppercase text-muted mb-0">
-                            Total Users
+                            {t('Total Users')}
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
                             {loading
@@ -166,7 +169,7 @@ const Dashboard = props => {
                       <Row>
                         <div className="col">
                           <CardTitle className="text-uppercase text-muted mb-0">
-                            Total Sales
+                            {t('Total Sales')}
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
                             {loading
@@ -189,7 +192,7 @@ const Dashboard = props => {
                       <Row>
                         <div className="col">
                           <CardTitle className="text-uppercase text-muted mb-0">
-                            Average Ratings/Total Ratings
+                            {t('Average Ratings/Total Ratings')}
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
                             {loading
@@ -221,7 +224,7 @@ const Dashboard = props => {
               <CardHeader className="bg-transparent">
                 <Row className="align-items-center">
                   <h6 className="text-uppercase text-light ls-1 mb-1">
-                    Filter Graph
+                    {t('Filter Graph')}
                   </h6>
                 </Row>
               </CardHeader>
@@ -230,7 +233,7 @@ const Dashboard = props => {
                   <Col xl="4">
                     <FormGroup>
                       <label className="form-control-label">
-                        Starting Date
+                        {t('Starting Date')}
                       </label>
                       <Input
                         className="form-control-alternative"
@@ -245,7 +248,9 @@ const Dashboard = props => {
                   </Col>
                   <Col xl="4">
                     <FormGroup>
-                      <label className="form-control-label">Ending Date</label>
+                      <label className="form-control-label">
+                        {t('Ending Date')}
+                      </label>
                       <Input
                         className="form-control-alternative"
                         type="date"
@@ -262,10 +267,10 @@ const Dashboard = props => {
                       <label
                         className="form-control-label"
                         htmlFor="input-description">
-                        Filter Graph
+                        {t('Filter Graph')}
                       </label>
                       <Button className="btn-block" color="primary">
-                        Submit
+                        {t('Submit')}
                       </Button>
                     </FormGroup>
                   </Col>
@@ -382,4 +387,4 @@ const Dashboard = props => {
   )
 }
 
-export default Dashboard
+export default withTranslation()(Dashboard)

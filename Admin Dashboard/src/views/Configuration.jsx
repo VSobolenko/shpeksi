@@ -17,6 +17,7 @@ const GET_CONFIGURATION = gql`
 `
 
 const Configuration = props => {
+  const { t } = props
   return (
     <>
       <Header />
@@ -35,7 +36,15 @@ const Configuration = props => {
               </Container>
             )
           }
-          if (error) return 'Error :('
+          if (error) {
+            return (
+              <Container className="text-center mt-4" fluid>
+                <span className="text-danger">
+                  {t('Error')}! {error.message}
+                </span>
+              </Container>
+            )
+          }
           return (
             <Container className="mt--7" fluid>
               <Loader

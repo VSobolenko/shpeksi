@@ -26,6 +26,7 @@ const GET_FOODS = gql`
 `
 
 const Category = props => {
+  const { t } = props
   const [editModal, setEditModal] = useState(false)
   const [category, setCategory] = useState(null)
   const [alert, setAlert] = useState(null)
@@ -57,28 +58,28 @@ const Category = props => {
 
   const columns = [
     {
-      name: 'Title',
+      name: t('Title'),
       sortable: true,
       selector: 'title'
     },
     {
-      name: 'Description',
+      name: t('Description'),
       sortable: true,
       selector: 'description'
     },
     {
-      name: 'Image',
+      name: t('Image'),
       cell: row => (
         <>
           {!!row.img_menu && (
             <img className="img-responsive" src={row.img_menu} alt="img menu" />
           )}
-          {!row.img_menu && 'No Image'}
+          {!row.img_menu && t('No Image')}
         </>
       )
     },
     {
-      name: 'Action',
+      name: t('Actions'),
       cell: row => <>{actionButtons(row)}</>
     }
   ]
@@ -146,7 +147,6 @@ const Category = props => {
       </>
     )
   }
-  const { t } = props
   return (
     <>
       <Header />
@@ -165,7 +165,7 @@ const Category = props => {
                   if (error) {
                     return (
                       <span>
-                        `${t('Error')}! ${error.message}`
+                        {t('Error')}! {error.message}
                       </span>
                     )
                   }

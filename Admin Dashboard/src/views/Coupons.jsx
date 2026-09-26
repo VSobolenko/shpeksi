@@ -27,6 +27,7 @@ const DELETE_COUPON = gql`
 `
 
 const Coupon = props => {
+  const { t } = props
   const [editModal, setEditModal] = useState(false)
   const [coupon, setCoupon] = useState(null)
   const [alert, setAlert] = useState(null)
@@ -58,21 +59,21 @@ const Coupon = props => {
 
   const columns = [
     {
-      name: 'Code',
+      name: t('Code'),
       sortable: true,
       selector: 'code'
     },
     {
-      name: 'Discount %',
+      name: t('Discount %'),
       sortable: true,
       selector: 'discount'
     },
     {
-      name: 'Status',
+      name: t('Status'),
       cell: row => <>{statusChanged(row)}</>
     },
     {
-      name: 'Action',
+      name: t('Actions'),
       cell: row => <>{actionButtons(row)}</>
     }
   ]
@@ -155,7 +156,6 @@ const Coupon = props => {
     )
   }
 
-  const { t } = props
   return (
     <>
       <Header />
@@ -174,7 +174,7 @@ const Coupon = props => {
                   if (error) {
                     return (
                       <span>
-                        `${t('Error')}! ${error.message}`
+                        {t('Error')}! {error.message}
                       </span>
                     )
                   }

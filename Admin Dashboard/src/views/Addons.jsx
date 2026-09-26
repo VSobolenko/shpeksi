@@ -21,6 +21,7 @@ const DELETE_ADDON = gql`
 `
 
 const Addon = props => {
+  const { t } = props
   const [addon, setAddon] = useState(null)
   const [editModal, setEditModal] = useState(false)
   const [alert, setAlert] = useState(null)
@@ -52,27 +53,27 @@ const Addon = props => {
 
   const columns = [
     {
-      name: 'Title',
+      name: t('Title'),
       sortable: true,
       selector: 'title'
     },
     {
-      name: 'Description',
+      name: t('Description'),
       sortable: true,
       selector: 'description'
     },
     {
-      name: 'Minimum',
+      name: t('Minimum'),
       sortable: true,
       selector: 'quantity_minimum'
     },
     {
-      name: 'Maximum',
+      name: t('Maximum'),
       sortable: true,
       selector: 'quantity_maximum'
     },
     {
-      name: 'Action',
+      name: t('Actions'),
       cell: row => <>{actionButtons(row)}</>
     }
   ]
@@ -129,7 +130,6 @@ const Addon = props => {
     )
   }
 
-  const { t } = props
   return (
     <>
       <Header />
@@ -150,7 +150,7 @@ const Addon = props => {
                     return (
                       <tr>
                         <td>
-                          `${t('Error')}! ${error.message}`
+                          {t('Error')}! {error.message}
                         </td>
                       </tr>
                     )

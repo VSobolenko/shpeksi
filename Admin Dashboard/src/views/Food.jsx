@@ -24,6 +24,7 @@ const DELETE_FOOD = gql`
 `
 
 const Food = props => {
+  const { t } = props
   const [editModal, setEditModal] = useState(false)
   const [food, setFood] = useState(null)
   const [alert, setAlert] = useState(null)
@@ -61,7 +62,7 @@ const Food = props => {
 
   const columns = [
     {
-      name: 'Title',
+      name: t('Title'),
       selector: 'title',
       sortable: true,
       cell: row => (
@@ -73,13 +74,13 @@ const Food = props => {
       )
     },
     {
-      name: 'Description',
+      name: t('Description'),
       sortable: true,
       selector: 'description',
       cell: row => <>{transformToNewline(row.description, 3)}</>
     },
     {
-      name: 'Category',
+      name: t('Category'),
       sortable: true,
       selector: 'category.title',
       // A category can be removed while foods still pointed at it (legacy data),
@@ -88,18 +89,18 @@ const Food = props => {
       cell: row => <>{row.category ? row.category.title : '—'}</>
     },
     {
-      name: 'Image',
+      name: t('Image'),
       cell: row => (
         <>
           {!!row.img_url && (
             <img className="img-responsive" src={row.img_url} alt="img menu" />
           )}
-          {!row.img_url && 'No Image'}
+          {!row.img_url && t('No Image')}
         </>
       )
     },
     {
-      name: 'Action',
+      name: t('Actions'),
       cell: row => <>{actionButtons(row)}</>
     }
   ]
@@ -154,7 +155,6 @@ const Food = props => {
     )
   }
 
-  const { t } = props
   return (
     <>
       <Header />
@@ -173,7 +173,7 @@ const Food = props => {
                   if (error) {
                     return (
                       <span>
-                        `${t('Error')}! ${error.message}`
+                        {t('Error')}! {error.message}
                       </span>
                     )
                   }
